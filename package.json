@@ -1,0 +1,15 @@
+{
+  "name": "ghopay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+ "scripts": {
+    "start": "pnpm --stream -r start",
+    "dev": "pnpm --parallel --stream -r run dev",
+    "build": "pnpm --stream -r run build",
+    "clean": "rm -rf .parcel-cache && pnpm -r run clean"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
