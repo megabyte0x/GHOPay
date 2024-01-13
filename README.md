@@ -37,7 +37,9 @@
 			- [ ] Swapping
 		- [ ] Landing
 			- [ ] Description
-			- [ ] partnerships
+         		- [ ] Key Features
+           		- [ ] How It Works (Tokenomics)
+			- [ ] Partnerships
 			- [ ] Team
 - [ ] Contract Integration [Ayush & Danish]
 		- [ ] Vault Deployer 
