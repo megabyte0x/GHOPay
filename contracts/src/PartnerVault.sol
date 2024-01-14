@@ -6,21 +6,24 @@ import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PartnerVault is ERC4626, Ownable {
-    address constant REWARD_POOL = address(0);
-    uint256 public USER_FEE = 2;
+    address public s_rewardPool;
 
     ERC20 public immutable i_ghoToken;
 
-    constructor(ERC20 _ghoToken, string memory _name, string memory _symbol, address _partnerAddress)
-        ERC4626(_ghoToken, _name, _symbol)
+    constructor(ERC20 _ghoToken, string memory _name, string memory _symbol, address _partnerAddress, uint8 ratio)
+        ERC4626(_ghoToken, _name, _symbol, (_ghoToken.decimals() + ratio))
     {
         i_ghoToken = _ghoToken;
 
         transferOwnership(_partnerAddress);
     }
 
+    function setRewardPool(address _rewardPool) public onlyOwner {
+        s_rewardPool = _rewardPool;
+    }
+
     function depositGHO(uint256 amountOfGHO) public onlyOwner {
-        deposit(amountOfGHO, REWARD_POOL);
+        deposit(amountOfGHO, s_rewardPool);
     }
 
     function withdrawByOwner(uint256 _rp, address _receiver) public onlyOwner {

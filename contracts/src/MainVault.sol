@@ -6,15 +6,24 @@ import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MainVault is ERC4626, Ownable {
-    ERC20 public immutable i_ghoToken;
+    ERC20 public immutable s_ghoToken;
+    uint8 public s_partnerFee;
+    address public s_rewardPool;
 
-    uint8 public immutable i_partnerFee;
-    uint8 public immutable i_userFee;
+    constructor(ERC20 _ghoToken, uint8 _partnerFee, address _rewardPool)
+        ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals())
+    {
+        s_ghoToken = _ghoToken;
+        s_partnerFee = _partnerFee;
+        s_rewardPool = _rewardPool;
+    }
 
-    constructor(ERC20 _ghoToken, uint8 _partnerFee, uint8 _userFee) ERC4626(_ghoToken, "GHO Points", "GP") {
-        i_ghoToken = _ghoToken;
-        i_partnerFee = _partnerFee;
-        i_userFee = _userFee;
+    function setPartnerFee(uint8 _partnerFee) public onlyOwner {
+        s_partnerFee = _partnerFee;
+    }
+
+    function setRewardPool(address _rewardPool) public onlyOwner {
+        s_rewardPool = _rewardPool;
     }
 
     /**
@@ -35,33 +44,17 @@ contract MainVault is ERC4626, Ownable {
     }
 
     /**
-     * Function to withdraw GP tokens in exchange for GHO tokens by User.
-     * @param _gp Amount of GP tokens to be burned in exchange for GHO tokens
-     * @param _receiver The address of the receiver of the GHO tokens
-     */
-    function withdrawForUser(uint256 _gp, address _receiver) public {
-        uint256 fee = (_gp * i_userFee) / 100;
-        uint256 remainingGP = _gp - fee;
-
-        // transferring fee to this contract
-        transferFrom(msg.sender, owner(), fee);
-
-        // call the withdraw function from teh
-        withdraw(remainingGP, _receiver, msg.sender);
-    }
-
-    /**
      * Function to withdraw GP tokens in exchange for GHO tokens by Partner.
      * @param _gp Amount of GP tokens to be burned in exchange for GHO tokens
      * @param _receiver The address of the receiver of the GHO tokens
      */
 
     function withdrawByPartners(uint256 _gp, address _receiver) public {
-        uint256 fee = (_gp * i_partnerFee) / 100;
+        uint256 fee = (_gp * s_partnerFee) / 100;
         uint256 remainingGP = _gp - fee;
 
         // transferring fee to this contract
-        transferFrom(owner(), msg.sender, fee);
+        transferFrom(msg.sender, address(this), fee);
 
         // call the withdraw function from teh
         withdraw(remainingGP, _receiver, msg.sender);
@@ -72,7 +65,7 @@ contract MainVault is ERC4626, Ownable {
      * @return total assets in the vault
      */
     function totalAssets() public view override returns (uint256) {
-        return i_ghoToken.balanceOf(address(this));
+        return s_ghoToken.balanceOf(address(this));
     }
 
     function gpTokenBalance(address _user) public view returns (uint256) {
