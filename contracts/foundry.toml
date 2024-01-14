@@ -5,6 +5,8 @@ libs = ['node_modules', 'lib']
 remappings = [
     '@chainlink/contracts/=node_modules/@chainlink/contracts',
     '@chainlink/contracts-ccip/=node_modules/@chainlink/contracts-ccip',
+    '@openzeppelin/=lib/openzeppelin-contracts',
+    '@solmate/contracts/=lib/solmate/src'
 ]
 solc = '0.8.19'
 
