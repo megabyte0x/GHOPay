@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.heroTextGrad {
+  background: linear-gradient(
+    180deg,
+    #dbd2ef 0%,
+    rgba(213, 201, 239, 0.5) 145.38%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* .heroBg {
+  background: url("/GHOPay/frontend/public/heroShowcase.svg");
+  background-size: cover;
+  background-position: center;
+} */
