@@ -13,7 +13,9 @@
 	- [ ] Wrapper Contract (Contains function for GHO Payment)
 		- [ ] payWithGHO
 - [ ] Frontend [Taveesha & Danish]
-	- [ ] Family Wallet Integration 
+	- [ ] Family Wallet Integration
+ 		- [x] integrate functionality
+   		- [ ] customize UI for our app's color palette
 	- [ ] UI Building 
 		- [ ] P1 Partner Admin Page for setup
 			- [ ] Create Vault
