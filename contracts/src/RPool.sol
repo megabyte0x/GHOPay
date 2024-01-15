@@ -6,29 +6,36 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Utils} from "./Utils.sol";
 import {FixedPointMathLib} from "@solmate/contracts/utils/FixedPointMathLib.sol";
 import {SafeTransferLib} from "@solmate/contracts/utils/SafeTransferLib.sol";
+import {MainVault} from "./MainVault.sol";
+import {PartnerVault} from "./PartnerVault.sol";
 
 contract RPool is Ownable {
     using FixedPointMathLib for uint256;
     using SafeTransferLib for ERC20;
 
-    address public s_ghoToken;
     address public s_utils;
+    address public s_gpToken;
+    address public s_ghoToken;
+    address public s_mainVault;
 
     uint256 public s_feeOnRPs;
     uint256 public s_feeOnWithdrawl;
     uint256 public constant PRECESION = 1e18;
 
-    constructor(address _ghoToken, address _utils) {
-        s_ghoToken = _ghoToken;
+    function setUtils(address _utils) public onlyOwner {
         s_utils = _utils;
+    }
+
+    function setGPToken(address _gpToken) public onlyOwner {
+        s_gpToken = _gpToken;
     }
 
     function setGHOToken(address _ghoToken) public onlyOwner {
         s_ghoToken = _ghoToken;
     }
 
-    function setUtils(address _utils) public onlyOwner {
-        s_utils = _utils;
+    function setMainVault(address _mainVault) public onlyOwner {
+        s_mainVault = _mainVault;
     }
 
     function setFeeOnRPs(uint256 _feeOnRPs) public onlyOwner {
@@ -39,44 +46,59 @@ contract RPool is Ownable {
         s_feeOnWithdrawl = _feeOnWithdrawl;
     }
 
-    function swap(address _tokenA, address _tokenB, uint256 _amountA) public {
-        (uint256 amountB,) = feeCalculator(_tokenA, _tokenB, _amountA);
-
-        // receiving TOKEN A
-        ERC20(_tokenA).safeTransferFrom(msg.sender, address(this), _amountA);
-
-        // sending TOKEN B to msg.sender with fee deduction in Token B
-        ERC20(_tokenB).safeTransferFrom(address(this), msg.sender, amountB);
+    function swap(address _initialToken, address _finalToken, uint256 _initialTokenAmount) public {
+        //TODO: if initialToken != gpToken then fee's divide b/w partner and user
+        swapRouter(_initialToken, _finalToken, _initialTokenAmount);
     }
 
-    function getSwapPreview(address _tokenA, address _tokenB, uint256 _amountA)
-        public
-        view
-        returns (uint256 _remainingAmountB)
-    {
-        (uint256 amountB,) = feeCalculator(_tokenA, _tokenB, _amountA);
+    function swapRouter(address _initialToken, address _finalToken, uint256 _initialTokenAmount) internal {
+        address gpToken = s_gpToken;
+        address ghoToken = s_ghoToken;
 
-        _remainingAmountB = amountB;
+        if (_initialToken == ghoToken) {
+            //...abi
+        } else if (_initialToken == gpToken && _finalToken == ghoToken) {
+            MainVault(s_mainVault).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
+        } else if (_initialToken != gpToken && _finalToken == ghoToken) {
+            PartnerVault(_initialToken).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
+        } else {
+            swapRP(_initialToken, _finalToken, _initialTokenAmount);
+        }
     }
 
-    function feeCalculator(address _tokenA, address _tokenB, uint256 _amountA)
+    function swapRP(address _initialToken, address _finalToken, uint256 _initialTokenAmount) public {
+        (uint256 finalTokenAmount,) = feeCalculator(_initialToken, _finalToken, _initialTokenAmount);
+
+        // receiving intial token from msg.sender
+        ERC20(_initialToken).safeTransferFrom(msg.sender, address(this), _initialTokenAmount);
+
+        // sending finalToken amount to msg.sender after deducting fee in finalToken.
+        ERC20(_finalToken).safeTransferFrom(address(this), msg.sender, finalTokenAmount);
+    }
+
+    function feeCalculator(address _initialToken, address _finalToken, uint256 _initialTokenAmount)
         public
         view
-        returns (uint256 amountB, uint256 fee)
+        returns (uint256 finalTokenAmount, uint256 fee)
     {
-        uint8 _decimalsA = ERC20(_tokenA).decimals();
-        uint8 _decimalsB = ERC20(_tokenB).decimals();
+        uint8 _initialTokenDecimals = ERC20(_initialToken).decimals();
+        uint8 _finalTokenDecimals = ERC20(_finalToken).decimals();
 
-        // amountA * decimalsB / decimalsA
-        uint256 _totalAmountB = FixedPointMathLib.divWadDown(_decimalsB, _decimalsA) * _amountA;
+        // 1 Gp -> 10 CV
+        // CV = 1000 x 1e18
+        // 1 GP -> 100 HP
+        // HP = 100 x 1e18
+
+        // 500 CV -> HP
+        // = (( 100 x 1e18 / 10000 X 1e18 ) * 1e18) * 500
+        // = (50 x 1e18) HP
+
+        uint256 _toalFinalTokenAmt =
+            FixedPointMathLib.divWadDown(_finalTokenDecimals, _initialTokenDecimals) * _initialTokenAmount;
 
         // s_userfee can be around 18 decimal places so we need to divide it by 1e18
-        if (_tokenA != s_ghoToken && _tokenB != s_ghoToken) {
-            fee = (_totalAmountB * s_feeOnRPs) / PRECESION;
-        } else {
-            fee = (_totalAmountB * s_feeOnWithdrawl) / PRECESION;
-        }
+        fee = (_toalFinalTokenAmt * s_feeOnRPs) / PRECESION;
 
-        amountB = _totalAmountB - fee;
+        finalTokenAmount = _toalFinalTokenAmt - fee;
     }
 }
