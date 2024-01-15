@@ -3,10 +3,10 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className=" heroBg flex gap-[32px] items-center justify-center px-[32px] max-w-[1280px]">
+    <div className=" heroBg flex gap-[32px] items-center justify-center max-w-[1280px]">
       <div className="flex flex-col items-start gap-[48px]">
         <div className="flex flex-col items-start gap-[24px]">
-          <h1 className="heroTextGrad text-[60px] font-semibold leading-[72px] tracking-[-1.2px]">
+          <h1 className="heroTextGrad font-semibold leading-[72px] tracking-[-1.2px]">
             Unlock Exciting Rewards with GHO Payments
           </h1>
           <h6 className="text-[20px] leading-[30px] text-[#DBD2EF] max-w-[480px]">
