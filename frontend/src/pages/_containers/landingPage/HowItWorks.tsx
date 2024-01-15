@@ -1,20 +1,15 @@
+import { BasicHeadings } from "@/pages/components";
 import Image from "next/image";
 import React from "react";
 
 const HowItWorks = () => {
   return (
     <div className="py-[96px] flex flex-col gap-[64px] items-center">
-      <div className="text-center">
-        <h6 className="text-[#dbd2efa5] text-[16px] font-semibold leading-[24px]">
-          How it Works
-        </h6>
-        <h1 className="text-[#DBD2EF] text-[36px] leading-[44px] font-semibold tracking-[-0.72px] pt-[12px] pb-[20px]">
-          GHOPay: Your Passport to Rewarding Transactions
-        </h1>
-        <h4 className="text-[20px] leading-[30px] text-[#dbd2efa5]">
-          Learn how payments with GHO can earn you incredible rewards.
-        </h4>
-      </div>
+      <BasicHeadings
+        subH1="How it Works"
+        mainH="GHOPay: Your Passport to Rewarding Transactions"
+        subH2="Learn how payments with GHO can earn you incredible rewards."
+      />
       <div className="flex gap-[32px]">
         <div className="flex gap-[20px] flex-col items-center justify-center text-center">
           <Image

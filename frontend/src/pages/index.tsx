@@ -6,6 +6,7 @@ import {
   Hero,
   HowItWorks,
   Partnered,
+  Team,
 } from "@/pages/_containers";
 
 const WalletInfo = () => {
@@ -19,6 +20,7 @@ const WalletInfo = () => {
       <HowItWorks />
       <FeatureSection />
       <Partnered />
+      <Team />
     </div>
   );
 };
