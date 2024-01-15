@@ -1,13 +1,40 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {ERC4626} from "@solmate/contracts/mixins/ERC4626.sol";
 import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
+import {ERC4626} from "@solmate/contracts/mixins/ERC4626.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {SafeTransferLib} from "@solmate/contracts/utils/SafeTransferLib.sol";
 
+import {Utils} from "./Utils.sol";
+
+/**
+ * @title MainVault
+ * @author Megabyte
+ * @notice The is the Main Vault of GHOPay. It accepts GHO tokens and mints GP tokens in exchange.
+ */
+
 contract MainVault is ERC4626, Ownable {
+    error MainVault__ZeroAddress();
+    error MainVault__ZeroAmount();
+
+    event MainVault__PartnerFeeSet(uint8 partnerFee);
+    event MainVault__UserFeeSet(uint8 userFee);
+    event MainVault__RewardPoolSet(address rewardPool);
+    event MainVault__FeeCollectorSet(address feeCollector);
+    event MainVault__UtilsSet(address utils);
+    event MainVault__GHODeposited(uint256 amount);
+    event MainVault__GHOWithdrawn(uint256 indexed amount, address indexed receiver, address indexed owner);
+
     using SafeTransferLib for ERC20;
+
+    /*
+           _        _                         _       _     _
+       ___| |_ __ _| |_ ___  __   ____ _ _ __(_) __ _| |__ | | ___  ___
+      / __| __/ _` | __/ _ \ \ \ / / _` | '__| |/ _` | '_ \| |/ _ \/ __|
+      \__ \ || (_| | ||  __/  \ V / (_| | |  | | (_| | |_) | |  __/\__ \
+      |___/\__\__,_|\__\___|   \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/
+    */
 
     ERC20 public immutable i_ghoToken;
 
@@ -15,33 +42,68 @@ contract MainVault is ERC4626, Ownable {
     uint8 public s_userFee;
     address public s_rewardPool;
     address public s_feeColletor;
+    address public s_utils;
 
     constructor(ERC20 _ghoToken) ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals()) {
         i_ghoToken = _ghoToken;
     }
 
-    function setPartnerFee(uint8 _partnerFee) public onlyOwner {
+    modifier isZeroAdrress(address _address) {
+        if (_address == address(0)) revert MainVault__ZeroAddress();
+        _;
+    }
+
+    modifier isZeroAmount(uint256 _amount) {
+        if (_amount == 0) revert MainVault__ZeroAmount();
+        _;
+    }
+
+    /*
+                   _     _ _         __                  _   _
+       _ __  _   _| |__ | (_) ___   / _|_   _ _ __   ___| |_(_) ___  _ __  ___
+      | '_ \| | | | '_ \| | |/ __| | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+      | |_) | |_| | |_) | | | (__  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+      | .__/ \__,_|_.__/|_|_|\___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+      |_|
+    */
+
+    function setPartnerFee(uint8 _partnerFee) public isZeroAmount(uint256(_partnerFee)) onlyOwner {
+        emit MainVault__PartnerFeeSet(_partnerFee);
+
         s_partnerFee = _partnerFee;
     }
 
-    function setUserFee(uint8 _userFee) public onlyOwner {
+    function setUserFee(uint8 _userFee) public isZeroAmount(uint256(_userFee)) onlyOwner {
+        emit MainVault__UserFeeSet(_userFee);
+
         s_userFee = _userFee;
     }
 
-    function setRewardPool(address _rewardPool) public onlyOwner {
+    function setRewardPool(address _rewardPool) public isZeroAdrress(_rewardPool) onlyOwner {
+        emit MainVault__RewardPoolSet(_rewardPool);
+
         s_rewardPool = _rewardPool;
     }
 
-    function setFeeCollector(address _feeCollector) public onlyOwner {
+    function setFeeCollector(address _feeCollector) public isZeroAdrress(_feeCollector) onlyOwner {
+        emit MainVault__FeeCollectorSet(_feeCollector);
+
         s_feeColletor = _feeCollector;
+    }
+
+    function setUtils(address _utils) public isZeroAdrress(_utils) onlyOwner {
+        emit MainVault__UtilsSet(_utils);
+
+        s_utils = _utils;
     }
 
     /**
      * Function to deposit GHO tokens to the vault in exchange for GP tokens.
-     * @param _assets number of assets to be deposited
+     * @param _ghoAmount number of assets to be deposited
      */
-    function depositGHO(uint256 _assets) public onlyOwner {
-        deposit(_assets, s_rewardPool);
+    function depositGHO(uint256 _ghoAmount) public isZeroAmount(_ghoAmount) onlyOwner {
+        deposit(_ghoAmount, s_rewardPool);
+        emit MainVault__GHODeposited(_ghoAmount);
     }
 
     /**
@@ -49,58 +111,14 @@ contract MainVault is ERC4626, Ownable {
      * @param _gp Amount of GP tokens to be burned in exchange for GHO tokens
      * @param _receiver The address of the receiver of the GHO tokens
      */
-    function withdrawGHO(uint256 _gp, address _receiver, address _owner) public onlyOwner {
-        withdraw(_gp, _receiver, _owner);
-    }
-
-    function withdraw(uint256 assets, address receiver, address _owner)
+    function withdrawGHO(uint256 _gp, address _receiver, address _owner)
         public
-        virtual
-        override
-        returns (uint256 shares)
+        isZeroAmount(_gp)
+        isZeroAdrress(_receiver)
+        isZeroAdrress(_owner)
     {
-        shares = previewWithdraw(assets); // No need to check for rounding error, previewWithdraw rounds up.
-
-        if (msg.sender != _owner) {
-            uint256 allowed = allowance[_owner][msg.sender]; // Saves gas for limited approvals.
-
-            if (allowed != type(uint256).max) allowance[_owner][msg.sender] = allowed - shares;
-        }
-
-        beforeWithdraw(assets, shares);
-
-        _burn(_owner, shares);
-
-        emit Withdraw(msg.sender, receiver, _owner, assets, shares);
-
-        if (msg.sender == owner()) {
-            i_ghoToken.safeTransfer(receiver, assets);
-        } else if (isPartner(msg.sender)) {
-            (uint256 amountPayable, uint256 fee) = withdrawWithFee(assets, s_partnerFee);
-            i_ghoToken.safeTransfer(receiver, amountPayable);
-            i_ghoToken.safeTransfer(s_feeColletor, fee);
-        } else {
-            (uint256 amountPayable, uint256 fee) = withdrawWithFee(assets, s_userFee);
-            i_ghoToken.safeTransfer(receiver, amountPayable);
-            i_ghoToken.safeTransfer(s_feeColletor, fee);
-        }
-    }
-
-    function isPartner(address _partner) internal view returns (bool) {
-        return _partner == s_rewardPool;
-    }
-
-    function withdrawWithFee(uint256 _rpTokenAmount, uint8 _fee)
-        internal
-        pure
-        returns (uint256 amountPayable, uint256 fee)
-    {
-        fee = calculateFee(_rpTokenAmount, _fee);
-        amountPayable = _rpTokenAmount - fee;
-    }
-
-    function calculateFee(uint256 _rpTokenAmount, uint8 _fee) internal pure returns (uint256) {
-        return (_rpTokenAmount * _fee) / 100;
+        withdraw(_gp, _receiver, _owner);
+        emit MainVault__GHOWithdrawn(_gp, _receiver, _owner);
     }
 
     /**
@@ -113,5 +131,96 @@ contract MainVault is ERC4626, Ownable {
 
     function gpTokenBalance(address _user) public view returns (uint256) {
         return balanceOf[_user];
+    }
+
+    /*
+       _       _                        _
+      (_)_ __ | |_ ___ _ __ _ __   __ _| |
+      | | '_ \| __/ _ \ '__| '_ \ / _` | |
+      | | | | | ||  __/ |  | | | | (_| | |
+      |_|_| |_|\__\___|_|  |_| |_|\__,_|_|
+    */
+
+    /**
+     * This function is used to check if the address is a partner booking contract.
+     * @param _partnerBookingContract The address of the partner booking contract
+     */
+    function isPartner(address _partnerBookingContract) internal view returns (bool) {
+        return Utils(s_utils).isPartnerBookingContractVaild(_partnerBookingContract);
+    }
+
+    /**
+     *
+     * @param _rpTokenAmount The amount of GP tokens in exchange for GHO tokens
+     * @param _fee The fee percent to be charged
+     * @return amountPayable The amount of GHO tokens to be paid
+     * @return fee The amount of fee to be paid
+     */
+    function withdrawWithFee(uint256 _rpTokenAmount, uint8 _fee)
+        internal
+        pure
+        returns (uint256 amountPayable, uint256 fee)
+    {
+        fee = calculateFee(_rpTokenAmount, _fee);
+        amountPayable = _rpTokenAmount - fee;
+    }
+
+    /**
+     * This is use to calculate the fee to be charged.
+     * @param _rpTokenAmount The amount of GP tokens in exchange for GHO tokens
+     * @param _fee The fee percent to be charged
+     */
+    function calculateFee(uint256 _rpTokenAmount, uint8 _fee) internal pure returns (uint256) {
+        return (_rpTokenAmount * _fee) / 100;
+    }
+
+    /*
+                                _     _
+        _____   _____ _ __ _ __(_) __| | ___
+       / _ \ \ / / _ \ '__| '__| |/ _` |/ _ \
+      | (_) \ V /  __/ |  | |  | | (_| |  __/
+       \___/ \_/ \___|_|  |_|  |_|\__,_|\___|
+    */
+    /**
+     * @param _gpAmount The amount of GP tokens to be exchanged for GHO tokens
+     * @param _receiver The address of the receiver of the GHO tokens
+     * @param _owner The address of the owner of the GP tokens
+     * @return shares The amount of GP tokens to be burned
+     * @dev This function is override to add the fee structure of the Protocol.
+     * @notice If the msg.sender is the owner of the Main Vault, then the GHO tokens are sent directly to the receiver.
+     * @notice If the msg.sender is a partner booking contract, then the GHO tokens are sent to the receiver after deducting the partner fee.
+     * @notice If the msg.sender is a user, then the GHO tokens are sent to the receiver after deducting the user fee.
+     */
+    function withdraw(uint256 _gpAmount, address _receiver, address _owner)
+        public
+        virtual
+        override
+        returns (uint256 shares)
+    {
+        shares = previewWithdraw(_gpAmount); // No need to check for rounding error, previewWithdraw rounds up.
+
+        if (msg.sender != _owner) {
+            uint256 allowed = allowance[_owner][msg.sender]; // Saves gas for limited approvals.
+
+            if (allowed != type(uint256).max) allowance[_owner][msg.sender] = allowed - shares;
+        }
+
+        beforeWithdraw(_gpAmount, shares);
+
+        _burn(_owner, shares);
+
+        emit Withdraw(msg.sender, _receiver, _owner, _gpAmount, shares);
+
+        if (msg.sender == owner()) {
+            i_ghoToken.safeTransfer(_receiver, _gpAmount);
+        } else if (isPartner(msg.sender)) {
+            (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_partnerFee);
+            i_ghoToken.safeTransfer(_receiver, amountPayable);
+            i_ghoToken.safeTransfer(s_feeColletor, fee);
+        } else {
+            (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_userFee);
+            i_ghoToken.safeTransfer(_receiver, amountPayable);
+            i_ghoToken.safeTransfer(s_feeColletor, fee);
+        }
     }
 }
