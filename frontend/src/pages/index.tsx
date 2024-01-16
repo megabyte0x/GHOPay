@@ -17,6 +17,7 @@ const WalletInfo = () => {
   return (
     <div className="bg-[#14141B] pt-[64px] flex flex-col items-center justify-center px-20">
       {/* Connected Wallet: {address} */}
+
       <Hero />
       <HowItWorks />
       <FeatureSection />
