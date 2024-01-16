@@ -2,7 +2,7 @@
 pragma solidity 0.8.19;
 
 import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
-import {ERC4626} from "@solmate/contracts/mixins/ERC4626.sol";
+import {ERC4626} from "@solmate/contracts/tokens/ERC4626.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {SafeTransferLib} from "@solmate/contracts/utils/SafeTransferLib.sol";
 
