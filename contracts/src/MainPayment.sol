@@ -6,15 +6,15 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {FixedPointMathLib} from "@solmate/contracts/utils/FixedPointMathLib.sol";
 
-contract Wrapper is Ownable {
-    error Wrapper__ZeroAmount();
-    error Wrapper__NotEnoughGP(uint256 _gpAmountLeft, uint256 _gpRewardAmount);
-    error Wrapper__ZeroAddress();
-    error Wrapper__NotEnoughGHO();
-    error Wrapper__OnlyGHOPassportHolders();
+contract MainPayment is Ownable {
+    error MainPayment__ZeroAmount();
+    error MainPayment__NotEnoughGP(uint256 _gpAmountLeft, uint256 _gpRewardAmount);
+    error MainPayment__ZeroAddress();
+    error MainPayment__NotEnoughGHO();
+    error MainPayment__OnlyGHOPassportHolders();
 
-    event Wrapper__PaidWithGHO(address indexed _recipient, uint256 _amount);
-    event Wrapper__GPRewarded(address indexed _user, uint256 indexed _amountPaid, uint256 indexed _gpAmountLeft);
+    event MainPayment__PaidWithGHO(address indexed _recipient, uint256 _amount);
+    event MainPayment__GPRewarded(address indexed _user, uint256 indexed _amountPaid, uint256 indexed _gpAmountLeft);
 
     using FixedPointMathLib for uint256;
 
@@ -40,17 +40,17 @@ contract Wrapper is Ownable {
     */
 
     modifier isZeroAdrress(address _address) {
-        if (_address == address(0)) revert Wrapper__ZeroAddress();
+        if (_address == address(0)) revert MainPayment__ZeroAddress();
         _;
     }
 
     modifier isZeroAmount(uint256 _amount) {
-        if (_amount == 0) revert Wrapper__ZeroAmount();
+        if (_amount == 0) revert MainPayment__ZeroAmount();
         _;
     }
 
     modifier isGHOPassportHolder() {
-        if (!(s_ghoPassport.balanceOf(msg.sender) > 0)) revert Wrapper__OnlyGHOPassportHolders();
+        if (!(s_ghoPassport.balanceOf(msg.sender) > 0)) revert MainPayment__OnlyGHOPassportHolders();
         _;
     }
 
@@ -81,18 +81,18 @@ contract Wrapper is Ownable {
         address _user = msg.sender;
         uint256 gpAmount = s_gpToken.balanceOf(address(this));
 
-        if (s_ghoToken.balanceOf(_user) < _amount) revert Wrapper__NotEnoughGHO();
+        if (s_ghoToken.balanceOf(_user) < _amount) revert MainPayment__NotEnoughGHO();
 
         uint256 gpRewardAmount = _calculateGPReward(_amount);
-        if (gpAmount < gpRewardAmount) revert Wrapper__NotEnoughGP(gpAmount, gpRewardAmount);
+        if (gpAmount < gpRewardAmount) revert MainPayment__NotEnoughGP(gpAmount, gpRewardAmount);
 
         // transfer funds to the recipient
         s_ghoToken.transferFrom(_user, _recipient, _amount);
-        emit Wrapper__PaidWithGHO(_recipient, _amount);
+        emit MainPayment__PaidWithGHO(_recipient, _amount);
 
         // transfer GP to _user
         s_gpToken.transfer(_user, gpRewardAmount);
-        emit Wrapper__GPRewarded(_user, gpRewardAmount, (gpAmount - gpRewardAmount));
+        emit MainPayment__GPRewarded(_user, gpRewardAmount, (gpAmount - gpRewardAmount));
     }
 
     /*
