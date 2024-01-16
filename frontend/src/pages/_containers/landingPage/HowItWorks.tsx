@@ -10,7 +10,7 @@ const HowItWorks = () => {
         mainH="GHOPay: Your Passport to Rewarding Transactions"
         subH2="Learn how payments with GHO can earn you incredible rewards."
       />
-      <div className="flex gap-[32px]">
+      <div className="flex md:flex-row flex-col gap-[32px] items-center justify-center">
         <div className="flex gap-[20px] flex-col items-center justify-center text-center">
           <Image
             src={"/credit-card-icon.svg"}
@@ -29,7 +29,13 @@ const HowItWorks = () => {
             </h5>
           </div>
         </div>
-        <Image src={"/arrow-right.svg"} height={32} width={32} alt="arrow" />
+        <Image
+          src={"/arrow-right.svg"}
+          height={32}
+          width={32}
+          alt="arrow"
+          className="md:rotate-0 rotate-90"
+        />
         <div className="flex gap-[20px] flex-col items-center justify-center text-center">
           <Image
             src={"/rewardIcon.svg"}
@@ -48,7 +54,13 @@ const HowItWorks = () => {
             </h5>
           </div>
         </div>
-        <Image src={"/arrow-right.svg"} height={32} width={32} alt="arrow" />
+        <Image
+          src={"/arrow-right.svg"}
+          height={32}
+          width={32}
+          alt="arrow"
+          className="md:rotate-0 rotate-90"
+        />
         <div className="flex gap-[20px] flex-col items-center justify-center text-center">
           <Image
             src={"/ticketIcon.svg"}

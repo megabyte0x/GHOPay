@@ -3,7 +3,10 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className=" heroBg flex gap-[32px] items-center justify-center max-w-[1280px]">
+    <div
+      className="heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
+    lg:flex-row flex-col"
+    >
       <div className="flex flex-col items-start gap-[48px]">
         <div className="flex flex-col items-start gap-[24px]">
           <h1 className="heroTextGrad font-semibold leading-[72px] tracking-[-1.2px]">

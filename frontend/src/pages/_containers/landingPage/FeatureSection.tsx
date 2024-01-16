@@ -9,7 +9,11 @@ const FeatureSection = () => {
         subH1="Features"
         mainH="Elevate Your Rewards Experience with GHO Payments"
       />
-      <div className="grid grid-cols-3 gap-[24px]">
+      <div
+        className="lg:grid lg:grid-cols-3 
+      flex flex-col
+      gap-[24px]"
+      >
         <div className="p-[32px] bg-[#393149] rounded-[6px] flex flex-col gap-[24px] items-center justify-center min-w-[280px]">
           <Image src={"/feat1.png"} height={200} width={350} alt="feature" />
           <div className="text-start text-[#DBD2EF]">
