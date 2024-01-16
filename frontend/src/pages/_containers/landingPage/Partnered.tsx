@@ -1,4 +1,4 @@
-import { BasicHeadings } from "@/pages/components";
+import { BasicHeadings } from "@/pages/_components";
 import React from "react";
 
 const Partnered = () => {

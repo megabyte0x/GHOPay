@@ -1,5 +1,4 @@
-import { BasicHeadings } from "@/pages/components";
-import TeamCard from "@/pages/components/Landing/TeamCard";
+import { BasicHeadings, TeamCard } from "@/pages/_components";
 import Image from "next/image";
 import React from "react";
 
