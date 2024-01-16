@@ -1,10 +1,11 @@
 import Image from "next/image";
 import React from "react";
+import { ButtonPurple } from "..";
 
 const Footer = () => {
   return (
     <div className="border-t-[1px] border-[#dbd2ef36] pt-[64px] pb-[48px] gap-[56px] flex flex-col">
-      <div className="flex w-[100vw] justify-between px-20">
+      <div className="flex md:flex-row flex-col md:gap-0 gap-12  w-[100vw] justify-between px-20">
         <div className="flex flex-col gap-[32px] self-start max-w-[390px]">
           <div className="flex gap-[8px] ">
             <Image src={"/logo.svg"} height={32} width={32} alt="logo" />
@@ -21,9 +22,10 @@ const Footer = () => {
             <h4>Privacy</h4>
           </div>
         </div>
-        <button className=" place-self-start shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] px-[18px] py-[12px] border-[1px] border-solid border-[#A48AFB] bg-[#6941C6] rounded-[8px] text-[#ffffff] text-[16px] font-semibold leading-[24px]">
-          Launch Dapp
-        </button>
+        <ButtonPurple
+          text="Launch Dapp"
+          styl="text-[16px] px-[18px] py-[12px]"
+        />
       </div>
       <div className="flex justify-between px-20 w-[100vw]">
         <div className="text-[16px] text-[#DBD2EF] leading-[24px] opacity-60">

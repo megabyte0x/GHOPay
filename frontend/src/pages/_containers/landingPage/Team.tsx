@@ -10,10 +10,13 @@ const Team = () => {
         mainH="Meet the team behind GHOPayments"
         subH2="We’re building the incentive layer for GHO Payments."
       />
-      <div className="flex gap-[48px] justify-center items-center">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-[48px] justify-center items-center">
         {/* {team.map((person) => {
           <TeamCard person={person} />;
         })} */}
+        <TeamCard person={team[0]} />
+        <TeamCard person={team[0]} />
+        <TeamCard person={team[0]} />
         <TeamCard person={team[0]} />
       </div>
     </div>

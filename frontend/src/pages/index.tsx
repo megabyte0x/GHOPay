@@ -15,7 +15,7 @@ const WalletInfo = () => {
   if (isConnecting) return <div>Connecting...</div>;
   if (isDisconnected) return <div>Disconnected</div>;
   return (
-    <div className="bg-[#14141B] pt-[64px] flex flex-col items-center justify-center px-20">
+    <div className="bg-[#14141B] pt-[64px] flex flex-col items-center justify-center md:px-20 px-6">
       {/* Connected Wallet: {address} */}
 
       <Hero />

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { ButtonPurple } from "..";
 
 const NavBar = () => {
   return (
@@ -19,9 +20,7 @@ const NavBar = () => {
           <li>Team</li>
         </ul>
       </div>
-      <button className=" shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] px-[18px] py-[12px] border-[1px] border-solid border-[#A48AFB] bg-[#6941C6] rounded-[8px] text-[#ffffff] text-[16px] font-semibold leading-[24px]">
-        Launch Dapp
-      </button>
+      <ButtonPurple text="Launch Dapp" styl="text-[16px] px-[18px] py-[12px]" />
     </div>
   );
 };

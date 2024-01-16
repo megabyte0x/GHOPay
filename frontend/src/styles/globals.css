@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 .heroTextGrad {
-  font-size: 60px;
   background: linear-gradient(
     180deg,
     #dbd2ef 0%,

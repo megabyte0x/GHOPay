@@ -25,7 +25,7 @@ function App({ Component, pageProps }: AppProps) {
       <ConnectKitProvider>
         {client && (
           <>
-            <NavBar />
+            {/* <NavBar /> */}
             <Component {...pageProps} />
             {/* <ConnectKitButton /> */}
           </>
