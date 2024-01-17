@@ -2,11 +2,9 @@
 pragma solidity 0.8.19;
 
 import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
-import {ERC4626} from "@solmate/contracts/mixins/ERC4626.sol";
+import {ERC4626} from "@solmate/contracts/tokens/ERC4626.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {SafeTransferLib} from "@solmate/contracts/utils/SafeTransferLib.sol";
-
-import {Utils} from "./Utils.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 /**
  * @title MainVault
@@ -26,8 +24,6 @@ contract MainVault is ERC4626, Ownable {
     event MainVault__GHODeposited(uint256 amount);
     event MainVault__GHOWithdrawn(uint256 indexed amount, address indexed receiver, address indexed owner);
 
-    using SafeTransferLib for ERC20;
-
     /*
            _        _                         _       _     _
        ___| |_ __ _| |_ ___  __   ____ _ _ __(_) __ _| |__ | | ___  ___
@@ -37,12 +33,12 @@ contract MainVault is ERC4626, Ownable {
     */
 
     ERC20 public immutable i_ghoToken;
+    IERC721 public s_ghoPartnerPassport;
 
-    uint8 public s_partnerFee;
     uint8 public s_userFee;
+    uint8 public s_partnerFee;
     address public s_rewardPool;
     address public s_feeColletor;
-    address public s_utils;
 
     constructor(ERC20 _ghoToken) ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals()) {
         i_ghoToken = _ghoToken;
@@ -91,12 +87,6 @@ contract MainVault is ERC4626, Ownable {
         s_feeColletor = _feeCollector;
     }
 
-    function setUtils(address _utils) public isZeroAdrress(_utils) onlyOwner {
-        emit MainVault__UtilsSet(_utils);
-
-        s_utils = _utils;
-    }
-
     /**
      * Function to deposit GHO tokens to the vault in exchange for GP tokens.
      * @param _ghoAmount number of assets to be deposited
@@ -142,11 +132,11 @@ contract MainVault is ERC4626, Ownable {
     */
 
     /**
-     * This function is used to check if the address is a partner booking contract.
-     * @param _partnerBookingContract The address of the partner booking contract
+     * This function is to check if the msg.sender is a GHO Partner Passport holder.
+     * @param _partnerAdmin The address of the partner booking contract
      */
-    function isPartner(address _partnerBookingContract) internal view returns (bool) {
-        return Utils(s_utils).isPartnerBookingContractVaild(_partnerBookingContract);
+    function isPartner(address _partnerAdmin) internal view returns (bool) {
+        return s_ghoPartnerPassport.balanceOf(_partnerAdmin) > 0;
     }
 
     /**
@@ -212,15 +202,15 @@ contract MainVault is ERC4626, Ownable {
         emit Withdraw(msg.sender, _receiver, _owner, _gpAmount, shares);
 
         if (msg.sender == owner()) {
-            i_ghoToken.safeTransfer(_receiver, _gpAmount);
+            i_ghoToken.transfer(_receiver, _gpAmount);
         } else if (isPartner(msg.sender)) {
             (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_partnerFee);
-            i_ghoToken.safeTransfer(_receiver, amountPayable);
-            i_ghoToken.safeTransfer(s_feeColletor, fee);
+            i_ghoToken.transfer(_receiver, amountPayable);
+            i_ghoToken.transfer(s_feeColletor, fee);
         } else {
             (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_userFee);
-            i_ghoToken.safeTransfer(_receiver, amountPayable);
-            i_ghoToken.safeTransfer(s_feeColletor, fee);
+            i_ghoToken.transfer(_receiver, amountPayable);
+            i_ghoToken.transfer(s_feeColletor, fee);
         }
     }
 }
