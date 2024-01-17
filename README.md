@@ -5,15 +5,17 @@
 - [ ] Figma Design [Taveesha & Danish]
 	- [ ] [https://www.figma.com/file/nfLV1nkhzidp9o2yAjqktO/LFGHO?type=design&node-id=1%3A2&mode=design&t=kM9r5lnizRU4Z9r3-1](https://www.figma.com/file/nfLV1nkhzidp9o2yAjqktO/LFGHO?type=design&node-id=1%3A2&mode=design&t=kM9r5lnizRU4Z9r3-1)
 - [ ] Contracts [Yash & Ayush]
-	- [ ] Hotel Vaults
+	- [x] Partner Vaults
 	- [ ] Booking Contract
-	- [ ] Main Vault
+	- [x] Main Vault
 	- [ ] Vault Deployer 
 	- [ ] Booking Deployer
-	- [ ] Wrapper Contract (Contains function for GHO Payment)
-		- [ ] payWithGHO
+	- [x] Wrapper Contract (Contains function for GHO Payment)
+		- [x] payWithGHO
 - [ ] Frontend [Taveesha & Danish]
-	- [ ] Family Wallet Integration 
+	- [ ] Family Wallet Integration
+ 		- [x] integrate functionality
+   		- [ ] customize UI for our app's color palette
 	- [ ] UI Building 
 		- [ ] P1 Partner Admin Page for setup
 			- [ ] Create Vault
