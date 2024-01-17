@@ -40,10 +40,16 @@ contract RPool is Ownable {
     address public s_mainVault;
 
     uint256 public s_feeOnRPs;
-    uint256 public s_feeOnWithdrawl;
-    uint256 public constant PRECESION = 1e18;
 
-    constructor() Ownable(msg.sender) {}
+    constructor(address _utils, address _gpToken, address _ghoToken, address _mainVault, uint256 _feeOnRPs)
+        Ownable(msg.sender)
+    {
+        s_utils = _utils;
+        s_gpToken = _gpToken;
+        s_ghoToken = _ghoToken;
+        s_mainVault = _mainVault;
+        s_feeOnRPs = _feeOnRPs;
+    }
 
     /*
                            _ _  __ _
@@ -95,10 +101,6 @@ contract RPool is Ownable {
 
     function setFeeOnRPs(uint256 _feeOnRPs) public onlyOwner isZeroAmount(_feeOnRPs) {
         s_feeOnRPs = _feeOnRPs;
-    }
-
-    function setFeeOnWithdrawl(uint256 _feeOnWithdrawl) public onlyOwner isZeroAmount(_feeOnWithdrawl) {
-        s_feeOnWithdrawl = _feeOnWithdrawl;
     }
 
     /**
@@ -173,7 +175,7 @@ contract RPool is Ownable {
             FixedPointMathLib.divWadDown(_finalTokenDecimals, _initialTokenDecimals) * _initialTokenAmount;
 
         // s_userfee can be around 18 decimal places so we need to divide it by 1e18
-        fee = (_toalFinalTokenAmt * s_feeOnRPs) / PRECESION;
+        fee = FixedPointMathLib.mulWadDown(_toalFinalTokenAmt, s_feeOnRPs);
 
         finalTokenAmount = _toalFinalTokenAmt - fee;
     }

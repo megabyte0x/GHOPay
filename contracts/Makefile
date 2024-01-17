@@ -90,9 +90,15 @@ endif
 deployMainVault:
 	@forge script script/DeployMainVault.s.sol:DeployMainVault $(NETWORK_ARGS)
 
+deployRPool:
+	@forge script script/DeployRPool.s.sol:DeployRPool $(NETWORK_ARGS)
+
 	
 
 # Commands for Testnets
 
 deployMainVaultOnSepolia:
 	make deployMainVault ARGS="--network sepolia"
+
+deployRPoolOnSepolia:
+	make deployRPool ARGS="--network sepolia"
