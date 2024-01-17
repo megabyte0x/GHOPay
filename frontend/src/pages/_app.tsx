@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { createWalletConfig } from "@/utils/createWalletConfig";
 import Image from "next/image";
-import { NavBar } from "./_components";
+import { Footer, NavBar } from "./_components";
 
 function App({ Component, pageProps }: AppProps) {
   // setup to avoid hydration mismatch
@@ -24,11 +24,14 @@ function App({ Component, pageProps }: AppProps) {
     <WagmiConfig config={createWalletConfig()}>
       <ConnectKitProvider>
         {client && (
-          <>
-            {/* <NavBar /> */}
+          <main className="bg-[#14141B] min-h-[100vh]">
+            <NavBar />
+
             <Component {...pageProps} />
+
+            <Footer />
             {/* <ConnectKitButton /> */}
-          </>
+          </main>
         )}
       </ConnectKitProvider>
     </WagmiConfig>
