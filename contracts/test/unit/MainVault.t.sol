@@ -57,7 +57,8 @@ contract MainVaultTest is Test {
     }
 
     function testDepositGHO() external {
-        vm.expectRevert();
+        vm.startPrank(s_mainDeployerKey);
         s_mainVault.depositGHO(GHO_TOKEN_TO_MINT);
+        vm.stopPrank();
     }
 }
