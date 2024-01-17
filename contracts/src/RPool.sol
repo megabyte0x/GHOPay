@@ -43,6 +43,8 @@ contract RPool is Ownable {
     uint256 public s_feeOnWithdrawl;
     uint256 public constant PRECESION = 1e18;
 
+    constructor() Ownable(msg.sender) {}
+
     /*
                            _ _  __ _
        _ __ ___   ___   __| (_)/ _(_) ___ _ __ ___

@@ -40,7 +40,7 @@ contract MainVault is ERC4626, Ownable {
     address public s_rewardPool;
     address public s_feeColletor;
 
-    constructor(ERC20 _ghoToken) ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals()) {
+    constructor(ERC20 _ghoToken) Ownable(msg.sender) ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals()) {
         i_ghoToken = _ghoToken;
     }
 

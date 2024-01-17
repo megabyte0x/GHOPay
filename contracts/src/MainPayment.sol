@@ -36,7 +36,9 @@ contract MainPayment is Ownable {
 
     uint256 public s_minimumAmt;
 
-    constructor(address _ghoToken, address _gpToken, address _ghoPassport, address _utils, uint256 _minimumAmt) {
+    constructor(address _ghoToken, address _gpToken, address _ghoPassport, address _utils, uint256 _minimumAmt)
+        Ownable(msg.sender)
+    {
         s_ghoToken = ERC20(_ghoToken);
         s_gpToken = ERC20(_gpToken);
         s_ghoPassport = IERC721(_ghoPassport);

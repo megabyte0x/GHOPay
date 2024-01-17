@@ -47,7 +47,7 @@ contract PartnerPayment is Ownable {
         address _partnerAdmin,
         uint256 _rpToGHORatio,
         uint8 _maxAmtPercentInRp
-    ) {
+    ) Ownable(msg.sender) {
         s_rpToken = ERC20(_rpToken);
         s_ghoPassport = IERC721(_ghoPassport);
         s_mainPayment = MainPayment(_mainPayment);

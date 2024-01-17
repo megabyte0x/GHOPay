@@ -34,11 +34,10 @@ contract PartnerVault is ERC4626, Ownable {
     address public s_partnerFeeCollector;
 
     constructor(ERC20 _ghoToken, string memory _name, string memory _symbol, address _partnerAddress, uint8 ratio)
+        Ownable(_partnerAddress)
         ERC4626(_ghoToken, _name, _symbol, (_ghoToken.decimals() + ratio))
     {
         i_ghoToken = _ghoToken;
-
-        transferOwnership(_partnerAddress);
     }
 
     modifier isZeroAdrress(address _address) {
