@@ -3,9 +3,9 @@ pragma solidity 0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {console2} from "forge-std/console2.sol";
-import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
 
 import {MainVault} from "../src/MainVault.sol";
+import {ERC20} from "../src/ERC4626Flatten.sol";
 import {HelperConfig} from "../script/HelperConfig.s.sol";
 
 contract DeployMainVault is Script {
