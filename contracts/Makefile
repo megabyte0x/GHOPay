@@ -2,7 +2,7 @@
 
 .PHONY: all test clean deploy fund help install snapshot format anvil 
 
-DEFAULT_ANVIL_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+DEFAULT_ANVIL_KEY := 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
 
 help:
 	@echo "Usage:"
@@ -87,12 +87,12 @@ endif
 
 # Commands for Local
 
-deployBasicUSDC:
-	@forge script script/DeployBasicUSDC.s.sol:DeployBasicUSDC $(NETWORK_ARGS)
+deployMainVault:
+	@forge script script/DeployMainVault.s.sol:DeployMainVault $(NETWORK_ARGS)
 
 	
 
 # Commands for Testnets
 
-deployBasicUSDCOnTestnets:
-	make deployBasicUSDC ARGS="--network mumbai" && make deployBasicUSDC ARGS="--network sepolia"
+deployMainVaultOnSepolia:
+	make deployMainVault ARGS="--network sepolia"
