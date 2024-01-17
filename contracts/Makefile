@@ -93,7 +93,8 @@ deployMainVault:
 deployRPool:
 	@forge script script/DeployRPool.s.sol:DeployRPool $(NETWORK_ARGS)
 
-	
+deployUtils:
+	@forge script script/DeployUtils.s.sol:DeployUtils $(NETWORK_ARGS)	
 
 # Commands for Testnets
 
@@ -102,3 +103,6 @@ deployMainVaultOnSepolia:
 
 deployRPoolOnSepolia:
 	make deployRPool ARGS="--network sepolia"
+
+deployUtilsOnSepolia:
+	make deployUtils ARGS="--network sepolia"
