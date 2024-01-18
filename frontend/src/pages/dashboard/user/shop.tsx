@@ -14,21 +14,6 @@ const Shop = () => {
         </h3>
       </div>
       <div className="flex flex-col gap-[48px]">
-        <div className="border-solid border-b-[1px] border-[#FFFFFF33] flex gap-[20px]  justify-start items-start">
-          <button
-            className="text-[14px] font-semibold leading-[20px] text-[#dbd2ef] 
-        border-solid border-b-2 border-[#dbd2ef] 
-        cursor-pointer px-[4x] pb-[12px]"
-          >
-            Shop
-          </button>
-          <button
-            className="text-[14px] font-semibold leading-[20px] text-[#dbd2ef]
-        cursor-pointer px-[4x] pb-[12px]"
-          >
-            Swap
-          </button>
-        </div>
         <div className="grid grid-cols-4 gap-[16px]">
           <div
             className="border-solid border-[#5720b7] border-[1px] rounded-[16px] bg-[#1b0f31] 

@@ -1,15 +1,48 @@
 import { useState } from "react";
 import Swap from "./swap";
 import Shop from "./shop";
+import { NavBar } from "@/components";
+import classNames from "classnames";
 
 enum ENav {
-  SHOP = "shop",
-  SWAP = "swap",
+  SHOP = "SHOP",
+  SWAP = "SWAP",
 }
 
 export const User = () => {
   const [navType, setNavType] = useState<ENav>(ENav.SHOP);
 
-  return <>{navType === ENav.SHOP ? <Shop /> : <Swap />}</>;
+  return (
+    <>
+      <NavBar />
+      <div className="flex flex-col px-20 pt-[64px]">
+        <div className="border-solid border-b-[1px] border-[#FFFFFF33] flex gap-[20px]  justify-start items-start">
+          <button
+            className={classNames(
+              "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
+              {
+                "border-solid border-b-2": navType === ENav.SHOP,
+              },
+            )}
+            onClick={() => setNavType(ENav.SHOP)}
+          >
+            Shop
+          </button>
+          <button
+            className={classNames(
+              "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
+              {
+                "border-solid border-b-2": navType === ENav.SWAP,
+              },
+            )}
+            onClick={() => setNavType(ENav.SWAP)}
+          >
+            Swap
+          </button>
+        </div>
+      </div>
+      <div>{navType === ENav.SHOP ? <Shop /> : <Swap />}</div>
+    </>
+  );
 };
 export default User;

@@ -2,7 +2,7 @@ import Partner from "./partner/home";
 import User from "./user";
 
 const Dapp = () => {
-  const isPartner = true;
+  const isPartner = false;
   return <>{isPartner ? <Partner /> : <User />}</>;
 };
 
