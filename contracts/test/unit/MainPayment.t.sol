@@ -8,9 +8,10 @@ import {ERC20} from "../../src/ERC4626Flatten.sol";
 
 import {MainPayment} from "../../src/MainPayment.sol";
 import {MainVault} from "../../src/MainVault.sol";
-import {TestGHO} from "../unit/mocks/TestGHO.sol";
-import {TestGHOPassport} from "../unit/mocks/TestGHOPassport.sol";
 import {Utils} from "../../src/Utils.sol";
+
+import {TestGHO} from "../mocks/TestGHO.sol";
+import {TestGHOPassport} from "../mocks/TestGHOPassport.sol";
 
 contract MainPaymentTest is Test {
     TestGHOPassport public s_ghoPassport;
@@ -26,6 +27,7 @@ contract MainPaymentTest is Test {
     address public immutable USER = makeAddr("user");
     address public immutable ADMIN = makeAddr("admin");
     address public immutable RECIPIENT = makeAddr("recipient");
+    address public immutable PARTNER_BOOKING_CONTRACT = makeAddr("partnerBookingContract");
 
     function setUp() external {
         s_utils = new Utils();
@@ -67,6 +69,31 @@ contract MainPaymentTest is Test {
 
         vm.startPrank(USER);
         s_mainPayment.payWithGHO(RECIPIENT, GHO_TO_TRANSFER);
+        vm.stopPrank();
+
+        // GP Amount received by the user
+        uint256 _mainPaymentGPBalanceAfter = s_mainVault.balanceOf(address(s_mainPayment));
+        uint256 gpAmountTrasfer = (GHO_TO_TRANSFER * 1e18) / MIN_AMOUNT;
+        assertEq(_mainPaymentGPBalanceAfter, _mainPaymentGPBalanceBefore - gpAmountTrasfer);
+
+        // GHO Amount received by the recipient
+        uint256 _ghoBalanceOfRecipient = s_ghoToken.balanceOf(RECIPIENT);
+        assertEq(_ghoBalanceOfRecipient, GHO_TO_TRANSFER);
+    }
+
+    modifier setUpUtils() {
+        vm.startPrank(ADMIN);
+        s_utils.addPartnerBookingContract(PARTNER_BOOKING_CONTRACT);
+        vm.stopPrank();
+
+        _;
+    }
+
+    function testPayWithGHOthroughPartner() public setUpVault setUpUtils {
+        uint256 _mainPaymentGPBalanceBefore = s_mainVault.balanceOf(address(s_mainPayment));
+
+        vm.startPrank(PARTNER_BOOKING_CONTRACT);
+        s_mainPayment.payWithGHO(USER, RECIPIENT, GHO_TO_TRANSFER);
         vm.stopPrank();
 
         // GP Amount received by the user
