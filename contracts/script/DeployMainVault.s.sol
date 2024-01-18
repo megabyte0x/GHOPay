@@ -21,17 +21,17 @@ contract DeployMainVault is Script {
         console2.log("MainVault deployed at: %s", address(_mainVault));
     }
 
-    function deployMainVaultUsingConfigs() public returns (address mainVault) {
+    function deployMainVaultUsingConfigs(address _ghoToken) public returns (address mainVault) {
         HelperConfig _helperConfigs = new HelperConfig();
 
-        address _ghoToken = _helperConfigs.s_ghoToken();
+        // address _ghoToken = _helperConfigs.s_ghoToken();
         uint256 _mainDeployerKey = _helperConfigs.s_mainDeployerKey();
         address _mainAdmin = _helperConfigs.s_mainAdmin();
 
         mainVault = deployMainVault(_ghoToken, _mainDeployerKey, _mainAdmin);
     }
 
-    function run() public returns (address mainVault) {
-        mainVault = deployMainVaultUsingConfigs();
+    function run(address _ghoToken) public returns (address mainVault) {
+        mainVault = deployMainVaultUsingConfigs(_ghoToken);
     }
 }
