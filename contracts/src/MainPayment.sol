@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
+import {ERC20} from "./ERC4626Flatten.sol";
+import {FixedPointMathLib} from "./ERC4626Flatten.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import {FixedPointMathLib} from "@solmate/contracts/utils/FixedPointMathLib.sol";
 
 import {Utils} from "./Utils.sol";
 
@@ -36,9 +36,14 @@ contract MainPayment is Ownable {
 
     uint256 public s_minimumAmt;
 
-    constructor(address _ghoToken, address _gpToken, address _ghoPassport, address _utils, uint256 _minimumAmt)
-        Ownable(msg.sender)
-    {
+    constructor(
+        address _ghoToken,
+        address _gpToken,
+        address _ghoPassport,
+        address _utils,
+        uint256 _minimumAmt,
+        address _mainAdmin
+    ) Ownable(_mainAdmin) {
         s_ghoToken = ERC20(_ghoToken);
         s_gpToken = ERC20(_gpToken);
         s_ghoPassport = IERC721(_ghoPassport);

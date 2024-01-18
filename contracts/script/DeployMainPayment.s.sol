@@ -13,11 +13,12 @@ contract DeployMainPayment is Script {
         address _ghoToken,
         address _ghoPassport,
         uint256 _minimumAmt,
-        uint256 _mainDeployerKey
+        uint256 _mainDeployerKey,
+        address _mainAdmin
     ) public returns (address mainPayment) {
         vm.startBroadcast(_mainDeployerKey);
         MainPayment _mainPayment = new MainPayment(
-        _ghoToken, _gpToken, _ghoPassport, _utils,_minimumAmt
+        _ghoToken, _gpToken, _ghoPassport, _utils,_minimumAmt, _mainAdmin
         );
         vm.stopBroadcast();
         mainPayment = address(_mainPayment);
@@ -30,12 +31,13 @@ contract DeployMainPayment is Script {
         address utils = helperConfig.getUtils(_chainId);
         address gpToken = helperConfig.getGPToken(_chainId);
         address ghoPassport = helperConfig.getGhoPassport(_chainId);
+        address mainAdmin = helperConfig.s_mainAdmin();
 
         address ghoToken = helperConfig.s_ghoToken();
         uint256 minimumAmt = helperConfig.MINIMUM_REWARD_AMOUNT();
         uint256 mainDeployerKey = helperConfig.s_mainDeployerKey();
 
-        mainPayment = deployMainPayment(utils, gpToken, ghoToken, ghoPassport, minimumAmt, mainDeployerKey);
+        mainPayment = deployMainPayment(utils, gpToken, ghoToken, ghoPassport, minimumAmt, mainDeployerKey, mainAdmin);
     }
 
     function run() external returns (address mainPayment) {
