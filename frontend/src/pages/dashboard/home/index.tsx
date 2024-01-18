@@ -1,8 +1,14 @@
+"use client";
 import { ButtonPurple } from "@/pages/_components";
+import CreateVaultModal from "@/pages/_containers/DashboardHome/CreateVaultModal";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const HomePage = () => {
+  const [step, setStep] = useState(0);
+  const clicked = () => {
+    console.log("worked");
+  };
   return (
     <div className="flex flex-col gap-[12px] w-[100vw] h-[fit] items-center px-[112px] pt-[30px] pb-[112px]">
       <div
@@ -38,11 +44,26 @@ const HomePage = () => {
             </h4>
           </div>
           <ButtonPurple
+            onClick={() => {
+              setStep(1);
+            }}
             text="Create a Vault"
             styl="px-[16px] py-[10px] text-[16px]"
           />
         </div>
       </div>
+      <CreateVaultModal
+        step={step}
+        onClose={() => {
+          setStep(0);
+        }}
+        onNext={() => {
+          setStep(step + 1);
+        }}
+        onBack={() => {
+          setStep(step - 1);
+        }}
+      />
     </div>
   );
 };
