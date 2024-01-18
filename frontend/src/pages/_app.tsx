@@ -6,7 +6,6 @@ import { WagmiConfig } from "wagmi";
 import { ConnectKitProvider } from "connectkit";
 import { useEffect, useState } from "react";
 import { createWalletConfig } from "@/utils/createWalletConfig";
-import { Footer, NavBar } from "./_components";
 
 function App({ Component, pageProps }: AppProps) {
   // setup to avoid hydration mismatch
@@ -20,11 +19,7 @@ function App({ Component, pageProps }: AppProps) {
       <ConnectKitProvider>
         {client && (
           <main className="bg-[#14141B] min-h-[100vh]">
-            <NavBar />
-
             <Component {...pageProps} />
-
-            <Footer />
           </main>
         )}
       </ConnectKitProvider>

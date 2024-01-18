@@ -45,3 +45,8 @@ export const PARTNERS: Partner[] = [
   { name: "partner_logo", img: "/xIcon.svg" },
   { name: "partner_logo", img: "/xIcon.svg" },
 ];
+
+export const ROUTES = {
+  LANDING: "/",
+  DASHBOARD: "/dashboard",
+};

@@ -3,9 +3,14 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { ConnectKitButton } from "connectkit";
 import BUTTONS from "../Landing/Buttons";
+import { useAccount } from "wagmi";
+import { ROUTES } from "@/constants";
 
 const NavBar = () => {
-  const currentPage = usePathname();
+  const { isConnected } = useAccount();
+  const pathname = usePathname();
+  const isLanding = pathname === ROUTES.LANDING;
+  const isDashboard = pathname === ROUTES.DASHBOARD;
 
   return (
     <div className="border-b-[1px] border-[#DBD2EF1A] bg-[#14141B] h-[68px] px-20 flex items-center justify-between ">
@@ -16,7 +21,7 @@ const NavBar = () => {
             GHOPay
           </h1>
         </div>
-        {currentPage == "/" && (
+        {isLanding && (
           <ul className="flex flex-row gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
             <li>Home</li>
             <li>How it Works</li>
@@ -25,20 +30,23 @@ const NavBar = () => {
             <li>Team</li>
           </ul>
         )}
-        {currentPage == "/dashboard/home" && (
+        {isDashboard && (
           <ul className="flex flex-row gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
             <li>Shop</li>
             <li>Apply As Partner</li>
           </ul>
         )}
       </div>
-      {currentPage == "/dashboard/home" && <ConnectKitButton />}
-      {currentPage == "/" && (
+      {isConnected ? (
+        "Connected"
+      ) : isLanding ? (
         <BUTTONS.PURPLE
           text="Launch Dapp"
           style="text-[16px] px-[18px] py-[12px]"
           onClick={() => {}}
         />
+      ) : (
+        <ConnectKitButton />
       )}
     </div>
   );
