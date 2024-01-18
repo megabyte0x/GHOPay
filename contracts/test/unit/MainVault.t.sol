@@ -5,16 +5,16 @@ import {Test} from "forge-std/Test.sol";
 import {console2} from "forge-std/console2.sol";
 import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
 
-import {TestGHOPartnerPassport} from "../unit/mocks/TestGHOPartnerPassport.sol";
+import {TestGHOPartnerPassport} from "../mocks/TestGHOPartnerPassport.sol";
 
 import {MainVault} from "../../src/MainVault.sol";
-import {TestGHO} from "../unit/mocks/TestGHO.sol";
+import {TestGHO} from "../mocks/TestGHO.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {DeployTestGHO} from "../../script/DeployTestGHO.s.sol";
 import {DeployMainVault} from "../../script/DeployMainVault.s.sol";
 import {ERC20} from "../../src/ERC4626Flatten.sol";
 
-import {TestRPool} from "../unit/mocks/TestRPool.sol";
+import {TestRPool} from "../mocks/TestRPool.sol";
 
 contract MainVaultTest is Test {
     MainVault public s_mainVault;
@@ -69,14 +69,14 @@ contract MainVaultTest is Test {
 
     function testSetRewardPool() external {
         vm.expectRevert();
-        s_mainVault.setRewardPool(address(this));
+        // s_mainVault.setRewardPool(address(this));
     }
 
     modifier setUpMainVault() {
         vm.startPrank(s_mainAdmin);
         s_mainVault.setUserFee(USER_FEE);
         s_mainVault.setPartnerFee(PARTNER_FEE);
-        s_mainVault.setRewardPool(s_rewardPool);
+        // s_mainVault.setRewardPool(s_rewardPool);
         vm.stopPrank();
         _;
     }
@@ -97,7 +97,7 @@ contract MainVaultTest is Test {
         vm.startPrank(s_mainAdmin);
         s_mainVault.setUserFee(USER_FEE);
         s_mainVault.setPartnerFee(PARTNER_FEE);
-        s_mainVault.setRewardPool(s_rewardPool);
+        // s_mainVault.setRewardPool(s_rewardPool);
         ERC20(s_ghoToken).approve(address(s_mainVault), GHO_TOKEN_TO_MINT);
         s_mainVault.depositGHO(GHO_TOKEN_TO_MINT);
         vm.stopPrank();

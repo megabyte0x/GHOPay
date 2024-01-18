@@ -2,16 +2,15 @@
 pragma solidity 0.8.20;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ERC20} from "./ERC4626Flatten.sol";
 
+import {Utils} from "./Utils.sol";
+import {ERC20} from "./ERC4626Flatten.sol";
 import {PartnerVault} from "./PartnerVault.sol";
 import {PartnerPayment} from "./PartnerPayment.sol";
-import {Utils} from "./Utils.sol";
 
 contract PartnerContractsDeployer is Ownable {
     event PartnerContractsDeployer__RegisterAsPartner(
-        address partnerVaultContractAddress,
-        address partnerPaymentContractAddress
+        address partnerVaultContractAddress, address partnerPaymentContractAddress
     );
 
     Utils public s_utilsContract;
@@ -53,10 +52,8 @@ contract PartnerContractsDeployer is Ownable {
             _maxAmtPercentInRp
         );
 
-        s_addressToPartnerDetails[msg.sender] = PartnerDetails({
-            s_vault: address(partnerVault),
-            s_partnerPayment: address(partnerPayment)
-        });
+        s_addressToPartnerDetails[msg.sender] =
+            PartnerDetails({s_vault: address(partnerVault), s_partnerPayment: address(partnerPayment)});
 
         s_partners.push(msg.sender);
 
@@ -64,10 +61,7 @@ contract PartnerContractsDeployer is Ownable {
         s_utilsContract.addPartnerBookingContract(address(partnerPayment));
         s_utilsContract.addPartnerVault(address(partnerVault));
 
-        emit PartnerContractsDeployer__RegisterAsPartner(
-            address(partnerVault),
-            address(partnerPayment)
-        );
+        emit PartnerContractsDeployer__RegisterAsPartner(address(partnerVault), address(partnerPayment));
     }
 
     function setMainPayment(address _mainPayment) public onlyOwner {
