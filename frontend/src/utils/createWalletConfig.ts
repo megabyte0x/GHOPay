@@ -1,11 +1,13 @@
 import { getDefaultConfig } from "connectkit";
-import { createConfig } from "wagmi";
+import { createConfig, sepolia } from "wagmi";
 import { env } from "./envVars";
 
 export const createWalletConfig = () =>
   createConfig(
     getDefaultConfig({
       walletConnectProjectId: env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+
+      chains: [sepolia],
 
       // Required
       appName: "GHOPay",
