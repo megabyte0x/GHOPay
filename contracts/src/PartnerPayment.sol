@@ -21,7 +21,11 @@ contract PartnerPayment is Ownable {
     error PartnerPayment__OnlyGHOPassportHolders();
 
     event PartnerPayment__PaidWithGHO(address indexed _sender, uint256 _amount);
-    event PartnerPayment__PaidWithGHOAndRP(address indexed _sender, uint256 indexed _rpamount, uint256 _ghoAmount);
+    event PartnerPayment__PaidWithGHOAndRP(
+        address indexed _sender,
+        uint256 indexed _rpamount,
+        uint256 _ghoAmount
+    );
 
     using FixedPointMathLib for uint256;
 
@@ -48,6 +52,7 @@ contract PartnerPayment is Ownable {
         uint8 _maxAmtPercentInRp
     ) Ownable(msg.sender) {
         s_rpToken = ERC20(_rpToken);
+        s_mainPayment = MainPayment(_mainPayment);
         s_partnerAdmin = _partnerAdmin;
         s_rpToGHORatio = _rpToGHORatio;
         s_maxAmtPercentInRp = _maxAmtPercentInRp;
@@ -62,7 +67,8 @@ contract PartnerPayment is Ownable {
     */
 
     modifier isGHOPassportHolder() {
-        if (!(s_ghoPassport.balanceOf(msg.sender) > 0)) revert PartnerPayment__OnlyGHOPassportHolders();
+        if (!(s_ghoPassport.balanceOf(msg.sender) > 0))
+            revert PartnerPayment__OnlyGHOPassportHolders();
         _;
     }
 
@@ -77,7 +83,8 @@ contract PartnerPayment is Ownable {
     }
 
     modifier haveEnoughRp(uint256 _rpAmount) {
-        if (_rpAmount > s_rpToken.balanceOf(msg.sender)) revert PartnerPayment__NotEnoughRP();
+        if (_rpAmount > s_rpToken.balanceOf(msg.sender))
+            revert PartnerPayment__NotEnoughRP();
         _;
     }
 
@@ -88,27 +95,39 @@ contract PartnerPayment is Ownable {
       |  __/>  <| ||  __/ |  | | | | (_| | | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
        \___/_/\_\\__\___|_|  |_| |_|\__,_|_| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
     */
-    function setRpToken(address _rpToken) public onlyOwner isZeroAdrress(_rpToken) {
+    function setRpToken(
+        address _rpToken
+    ) public onlyOwner isZeroAdrress(_rpToken) {
         s_rpToken = ERC20(_rpToken);
     }
 
-    function setGhoPassport(address _ghoPassport) public onlyOwner isZeroAdrress(_ghoPassport) {
+    function setGhoPassport(
+        address _ghoPassport
+    ) public onlyOwner isZeroAdrress(_ghoPassport) {
         s_ghoPassport = IERC721(_ghoPassport);
     }
 
-    function setMainPayment(address _mainPayment) public onlyOwner isZeroAdrress(_mainPayment) {
+    function setMainPayment(
+        address _mainPayment
+    ) public onlyOwner isZeroAdrress(_mainPayment) {
         s_mainPayment = MainPayment(_mainPayment);
     }
 
-    function setPartnerAdmin(address _partnerAdmin) public onlyOwner isZeroAdrress(_partnerAdmin) {
+    function setPartnerAdmin(
+        address _partnerAdmin
+    ) public onlyOwner isZeroAdrress(_partnerAdmin) {
         s_partnerAdmin = _partnerAdmin;
     }
 
-    function setRpToGHORatio(uint256 _rpToGHORatio) public onlyOwner isZeroAmount(_rpToGHORatio) {
+    function setRpToGHORatio(
+        uint256 _rpToGHORatio
+    ) public onlyOwner isZeroAmount(_rpToGHORatio) {
         s_rpToGHORatio = _rpToGHORatio;
     }
 
-    function setMaxAmtPercentInRp(uint8 _maxAmtPercentInRp) public onlyOwner isZeroAmount(_maxAmtPercentInRp) {
+    function setMaxAmtPercentInRp(
+        uint8 _maxAmtPercentInRp
+    ) public onlyOwner isZeroAmount(_maxAmtPercentInRp) {
         s_maxAmtPercentInRp = _maxAmtPercentInRp;
     }
 
@@ -128,7 +147,10 @@ contract PartnerPayment is Ownable {
      * @dev If _rpAmount is 0 then only GHO will be used to pay for the service.
      * @dev The Main Payment contract will be used to pay GHO, so that user can earn GP.
      */
-    function bookAService(uint256 _rpAmount, uint256 _serviceAmount)
+    function bookAService(
+        uint256 _rpAmount,
+        uint256 _serviceAmount
+    )
         public
         isGHOPassportHolder
         haveEnoughRp(_rpAmount)
@@ -137,8 +159,13 @@ contract PartnerPayment is Ownable {
         address sender = msg.sender;
 
         if (_rpAmount > 0) {
-            uint256 maxUtilisableRp = maxAmountPayInRpCalculator(_serviceAmount);
-            uint256 amountToPayInGHO = rpUtilisationCalculator(_rpAmount, _serviceAmount);
+            uint256 maxUtilisableRp = maxAmountPayInRpCalculator(
+                _serviceAmount
+            );
+            uint256 amountToPayInGHO = rpUtilisationCalculator(
+                _rpAmount,
+                _serviceAmount
+            );
 
             if (_rpAmount > maxUtilisableRp) {
                 // If _rpAmount is greater than maxUtilisableRp, then transfer maxUtilisableRp to Partner Admin Address
@@ -150,7 +177,11 @@ contract PartnerPayment is Ownable {
             // Transfer the GHO to the Partner Admin Address
             s_mainPayment.payWithGHO(sender, s_partnerAdmin, amountToPayInGHO);
 
-            emit PartnerPayment__PaidWithGHOAndRP(sender, _rpAmount, amountToPayInGHO);
+            emit PartnerPayment__PaidWithGHOAndRP(
+                sender,
+                _rpAmount,
+                amountToPayInGHO
+            );
         } else {
             // Transfer the GHO to the Partner Admin Address
             s_mainPayment.payWithGHO(sender, s_partnerAdmin, _serviceAmount);
@@ -163,9 +194,17 @@ contract PartnerPayment is Ownable {
      * Function to calculate the maximum amount of RP that can be used to pay for the service.
      * @param _serviceAmount The cost of the service.
      */
-    function maxAmountPayInRpCalculator(uint256 _serviceAmount) public view returns (uint256 maxUtilisableRp) {
-        uint256 maxAmountPayInRp = FixedPointMathLib.mulWadUp(_serviceAmount, s_maxAmtPercentInRp) / 100;
-        maxUtilisableRp = FixedPointMathLib.mulWadUp(maxAmountPayInRp, s_rpToGHORatio);
+    function maxAmountPayInRpCalculator(
+        uint256 _serviceAmount
+    ) public view returns (uint256 maxUtilisableRp) {
+        uint256 maxAmountPayInRp = FixedPointMathLib.mulWadUp(
+            _serviceAmount,
+            s_maxAmtPercentInRp
+        ) / 100;
+        maxUtilisableRp = FixedPointMathLib.mulWadUp(
+            maxAmountPayInRp,
+            s_rpToGHORatio
+        );
     }
 
     /**
@@ -173,12 +212,14 @@ contract PartnerPayment is Ownable {
      * @param _rpAmount The amount of RP user willing to pay for the service
      * @param _serviceCharge The cost of the service.
      */
-    function rpUtilisationCalculator(uint256 _rpAmount, uint256 _serviceCharge)
-        public
-        view
-        returns (uint256 amountToPayInGHO)
-    {
-        uint256 amountUtilisedInRp = FixedPointMathLib.divWadDown(_rpAmount, s_rpToGHORatio);
+    function rpUtilisationCalculator(
+        uint256 _rpAmount,
+        uint256 _serviceCharge
+    ) public view returns (uint256 amountToPayInGHO) {
+        uint256 amountUtilisedInRp = FixedPointMathLib.divWadDown(
+            _rpAmount,
+            s_rpToGHORatio
+        );
         amountToPayInGHO = _serviceCharge - amountUtilisedInRp;
     }
 }

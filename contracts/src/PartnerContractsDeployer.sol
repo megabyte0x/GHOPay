@@ -6,14 +6,20 @@ import {ERC20} from "./ERC4626Flatten.sol";
 
 import {PartnerVault} from "./PartnerVault.sol";
 import {PartnerPayment} from "./PartnerPayment.sol";
+import {Utils} from "./Utils.sol";
 
 contract PartnerContractsDeployer is Ownable {
-    address public s_utilsContract;
+    event PartnerContractsDeployer__RegisterAsPartner(
+        address partnerVaultContractAddress,
+        address partnerPaymentContractAddress
+    );
+
+    Utils public s_utilsContract;
     address public i_owner;
     address public s_mainPayment;
 
     mapping(address => PartnerDetails) public s_addressToPartnerDetails;
-    address[] public s_partneres;
+    address[] public s_partners;
 
     struct PartnerDetails {
         address s_vault;
@@ -25,7 +31,7 @@ contract PartnerContractsDeployer is Ownable {
         s_mainPayment = _mainPayment;
     }
 
-    function createVault(
+    function registerAsPartner(
         ERC20 _ghoToken,
         string memory _name,
         string memory _symbol,
@@ -52,6 +58,23 @@ contract PartnerContractsDeployer is Ownable {
             s_partnerPayment: address(partnerPayment)
         });
 
-        s_partneres.push(msg.sender);
+        s_partners.push(msg.sender);
+
+        // TODO: mint partner NFT;
+        s_utilsContract.addPartnerBookingContract(address(partnerPayment));
+        s_utilsContract.addPartnerVault(address(partnerVault));
+
+        emit PartnerContractsDeployer__RegisterAsPartner(
+            address(partnerVault),
+            address(partnerPayment)
+        );
+    }
+
+    function setMainPayment(address _mainPayment) public onlyOwner {
+        s_mainPayment = _mainPayment;
+    }
+
+    function setUtils(address _utils) public onlyOwner {
+        s_utilsContract = Utils(_utils);
     }
 }
