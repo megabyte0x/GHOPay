@@ -38,7 +38,7 @@ contract MainVault is ERC4626, Ownable {
 
     uint8 public s_userFee;
     uint8 public s_partnerFee;
-    address public s_rewardPool;
+    address public s_mainPayment;
     address public s_mainAdmin;
 
     constructor(ERC20 _ghoToken, address _mainAdmin) Ownable(_mainAdmin) ERC4626(_ghoToken, "GHO Points", "GP", 18) {
@@ -77,10 +77,10 @@ contract MainVault is ERC4626, Ownable {
         s_userFee = _userFee;
     }
 
-    function setRewardPool(address _rewardPool) public isZeroAdrress(_rewardPool) onlyOwner {
-        emit MainVault__RewardPoolSet(_rewardPool);
+    function setMainPayment(address _mainPayment) public isZeroAdrress(_mainPayment) onlyOwner {
+        emit MainVault__RewardPoolSet(_mainPayment);
 
-        s_rewardPool = _rewardPool;
+        s_mainPayment = _mainPayment;
     }
 
     function setMainAdmin(address _mainAdmin) public isZeroAdrress(_mainAdmin) onlyOwner {
@@ -98,7 +98,7 @@ contract MainVault is ERC4626, Ownable {
      * @param _ghoAmount number of assets to be deposited
      */
     function depositGHO(uint256 _ghoAmount) public isZeroAmount(_ghoAmount) onlyOwner {
-        deposit(_ghoAmount, s_rewardPool);
+        deposit(_ghoAmount, s_mainPayment);
         emit MainVault__GHODeposited(_ghoAmount);
     }
 
