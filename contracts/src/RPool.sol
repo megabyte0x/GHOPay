@@ -41,13 +41,9 @@ contract RPool is Ownable {
 
     uint256 public s_feeOnRPs;
 
-    constructor(address _utils, address _gpToken, address _ghoToken, address _mainVault, uint256 _feeOnRPs)
-        Ownable(msg.sender)
-    {
+    constructor(address _utils, address _ghoToken, uint256 _feeOnRPs) Ownable(msg.sender) {
         s_utils = _utils;
-        s_gpToken = _gpToken;
         s_ghoToken = _ghoToken;
-        s_mainVault = _mainVault;
         s_feeOnRPs = _feeOnRPs;
     }
 

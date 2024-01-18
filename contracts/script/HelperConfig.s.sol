@@ -24,6 +24,7 @@ contract HelperConfig is Script {
     address public s_mainVault;
     address public s_ghoPassport;
     address public s_ghoPartnerPassport;
+    address public s_rewardPool;
 
     // Constants for all networks
     uint256 public constant FEE_ON_RPS = 2e17;
@@ -54,19 +55,24 @@ contract HelperConfig is Script {
         ghoPassport = DevOpsTools.get_most_recent_deployment("TestGHOPassport", _chainId);
     }
 
+    function getRPoolAddress(uint256 _chainId) public view returns (address rPoolAddress) {
+        rPoolAddress = DevOpsTools.get_most_recent_deployment("RPool", _chainId);
+    }
+
     function getGhoPartnerPassport(uint256 _chainId) public view returns (address ghoPartnerPassport) {
         ghoPartnerPassport = DevOpsTools.get_most_recent_deployment("TestGHOPartnerPassport", _chainId);
     }
 
     function getSepoliaConfigs() public {
-        s_ghoToken = 0xc4bF5CbDaBE595361438F8c6a187bDc330539c60;
         s_mainDeployerKey = vm.envUint("PRIVATE_KEY");
+        s_ghoToken = 0xc4bF5CbDaBE595361438F8c6a187bDc330539c60;
+        s_mainDeployer = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;
     }
 
     function getAnvilConfigs() public {
         s_mainAdmin = makeAddr("MAKE_ADMIN");
-        s_mainDeployer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
         s_mainDeployerKey = vm.envUint("ANVIL_PRIVATE_KEY");
         s_ghoToken = 0xfbAb4aa40C202E4e80390171E82379824f7372dd;
+        s_mainDeployer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
     }
 }
