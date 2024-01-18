@@ -23,10 +23,12 @@ contract DeployRPool is Script {
 
     function deployRPoolUsingConfigs() public returns (address rPool) {
         HelperConfig helperConfig = new HelperConfig();
-        address utils = helperConfig.s_utils();
-        address gpToken = helperConfig.s_gpToken();
+        uint256 _chainId = block.chainid;
+        address utils = helperConfig.getUtils(_chainId);
+        address gpToken = helperConfig.getGPToken(_chainId);
+        address mainVault = helperConfig.getGPToken(_chainId);
+
         address ghoToken = helperConfig.s_ghoToken();
-        address mainVault = helperConfig.s_mainVault();
         uint256 feeOnRPs = helperConfig.FEE_ON_RPS();
         uint256 mainDeployerKey = helperConfig.s_mainDeployerKey();
 

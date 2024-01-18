@@ -4,19 +4,31 @@ pragma solidity 0.8.20;
 import {Script} from "forge-std/Script.sol";
 import {console2} from "forge-std/console2.sol";
 
-import {TestGHO} from "../src/TestGHO.sol";
+import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
+
+import {TestGHO} from "../test/unit/mocks/TestGHO.sol";
+import {DeployTestGHO} from "./DeployTestGHO.s.sol";
+import {DeployTestGHOPassport} from "./DeployTestGHOPassport.s.sol";
+import {DeployTestGHOPartnerPassport} from "./DeployTestGHOPartnerPassport.s.sol";
 
 contract HelperConfig is Script {
+    // Variables which will be constant depending on the network
     address public s_ghoToken;
     address public s_mainAdmin;
     address public s_mainDeployer;
+    uint256 public s_mainDeployerKey;
+
+    // Variables which will differ depending on the network
     address public s_utils;
     address public s_gpToken;
     address public s_mainVault;
+    address public s_ghoPassport;
+    address public s_ghoPartnerPassport;
 
-    uint256 public s_mainDeployerKey;
+    // Constants for all networks
     uint256 public constant FEE_ON_RPS = 2e17;
     uint256 public constant GHO_TOKEN_TO_MINT = 10000e18;
+    uint256 public constant MINIMUM_REWARD_AMOUNT = 200e18;
 
     constructor() {
         if (block.chainid == 11155111) {
@@ -24,6 +36,26 @@ contract HelperConfig is Script {
         } else {
             getAnvilConfigs();
         }
+    }
+
+    function getGPToken(uint256 _chainId) public view returns (address gpToken) {
+        gpToken = DevOpsTools.get_most_recent_deployment("MainVault", _chainId);
+    }
+
+    function getUtils(uint256 _chainId) public view returns (address utils) {
+        utils = DevOpsTools.get_most_recent_deployment("Utils", _chainId);
+    }
+
+    function getMainVault(uint256 _chainId) public view returns (address mainVault) {
+        mainVault = DevOpsTools.get_most_recent_deployment("MainVault", _chainId);
+    }
+
+    function getGhoPassport(uint256 _chainId) public view returns (address ghoPassport) {
+        ghoPassport = DevOpsTools.get_most_recent_deployment("TestGHOPassport", _chainId);
+    }
+
+    function getGhoPartnerPassport(uint256 _chainId) public view returns (address ghoPartnerPassport) {
+        ghoPartnerPassport = DevOpsTools.get_most_recent_deployment("TestGHOPartnerPassport", _chainId);
     }
 
     function getSepoliaConfigs() public {
@@ -35,15 +67,6 @@ contract HelperConfig is Script {
         s_mainAdmin = makeAddr("MAKE_ADMIN");
         s_mainDeployer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
         s_mainDeployerKey = vm.envUint("ANVIL_PRIVATE_KEY");
-        s_utils = makeAddr("UTILS");
-        s_gpToken = makeAddr("GP_TOKEN");
-        s_mainVault = makeAddr("MAIN_VAULT");
-
-        // deploying, setting the ghoToken address and minting the token address
-        vm.startBroadcast(s_mainDeployerKey);
-        TestGHO _ghoToken = new TestGHO();
-        _ghoToken.mint(s_mainAdmin, GHO_TOKEN_TO_MINT);
-        s_ghoToken = address(_ghoToken);
-        vm.stopBroadcast();
+        s_ghoToken = 0xfbAb4aa40C202E4e80390171E82379824f7372dd;
     }
 }
