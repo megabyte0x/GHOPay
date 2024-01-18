@@ -1,4 +1,4 @@
-import { Partner, TeamMember } from "./types";
+import { ChainInfo, Partner, TeamMember } from "./types";
 
 export const TEAM: TeamMember[] = [
   {
@@ -51,7 +51,7 @@ export const ROUTES = {
   DASHBOARD: "/dashboard",
 };
 
-export const CHAINS = {
+export const CHAINS: { [chainId: number]: ChainInfo } = {
   11155111: {
     id: "0xaa36a7",
     token: "gsepETH",

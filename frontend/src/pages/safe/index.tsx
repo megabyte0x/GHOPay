@@ -7,11 +7,10 @@ import { CHAINS } from "@/constants";
 const Safe = () => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  console.log(chainId);
+  const chainInfo = CHAINS[chainId];
+
   const handleOnClick = () => {
-    if (!Object.keys(CHAINS).includes(chainId.toString()))
-      throw "Chain not supported";
-    const provider = new ethers.JsonRpcProvider(CHAINS[chainId]);
+    const provider = new ethers.JsonRpcProvider(chainInfo.rpcUrl);
     const ethAdapter = new EthersAdapter({
       ethers,
     });
