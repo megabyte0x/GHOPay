@@ -3,7 +3,7 @@ import HowItWorks from "./HowItWorks";
 import FeatureSection from "./FeatureSection";
 import Partnered from "./Partnered";
 import Team from "./Team";
-import { Footer } from "@/pages/_components";
+import { Footer } from "@/components";
 
 const LandingPage = () => {
   return (

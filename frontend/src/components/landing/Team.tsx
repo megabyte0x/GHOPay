@@ -1,6 +1,6 @@
 import { TEAM } from "@/constants";
-import { BasicHeadings } from "@/pages/_components";
-import TeamCard from "@/pages/_components/Landing/TeamCard";
+import { BasicHeadings } from "@/components";
+import TeamCard from "@/components/landing/TeamCard";
 import React from "react";
 
 const Team = () => {

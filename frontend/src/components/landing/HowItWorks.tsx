@@ -1,4 +1,4 @@
-import { BasicHeadings } from "@/pages/_components";
+import { BasicHeadings } from "@/components";
 import Image from "next/image";
 import React from "react";
 

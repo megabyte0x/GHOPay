@@ -1,6 +1,6 @@
 "use client";
-import LandingPage from "./_containers/Landing";
-import { NavBar } from "./_components";
+import LandingPage from "../components/landing";
+import { NavBar } from "../components";
 
 const Main = () => {
   return (

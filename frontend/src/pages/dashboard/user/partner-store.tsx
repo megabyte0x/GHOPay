@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const AboutPartnerPage = () => {
+const PartnerStore = () => {
   return (
     <div className="w-full px-20 py-[64px] flex flex-col gap-[48px]">
       <div className="flex gap-[24px]">
@@ -100,4 +100,4 @@ const AboutPartnerPage = () => {
   );
 };
 
-export default AboutPartnerPage;
+export default PartnerStore;

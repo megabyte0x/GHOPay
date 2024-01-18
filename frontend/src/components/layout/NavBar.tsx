@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { ConnectKitButton } from "connectkit";
-import BUTTONS from "../Landing/Buttons";
+import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
 import { ROUTES } from "@/constants";
 

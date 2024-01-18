@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { usePathname } from "next/navigation";
-import BUTTONS from "../Landing/Buttons";
+import BUTTONS from "../landing/Buttons";
 
 const Footer = () => {
   const currentPage = usePathname();

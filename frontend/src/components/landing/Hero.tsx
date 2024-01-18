@@ -1,4 +1,4 @@
-import BUTTONS from "@/pages/_components/Landing/Buttons";
+import BUTTONS from "@/components/landing/Buttons";
 import Image from "next/image";
 import React from "react";
 
