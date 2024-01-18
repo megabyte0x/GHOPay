@@ -87,14 +87,28 @@ endif
 
 # Commands for Local
 
+deployTestGHO:
+	@forge script script/DeployTestGHO.s.sol:DeployTestGHO $(NETWORK_ARGS)
+
+deployGHOPassport:
+	@forge script script/DeployTestGHOPassport.s.sol:DeployTestGHOPassport $(NETWORK_ARGS)
+
+deployGHOPartnerPassport:
+	@forge script script/DeployTestGHOPartnerPassport.s.sol:DeployTestGHOPartnerPassport $(NETWORK_ARGS)
+
+deployUtils:
+	@forge script script/DeployUtils.s.sol:DeployUtils $(NETWORK_ARGS)	
+
 deployMainVault:
 	@forge script script/DeployMainVault.s.sol:DeployMainVault $(NETWORK_ARGS)
+
+deployMainPayment:
+	@forge script script/DeployMainPayment.s.sol:DeployMainPayment $(NETWORK_ARGS)
 
 deployRPool:
 	@forge script script/DeployRPool.s.sol:DeployRPool $(NETWORK_ARGS)
 
-deployUtils:
-	@forge script script/DeployUtils.s.sol:DeployUtils $(NETWORK_ARGS)	
+
 
 # Commands for Testnets
 
@@ -106,3 +120,6 @@ deployRPoolOnSepolia:
 
 deployUtilsOnSepolia:
 	make deployUtils ARGS="--network sepolia"
+
+deployMainPaymentOnSepolia:
+	make deployMainPayment ARGS="--network sepolia"
