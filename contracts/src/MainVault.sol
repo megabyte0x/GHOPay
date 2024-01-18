@@ -89,6 +89,10 @@ contract MainVault is ERC4626, Ownable {
         s_mainAdmin = _mainAdmin;
     }
 
+    function setGHOPartnerPassport(address _ghoPartnerPassport) public isZeroAdrress(_ghoPartnerPassport) onlyOwner {
+        s_ghoPartnerPassport = IERC721(_ghoPartnerPassport);
+    }
+
     /**
      * Function to deposit GHO tokens to the vault in exchange for GP tokens.
      * @param _ghoAmount number of assets to be deposited
