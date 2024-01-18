@@ -25,14 +25,14 @@ const NavBar = () => {
             <li>Team</li>
           </ul>
         )}
-        {currentPage == "/dashboard/home" && (
+        {currentPage != "/" && (
           <ul className="flex flex-row gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
             <li>Shop</li>
             <li>Apply As Partner</li>
           </ul>
         )}
       </div>
-      {currentPage == "/dashboard/home" && <ConnectKitButton />}
+      {currentPage != "/" && <ConnectKitButton />}
       {currentPage == "/" && (
         <ButtonPurple
           text="Launch Dapp"

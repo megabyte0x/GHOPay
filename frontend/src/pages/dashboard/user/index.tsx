@@ -1,4 +1,5 @@
 import { ButtonPurple } from "@/pages/_components";
+import { BookDealModal } from "@/pages/_containers";
 import Image from "next/image";
 import React from "react";
 
@@ -98,6 +99,7 @@ const userPage = () => {
           </div>
         </div>
       </div>
+      {/* <BookDealModal /> */}
     </div>
   );
 };
