@@ -1,6 +1,12 @@
 import React from "react";
 
-const BasicHeadings = ({ subH1, mainH, subH2 }: any) => {
+type HeadingProps = {
+  subH1: string;
+  mainH: string;
+  subH2?: string;
+};
+
+const BasicHeadings = ({ subH1, mainH, subH2 }: HeadingProps) => {
   return (
     <div className="text-center text-[#DBD2EF]">
       <h6 className=" text-[16px] font-semibold leading-[24px] opacity-60">

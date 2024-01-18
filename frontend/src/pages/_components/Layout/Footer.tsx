@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { ButtonPurple } from "..";
 import { usePathname } from "next/navigation";
+import BUTTONS from "../Landing/Buttons";
 
 const Footer = () => {
   const currentPage = usePathname();
@@ -26,9 +26,10 @@ const Footer = () => {
               <h4>Privacy</h4>
             </div>
           </div>
-          <ButtonPurple
+          <BUTTONS.PURPLE
             text="Launch Dapp"
-            styl="text-[16px] px-[18px] py-[12px]"
+            style="text-[16px] px-[18px] py-[12px]"
+            onClick={() => {}}
           />
         </div>
       )}

@@ -1,6 +1,6 @@
+import { TEAM } from "@/constants";
 import { BasicHeadings } from "@/pages/_components";
 import TeamCard from "@/pages/_components/Landing/TeamCard";
-import Image from "next/image";
 import React from "react";
 
 const Team = () => {
@@ -12,22 +12,12 @@ const Team = () => {
         subH2="We’re building the incentive layer for GHO Payments."
       />
       <div className="flex gap-[48px] justify-center items-center">
-        {/* {team.map((person) => {
-          <TeamCard person={person} />;
-        })} */}
-        <TeamCard person={team[0]} />
+        {TEAM.map((member) => (
+          <TeamCard key={member.name} member={member} />
+        ))}
       </div>
     </div>
   );
 };
 
 export default Team;
-
-const team = [
-  {
-    name: "MegaByte",
-    role: "Smart Contract Dev",
-    twit: "",
-    gitHub: "",
-  },
-];

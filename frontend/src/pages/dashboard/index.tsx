@@ -14,7 +14,6 @@ const DashboardPage = () => {
       flex gap-[24px] items-center justify-start w-full pb-[24px]"
       >
         <div className="text-6xl leading-[64px] mt-2">👋</div>
-        {/* <Image src={"/hiHand.svg"} height={64} width={64} alt="hi" /> */}
         <div className="flex flex-col gap-[10px] text-start">
           <h1 className="text-[30px] font-semibold leading-[38px] text-[#dbd2ef]">
             Hey, there

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
-import { ButtonPurple } from "..";
 import { usePathname } from "next/navigation";
 import { ConnectKitButton } from "connectkit";
+import BUTTONS from "../Landing/Buttons";
 
 const NavBar = () => {
   const currentPage = usePathname();
@@ -34,9 +34,10 @@ const NavBar = () => {
       </div>
       {currentPage == "/dashboard/home" && <ConnectKitButton />}
       {currentPage == "/" && (
-        <ButtonPurple
+        <BUTTONS.PURPLE
           text="Launch Dapp"
-          styl="text-[16px] px-[18px] py-[12px]"
+          style="text-[16px] px-[18px] py-[12px]"
+          onClick={() => {}}
         />
       )}
     </div>

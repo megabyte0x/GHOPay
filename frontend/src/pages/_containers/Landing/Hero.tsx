@@ -1,4 +1,4 @@
-import { ButtonPurple } from "@/pages/_components";
+import BUTTONS from "@/pages/_components/Landing/Buttons";
 import Image from "next/image";
 import React from "react";
 
@@ -26,9 +26,10 @@ const Hero = () => {
             you rewarding experiences and exclusive perks.
           </h6>
         </div>
-        <ButtonPurple
+        <BUTTONS.PURPLE
           text="Get Started"
-          styl="px-[20px] py-[12px] text-[18px]"
+          style="px-[20px] py-[12px] text-[18px]"
+          onClick={() => {}}
         />
       </div>
       <div>
