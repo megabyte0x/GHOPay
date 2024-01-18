@@ -20,7 +20,7 @@ contract MainVault is ERC4626, Ownable {
     event MainVault__PartnerFeeSet(uint8 partnerFee);
     event MainVault__UserFeeSet(uint8 userFee);
     event MainVault__RewardPoolSet(address rewardPool);
-    event MainVault__FeeCollectorSet(address feeCollector);
+    event MainVault__UpdatedMainAdmin(address mainAdmin);
     event MainVault__UtilsSet(address utils);
     event MainVault__GHODeposited(uint256 amount);
     event MainVault__GHOWithdrawn(uint256 indexed amount, address indexed receiver, address indexed owner);
@@ -39,10 +39,11 @@ contract MainVault is ERC4626, Ownable {
     uint8 public s_userFee;
     uint8 public s_partnerFee;
     address public s_rewardPool;
-    address public s_feeColletor;
+    address public s_mainAdmin;
 
-    constructor(ERC20 _ghoToken) Ownable(msg.sender) ERC4626(_ghoToken, "GHO Points", "GP", _ghoToken.decimals()) {
+    constructor(ERC20 _ghoToken, address _mainAdmin) Ownable(_mainAdmin) ERC4626(_ghoToken, "GHO Points", "GP", 18) {
         i_ghoToken = _ghoToken;
+        s_mainAdmin = _mainAdmin;
     }
 
     modifier isZeroAdrress(address _address) {
@@ -82,10 +83,10 @@ contract MainVault is ERC4626, Ownable {
         s_rewardPool = _rewardPool;
     }
 
-    function setFeeCollector(address _feeCollector) public isZeroAdrress(_feeCollector) onlyOwner {
-        emit MainVault__FeeCollectorSet(_feeCollector);
+    function setMainAdmin(address _mainAdmin) public isZeroAdrress(_mainAdmin) onlyOwner {
+        emit MainVault__UpdatedMainAdmin(_mainAdmin);
 
-        s_feeColletor = _feeCollector;
+        s_mainAdmin = _mainAdmin;
     }
 
     /**
@@ -207,11 +208,11 @@ contract MainVault is ERC4626, Ownable {
         } else if (isPartner(msg.sender)) {
             (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_partnerFee);
             i_ghoToken.transfer(_receiver, amountPayable);
-            i_ghoToken.transfer(s_feeColletor, fee);
+            i_ghoToken.transfer(s_mainAdmin, fee);
         } else {
             (uint256 amountPayable, uint256 fee) = withdrawWithFee(_gpAmount, s_userFee);
             i_ghoToken.transfer(_receiver, amountPayable);
-            i_ghoToken.transfer(s_feeColletor, fee);
+            i_ghoToken.transfer(s_mainAdmin, fee);
         }
     }
 }

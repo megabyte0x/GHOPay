@@ -99,14 +99,18 @@ deployGHOPartnerPassport:
 deployUtils:
 	@forge script script/DeployUtils.s.sol:DeployUtils $(NETWORK_ARGS)	
 
+deployRPool:
+	@forge script script/DeployRPool.s.sol:DeployRPool $(NETWORK_ARGS)
+
 deployMainVault:
 	@forge script script/DeployMainVault.s.sol:DeployMainVault $(NETWORK_ARGS)
+
+setUpForTestingMainVault:
+	make deployTestGHO && make deployGHOPassport && make deployGHOPartnerPassport && make deployUtils && make deployRPool && make deployMainVault
 
 deployMainPayment:
 	@forge script script/DeployMainPayment.s.sol:DeployMainPayment $(NETWORK_ARGS)
 
-deployRPool:
-	@forge script script/DeployRPool.s.sol:DeployRPool $(NETWORK_ARGS)
 
 
 
