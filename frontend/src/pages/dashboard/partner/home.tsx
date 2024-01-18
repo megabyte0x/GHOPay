@@ -3,14 +3,12 @@ import CreateVaultModal from "@/components/partner/CreateVaultModal";
 import Image from "next/image";
 import React, { useState } from "react";
 import BUTTONS from "../../../components/landing/Buttons";
-import { NavBar } from "../../../components";
 
 const Home = () => {
   const [step, setStep] = useState(0);
 
   return (
     <>
-      <NavBar />
       <div className="flex flex-col gap-[12px] w-[100vw] h-[fit] items-center px-[112px] pt-[30px] pb-[112px]">
         <div
           className="border-solid border-b-[1px] border-[#FFFFFF1A] 

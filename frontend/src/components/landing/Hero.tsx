@@ -2,7 +2,11 @@ import BUTTONS from "@/components/landing/Buttons";
 import Image from "next/image";
 import React from "react";
 
-const Hero = () => {
+type HeroProps = {
+  handleOpenDapp: () => void;
+};
+
+const Hero = ({ handleOpenDapp }: HeroProps) => {
   return (
     <div
       className="heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
@@ -29,7 +33,7 @@ const Hero = () => {
         <BUTTONS.PURPLE
           text="Get Started"
           style="px-[20px] py-[12px] text-[18px]"
-          onClick={() => {}}
+          onClick={handleOpenDapp}
         />
       </div>
       <div>

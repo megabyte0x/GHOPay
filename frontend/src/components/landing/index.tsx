@@ -5,16 +5,24 @@ import Partnered from "./Partnered";
 import Team from "./Team";
 import { Footer } from "@/components";
 
-const LandingPage = () => {
+type LandingPageProps = {
+  handleOpenDapp: () => void;
+};
+
+const LandingPage = ({ handleOpenDapp }: LandingPageProps) => {
   return (
-    <div className="bg-[#14141B] pt-[64px] flex flex-col items-center justify-center md:px-20 px-6">
-      <Hero />
-      <HowItWorks />
-      <FeatureSection />
-      <Partnered />
-      <Team />
-      <Footer />
-    </div>
+    <>
+      {handleOpenDapp && (
+        <div className="bg-[#14141B] pt-[64px] flex flex-col items-center justify-center md:px-20 px-6">
+          <Hero handleOpenDapp={handleOpenDapp} />
+          <HowItWorks />
+          <FeatureSection />
+          <Partnered />
+          <Team />
+          <Footer />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -1,14 +1,15 @@
-"use client";
-import LandingPage from "../components/landing";
-import { NavBar } from "../components";
+import LandingPage from "@/components/landing";
 
-const Main = () => {
+type LandingProps = {
+  handleOpenDapp: () => void;
+};
+
+export const Landing = ({ handleOpenDapp }: LandingProps) => {
   return (
     <>
-      <NavBar />
-      <LandingPage />
+      <LandingPage handleOpenDapp={handleOpenDapp} />
     </>
   );
 };
 
-export default Main;
+export default Landing;

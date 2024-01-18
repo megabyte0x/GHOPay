@@ -1,16 +1,27 @@
 import Image from "next/image";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ConnectKitButton } from "connectkit";
+import { ConnectKitButton, useModal } from "connectkit";
 import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
 import { ROUTES } from "@/constants";
+import { useRouter } from "next/router";
+import WalletInfo from "./WalletInfo";
 
-const NavBar = () => {
+type _NavBarProps = {
+  handleOpenDapp: () => void;
+};
+
+const _NavBar = ({ handleOpenDapp }: _NavBarProps) => {
   const { isConnected } = useAccount();
+  const router = useRouter();
   const pathname = usePathname();
   const isLanding = pathname === ROUTES.LANDING;
-  const isDashboard = pathname === ROUTES.DASHBOARD;
+  const isDashboard = pathname.startsWith(ROUTES.DASHBOARD);
+
+  if (isDashboard && !isConnected) {
+    router.push(ROUTES.LANDING);
+  }
 
   return (
     <div className="border-b-[1px] border-[#DBD2EF1A] bg-[#14141B] h-[68px] px-20 flex items-center justify-between ">
@@ -38,18 +49,49 @@ const NavBar = () => {
         )}
       </div>
       {isConnected ? (
-        "Connected"
+        <WalletInfo />
       ) : isLanding ? (
         <BUTTONS.PURPLE
           text="Launch Dapp"
           style="text-[16px] px-[18px] py-[12px]"
-          onClick={() => {}}
+          onClick={handleOpenDapp}
         />
       ) : (
         <ConnectKitButton />
       )}
     </div>
   );
+};
+
+type NavBarProps = {
+  setHandleOpenDapp?: (handleOpenDapp: () => void) => void;
+};
+
+const NavBar = ({ setHandleOpenDapp }: NavBarProps) => {
+  const { setOpen } = useModal();
+  const { isConnected } = useAccount();
+  const [dappOpen, setDappOpen] = useState<boolean>();
+  const router = useRouter();
+  const [handler, setHandler] = useState<boolean>();
+
+  const handleOpenDapp = useCallback(() => {
+    setOpen(true); // Open the modal to connect the wallet
+    setDappOpen(true);
+  }, [setOpen]); // Dependencies array
+
+  useEffect(() => {
+    if (handler || !setHandleOpenDapp) return;
+    setHandler(true);
+    setHandleOpenDapp(() => handleOpenDapp);
+  }, [handleOpenDapp, setHandleOpenDapp, handler]);
+
+  useEffect(() => {
+    if (dappOpen && isConnected) {
+      router.push(ROUTES.DASHBOARD);
+    }
+  }, [dappOpen, isConnected, router]);
+
+  return <_NavBar handleOpenDapp={handleOpenDapp} />;
 };
 
 export default NavBar;

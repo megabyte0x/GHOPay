@@ -1,7 +1,11 @@
 import Home from "./home";
 
 const Partner = () => {
-  return <Home />;
+  return (
+    <>
+      <Home />
+    </>
+  );
 };
 
 export default Partner;

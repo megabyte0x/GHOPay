@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Swap from "./swap";
 import Shop from "./shop";
-import { NavBar } from "@/components";
 import classNames from "classnames";
 
 enum ENav {
@@ -14,7 +13,6 @@ export const User = () => {
 
   return (
     <>
-      <NavBar />
       <div className="flex flex-col px-20 pt-[64px]">
         <div className="border-solid border-b-[1px] border-[#FFFFFF33] flex gap-[20px]  justify-start items-start">
           <button
