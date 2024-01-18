@@ -1,13 +1,14 @@
 import { getDefaultConfig } from "connectkit";
 import { createConfig, sepolia } from "wagmi";
 import { env } from "./envVars";
+import { avalancheFuji, polygonMumbai } from "viem/chains";
 
 export const createWalletConfig = () =>
   createConfig(
     getDefaultConfig({
       walletConnectProjectId: env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
 
-      chains: [sepolia],
+      chains: [sepolia, polygonMumbai, avalancheFuji],
 
       // Required
       appName: "GHOPay",
