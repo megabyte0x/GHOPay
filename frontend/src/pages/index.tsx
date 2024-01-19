@@ -1,13 +1,9 @@
 import LandingPage from "@/components/landing";
 
-type LandingProps = {
-  handleOpenDapp: () => void;
-};
-
-export const Landing = ({ handleOpenDapp }: LandingProps) => {
+export const Landing = () => {
   return (
     <>
-      <LandingPage handleOpenDapp={handleOpenDapp} />
+      <LandingPage />
     </>
   );
 };

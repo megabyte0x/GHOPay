@@ -1,32 +1,19 @@
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { ConnectKitButton, useModal } from "connectkit";
+import { ConnectKitButton } from "connectkit";
 import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
-import { ROUTES } from "@/constants";
-import { useRouter } from "next/router";
+import useAppNavigation from "@/hooks/useAppNavigation";
 import WalletInfo from "./WalletInfo";
 
-type _NavBarProps = {
-  handleOpenDapp: () => void;
-};
-
-const _NavBar = ({ handleOpenDapp }: _NavBarProps) => {
+const NavBar = () => {
   const { isConnected } = useAccount();
-  const router = useRouter();
-  const pathname = usePathname();
-  const isLanding = pathname === ROUTES.LANDING;
-  const isDashboard = pathname.startsWith(ROUTES.DASHBOARD);
-
-  if (isDashboard && !isConnected) {
-    router.push(ROUTES.LANDING);
-  }
+  const { goToHome, isDashboard, isLanding, handleLandingOpen } =
+    useAppNavigation();
 
   return (
     <div className="border-b-[1px] border-[#DBD2EF1A] bg-[#14141B] h-[68px] px-20 flex items-center justify-between ">
       <div className="flex gap-[40px]">
-        <div className="flex gap-[8px]">
+        <div className="flex gap-[8px] cursor-pointer" onClick={goToHome}>
           <Image src={"/logo.svg"} width={32} height={32} alt="logo" />{" "}
           <h1 className="text-[20px] leading-[24px] text-[#DBD2EF] font-semibold">
             GHOPay
@@ -54,44 +41,13 @@ const _NavBar = ({ handleOpenDapp }: _NavBarProps) => {
         <BUTTONS.PURPLE
           text="Launch Dapp"
           style="text-[16px] px-[18px] py-[12px]"
-          onClick={handleOpenDapp}
+          onClick={handleLandingOpen}
         />
       ) : (
         <ConnectKitButton />
       )}
     </div>
   );
-};
-
-type NavBarProps = {
-  setHandleOpenDapp?: (handleOpenDapp: () => void) => void;
-};
-
-const NavBar = ({ setHandleOpenDapp }: NavBarProps) => {
-  const { setOpen } = useModal();
-  const { isConnected } = useAccount();
-  const [dappOpen, setDappOpen] = useState<boolean>();
-  const router = useRouter();
-  const [handler, setHandler] = useState<boolean>();
-
-  const handleOpenDapp = useCallback(() => {
-    setOpen(true); // Open the modal to connect the wallet
-    setDappOpen(true);
-  }, [setOpen]); // Dependencies array
-
-  useEffect(() => {
-    if (handler || !setHandleOpenDapp) return;
-    setHandler(true);
-    setHandleOpenDapp(() => handleOpenDapp);
-  }, [handleOpenDapp, setHandleOpenDapp, handler]);
-
-  useEffect(() => {
-    if (dappOpen && isConnected) {
-      router.push(ROUTES.DASHBOARD);
-    }
-  }, [dappOpen, isConnected, router]);
-
-  return <_NavBar handleOpenDapp={handleOpenDapp} />;
 };
 
 export default NavBar;

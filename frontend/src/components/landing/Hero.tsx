@@ -1,12 +1,10 @@
 import BUTTONS from "@/components/landing/Buttons";
+import useAppNavigation from "@/hooks/useAppNavigation";
 import Image from "next/image";
 import React from "react";
 
-type HeroProps = {
-  handleOpenDapp: () => void;
-};
-
-const Hero = ({ handleOpenDapp }: HeroProps) => {
+const Hero = () => {
+  const { handleLandingOpen } = useAppNavigation();
   return (
     <div
       className="heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
@@ -33,7 +31,7 @@ const Hero = ({ handleOpenDapp }: HeroProps) => {
         <BUTTONS.PURPLE
           text="Get Started"
           style="px-[20px] py-[12px] text-[18px]"
-          onClick={handleOpenDapp}
+          onClick={handleLandingOpen}
         />
       </div>
       <div>
