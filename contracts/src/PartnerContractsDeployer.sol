@@ -10,24 +10,18 @@ import {PartnerPayment} from "./PartnerPayment.sol";
 
 contract PartnerContractsDeployer is Ownable {
     event PartnerContractsDeployer__RegisterAsPartner(
-        address partnerVaultContractAddress, address partnerPaymentContractAddress
+        address indexed partner,
+        address indexed partnerVaultContractAddress,
+        address indexed partnerPaymentContractAddress
     );
 
     Utils public s_utilsContract;
-    address public i_owner;
+
     address public s_mainPayment;
 
-    mapping(address => PartnerDetails) public s_addressToPartnerDetails;
-    address[] public s_partners;
-
-    struct PartnerDetails {
-        address s_vault;
-        address s_partnerPayment;
-    }
-
-    constructor(address _owner, address _mainPayment) Ownable(_owner) {
-        i_owner = _owner;
+    constructor(address _mainPayment, address _mainAdmin, address _utils) Ownable(_mainAdmin) {
         s_mainPayment = _mainPayment;
+        s_utilsContract = Utils(_utils);
     }
 
     function registerAsPartner(
@@ -47,21 +41,14 @@ contract PartnerContractsDeployer is Ownable {
         PartnerPayment partnerPayment = new PartnerPayment(
             address(partnerVault),
             s_mainPayment,
+            _maxAmtPercentInRp,
             msg.sender,
-            _ratio,
-            _maxAmtPercentInRp
+            _ratio
         );
 
-        s_addressToPartnerDetails[msg.sender] =
-            PartnerDetails({s_vault: address(partnerVault), s_partnerPayment: address(partnerPayment)});
+        s_utilsContract.addPartnerContracts(address(partnerPayment), address(partnerVault));
 
-        s_partners.push(msg.sender);
-
-        // TODO: mint partner NFT;
-        s_utilsContract.addPartnerBookingContract(address(partnerPayment));
-        s_utilsContract.addPartnerVault(address(partnerVault));
-
-        emit PartnerContractsDeployer__RegisterAsPartner(address(partnerVault), address(partnerPayment));
+        emit PartnerContractsDeployer__RegisterAsPartner(msg.sender, address(partnerVault), address(partnerPayment));
     }
 
     function setMainPayment(address _mainPayment) public onlyOwner {
