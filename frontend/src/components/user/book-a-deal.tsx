@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 type BookDealModalProps = {
   onClose: () => void;
@@ -8,6 +9,32 @@ type BookDealModalProps = {
 };
 
 const BookDealModal = ({ onClose, onNext, onBack }: BookDealModalProps) => {
+  const [amountPay, setAmountPay] = useState(0);
+  const [tnc, setTnc] = useState(false);
+  const [message, setMessage] = useState("");
+  const handleAmountPay = (e: any) => {
+    setAmountPay(parseFloat(e.target.value));
+  };
+  const handleTnc = (e: any) => {
+    setTnc(e.target.value);
+    console.log(tnc);
+  };
+  const handleCancel = () => {
+    onBack();
+  };
+  const handleBook = () => {
+    if (amountPay) {
+      onNext();
+      setTimeout(() => {
+        onClose();
+      }, 500);
+    } else {
+      setMessage("Enter Amount");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
   return (
     <div
       className="border-solid border-[#5720b7] border-[1px] rounded-[12px] shadow-[0px_8px_8px_-4px_rgba(16,_24,_40,_0.04),_0px_20px_24px_-4px_rgba(16,_24,_40,_0.1)] bg-[#2e125e] 
@@ -51,7 +78,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
                 <h3 className="text-left">GHO Points</h3>
               </div>
               <h6 className="pr-[14px] min-w-fit text-right place-self-end">
-                $50
+                ${ghoPoints}
               </h6>
             </div>
             <div className="flex justify-between">
@@ -60,7 +87,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
                 <h3 className="text-left">Gas Fees</h3>
               </div>
               <h6 className="pr-[14px] min-w-fit  text-right place-self-end">
-                0.00 GWEI
+                {gasFee} GWEI
               </h6>
             </div>
           </div>
@@ -71,7 +98,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
               </h1>
 
               <h3 className="text-right text-[14px] leading-[20px] text-[#DBD2EFCC]">
-                Available GHO: 50.0
+                Available GHO: {availableGHO}
               </h3>
             </label>
             <div
@@ -80,46 +107,72 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
               flex justify-between items-center gap-[8px]"
             >
               <input
-                type="text"
+                onChange={handleAmountPay}
+                type="number"
                 placeholder="0.00 GHO"
                 className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] px-[14px]"
               />
             </div>
           </div>
+          {/* CHECK BASED ON? XX */}
+          {/* <div
+            className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+                text-[#A48AFB]
+              flex justify-between gap-[8px] w-full
+                  text-[16px] leading-[24px] py-[10px] pl-[14px]"
+          >
+            <div className="flex gap-2">
+              <Image
+                src={"/info-circle.svg"}
+                alt="info"
+                width={20}
+                height={20}
+              />
+              <h3 className="text-left">You don’t have enough GHO to stake.</h3>
+            </div>
+            <h6
+              className="hover:underline-offset-[2px] cursor-pointer
+                      pr-[14px] min-w-fit underline font-semibold text-right place-self-end"
+            >
+              Buy GHO
+            </h6>
+          </div> */}
           <div className="border-b-[1px] border-solid border-[#491C96]"></div>
           <div className="flex gap-2">
-            <input type="checkbox" className="border-[0px] bg-[#000000]" />
+            <input
+              type="checkbox"
+              className="border-[0px] bg-[#000000]"
+              onChange={handleTnc}
+            />
             <label className="text-[14px] leading-[20px] text-medium text-[#C3B5FD]">
               I agree to all the terms and conditions of the booking.
             </label>
           </div>
         </form>
-        <div className="grid grid-cols-2 gap-[12px]">
-          <button
-            onClick={onBack}
-            className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
+        <div className="flex flex-col">
+          <h3 className="self-end text-[#ed8484cc] text-[12px]">{message}</h3>
+          <div className="grid grid-cols-2 gap-[12px]">
+            <button
+              onClick={handleCancel}
+              className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
         border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
         flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
         hover:opacity-60"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              onNext();
-              setTimeout(() => {
-                onClose();
-              }, 500);
-            }}
-            className="font-semibold leading-[24px] text-white text-[16px]
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleBook}
+              className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-75"
-          >
-            Book Deal
-          </button>
+            >
+              Book Deal
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -127,3 +180,6 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
 };
 
 export default BookDealModal;
+const ghoPoints = 0;
+const gasFee = 0;
+const availableGHO = 0;
