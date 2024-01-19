@@ -18,10 +18,12 @@ contract PartnerContractsDeployer is Ownable {
     Utils public s_utilsContract;
 
     address public s_mainPayment;
+    address public s_rPool;
 
-    constructor(address _mainPayment, address _mainAdmin, address _utils) Ownable(_mainAdmin) {
+    constructor(address _mainPayment, address _mainAdmin, address _utils, address _rPool) Ownable(_mainAdmin) {
         s_mainPayment = _mainPayment;
         s_utilsContract = Utils(_utils);
+        s_rPool = _rPool;
     }
 
     function registerAsPartner(
@@ -36,6 +38,7 @@ contract PartnerContractsDeployer is Ownable {
             _name,
             _symbol,
             msg.sender,
+            s_rPool,
             _ratio
         );
         PartnerPayment partnerPayment = new PartnerPayment(
@@ -57,5 +60,9 @@ contract PartnerContractsDeployer is Ownable {
 
     function setUtils(address _utils) public onlyOwner {
         s_utilsContract = Utils(_utils);
+    }
+
+    function setRPool(address _rPool) public onlyOwner {
+        s_rPool = _rPool;
     }
 }

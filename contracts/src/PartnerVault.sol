@@ -6,6 +6,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC20} from "./ERC4626Flatten.sol";
 import {ERC4626} from "./ERC4626Flatten.sol";
 import {SafeTransferLib} from "./ERC4626Flatten.sol";
+import {FixedPointMathLib} from "./ERC4626Flatten.sol";
 
 /**
  * @title Partner Vault
@@ -18,6 +19,7 @@ contract PartnerVault is ERC4626, Ownable {
     error PartnerVault__ZeroAmount();
 
     using SafeTransferLib for ERC20;
+    using FixedPointMathLib for uint256;
 
     /*
            _        _                         _       _     _
@@ -34,11 +36,16 @@ contract PartnerVault is ERC4626, Ownable {
     address public s_rewardPool;
     address public s_partnerFeeCollector;
 
-    constructor(ERC20 _ghoToken, string memory _name, string memory _symbol, address _partnerAddress, uint8 ratio)
-        Ownable(_partnerAddress)
-        ERC4626(_ghoToken, _name, _symbol, (_ghoToken.decimals() + ratio))
-    {
+    constructor(
+        ERC20 _ghoToken,
+        string memory _name,
+        string memory _symbol,
+        address _partnerAddress,
+        address _rewardPool,
+        uint8 ratio
+    ) Ownable(_partnerAddress) ERC4626(_ghoToken, _name, _symbol, (_ghoToken.decimals() + ratio)) {
         i_ghoToken = _ghoToken;
+        s_rewardPool = _rewardPool;
     }
 
     modifier isZeroAdrress(address _address) {
@@ -128,12 +135,12 @@ contract PartnerVault is ERC4626, Ownable {
         returns (uint256 amountPayable, uint256 feeForPartner)
     {
         uint256 fee = calculateFee(_rpTokenAmount);
-        feeForPartner = (fee * s_partnerFee) / 100;
+        feeForPartner = FixedPointMathLib.mulWadUp(fee, s_partnerFee);
         amountPayable = _rpTokenAmount - fee;
     }
 
     function calculateFee(uint256 _rpTokenAmount) internal view returns (uint256) {
-        return (_rpTokenAmount * s_withdrawalFee) / 100;
+        return FixedPointMathLib.mulWadUp(_rpTokenAmount, s_withdrawalFee);
     }
 
     /*

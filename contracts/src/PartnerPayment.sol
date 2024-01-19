@@ -80,7 +80,9 @@ contract PartnerPayment is Ownable {
     }
 
     modifier haveEnoughRp(uint256 _rpAmount) {
-        if (_rpAmount > s_rpToken.balanceOf(msg.sender)) {
+        if (_rpAmount == 0) {
+            _;
+        } else if (_rpAmount > s_rpToken.balanceOf(msg.sender)) {
             revert PartnerPayment__NotEnoughRP();
         }
         _;

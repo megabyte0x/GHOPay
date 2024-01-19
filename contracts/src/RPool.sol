@@ -39,12 +39,14 @@ contract RPool is Ownable {
     address public s_gpToken;
     address public s_ghoToken;
     address public s_mainVault;
+    address public s_mainAdmin;
 
     uint256 public s_feeOnRPs;
 
-    constructor(address _utils, address _ghoToken, uint256 _feeOnRPs) Ownable(msg.sender) {
+    constructor(address _utils, address _ghoToken, uint256 _feeOnRPs, address _mainAdmin) Ownable(_mainAdmin) {
         s_utils = _utils;
         s_ghoToken = _ghoToken;
+        s_mainAdmin = _mainAdmin;
         s_feeOnRPs = _feeOnRPs;
     }
 
@@ -100,6 +102,10 @@ contract RPool is Ownable {
         s_feeOnRPs = _feeOnRPs;
     }
 
+    function setMainAdmin(address _mainAdmin) public onlyOwner isZeroAdrress(_mainAdmin) {
+        s_mainAdmin = _mainAdmin;
+    }
+
     /**
      * Function to swap beween RP tokens and GHO token.
      * @param _initialToken The token that user wants to swap
@@ -137,7 +143,7 @@ contract RPool is Ownable {
         ERC20(_initialToken).safeTransferFrom(msg.sender, address(this), _initialTokenAmount);
 
         // sending finalToken amount to msg.sender after deducting fee in finalToken.
-        ERC20(_finalToken).safeTransferFrom(address(this), msg.sender, finalTokenAmount);
+        ERC20(_finalToken).safeTransfer(msg.sender, finalTokenAmount);
     }
 
     /**
@@ -168,8 +174,9 @@ contract RPool is Ownable {
         // = (( 100 x 1e18 / 10000 X 1e18 ) * 1e18) * 500
         // = (50 x 1e18) HP
 
-        uint256 _toalFinalTokenAmt =
-            FixedPointMathLib.divWadDown(_finalTokenDecimals, _initialTokenDecimals) * _initialTokenAmount;
+        uint256 _toalFinalTokenAmt = FixedPointMathLib.mulWadDown(
+            FixedPointMathLib.divWadDown(_finalTokenDecimals, _initialTokenDecimals), _initialTokenAmount
+        );
 
         // s_userfee can be around 18 decimal places so we need to divide it by 1e18
         fee = FixedPointMathLib.mulWadDown(_toalFinalTokenAmt, s_feeOnRPs);
@@ -201,9 +208,7 @@ contract RPool is Ownable {
         address gpToken = s_gpToken;
         address ghoToken = s_ghoToken;
 
-        if (_initialToken == ghoToken) {
-            // TODO
-        } else if (_initialToken == gpToken && _finalToken == ghoToken) {
+        if (_initialToken == gpToken && _finalToken == ghoToken) {
             MainVault(s_mainVault).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
             emit RPool__GHOWithdrawn();
         } else if (_initialToken != gpToken && _finalToken == ghoToken) {
