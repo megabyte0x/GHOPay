@@ -49,6 +49,25 @@ const CreateVaultModal = ({
   };
   const handleBuyGHO = () => {};
   const handleStakeAll = () => {};
+  const handleVaultName = (e: any) => {
+    setVaultName(e.target.value);
+  };
+  const handleSymbol = (e: any) => {
+    setSymbol(e.target.value);
+  };
+  const handleRatio1 = (e: any) => {
+    setRatio1(parseFloat(e.target.value));
+    console.log(ratio1);
+    // XX VALUE printing pre change
+  };
+  const handleRatio2 = (e: any) => {
+    setRatio2(parseFloat(e.target.value));
+    console.log(ratio2);
+    // XX VALUE printing pre change
+  };
+  const handleStakedGHO = (e: any) => {
+    setStakeGHO(parseFloat(e.target.value));
+  };
   return (
     <>
       {step > 0 && (
@@ -103,9 +122,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                     >
                       <input
                         maxLength={30}
-                        onChange={(e) => {
-                          setVaultName(e.target.value);
-                        }}
+                        onChange={handleVaultName}
                         type="text"
                         placeholder="Enter a Name for your Vault"
                         className="bg-[#00000000] border-0 w-full
@@ -127,9 +144,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                     >
                       <input
-                        onChange={(e) => {
-                          setSymbol(e.target.value);
-                        }}
+                        onChange={handleSymbol}
                         maxLength={4}
                         type="text"
                         placeholder="Enter a 4 letter Symbol name for your vault e.g. GHOV, SHAR"
@@ -153,9 +168,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                       >
                         <input
-                          onChange={(e) => {
-                            setRatio1(parseFloat(e.target.value));
-                          }}
+                          onChange={handleRatio1}
                           type="number"
                           placeholder="Enter XX"
                           className="bg-[#00000000] border-0 w-full
@@ -171,9 +184,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                       >
                         <input
-                          onChange={(e) => {
-                            setRatio2(parseFloat(e.target.value));
-                          }}
+                          onChange={handleRatio2}
                           type="number"
                           placeholder="Enter XX"
                           className="bg-[#00000000] border-0 w-full
@@ -275,9 +286,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                     >
                       <input
                         type="number"
-                        onChange={(e) => {
-                          setStakeGHO(parseFloat(e.target.value));
-                        }}
+                        onChange={handleStakedGHO}
                         placeholder="0"
                         className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
