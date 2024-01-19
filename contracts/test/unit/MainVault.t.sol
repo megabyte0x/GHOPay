@@ -51,7 +51,7 @@ contract MainVaultTest is Test {
         TestGHO(s_ghoToken).mint(s_mainAdmin, GHO_TOKEN_TO_MINT);
 
         DeployMainVault deployMainVault = new DeployMainVault();
-        s_mainVault = MainVault(deployMainVault.run(s_ghoToken));
+        s_mainVault = MainVault(deployMainVault.run());
 
         s_rewardPool = address(new TestRPool(s_utils, s_ghoToken, FEE_ON_RP, s_mainAdmin));
         TestRPool(s_rewardPool).setGPToken(address(s_mainVault));

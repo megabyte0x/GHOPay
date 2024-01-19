@@ -1,66 +1,11 @@
-## Foundry
+## Sepolia
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+TestGHO: 0xBdD9c513Be2514F83B72761503F0be2134ec6A1a
+GHOPassport: 0x17206705E75249B2Cb885423937e88Fc8f068338
+GHOPartnerPassport: 0xEa9b91D90ff3e904EcF230296D88c30c78E1E4c8
+Utils: 0xA9429c88fF54D00d96896Cad67E8EbD60e63238d
+RPool: 0xedE73Ab19f7ec894c01b70B2be2300b4cd1C3c50
+MainVault: 0x93EBcd57712B37084564259168b3a1d5738ef76b
+MainPayment: 0x871886faF72978697829D0a988Dd71dB5F8f17D2
+PartnerContractsDeployer: 0x100D3d398CCb077A668DfFC9413a147acEd36a6e
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```

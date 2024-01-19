@@ -49,7 +49,7 @@ contract PartnerContractsDeployer is Ownable {
             _ratio
         );
 
-        s_utilsContract.addPartnerContracts(address(partnerPayment), address(partnerVault));
+        s_utilsContract.addPartnerContracts(msg.sender, address(partnerPayment), address(partnerVault));
 
         emit PartnerContractsDeployer__RegisterAsPartner(msg.sender, address(partnerVault), address(partnerPayment));
     }

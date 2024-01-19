@@ -9,11 +9,8 @@ import {ERC20} from "../src/ERC4626Flatten.sol";
 import {HelperConfig} from "../script/HelperConfig.s.sol";
 
 contract DeployMainVault is Script {
-    function deployMainVault(address _ghoToken, uint256 _mainDeployerKey, address _mainAdmin)
-        public
-        returns (address mainVault)
-    {
-        vm.startBroadcast(_mainDeployerKey);
+    function deployMainVault(address _ghoToken, address _mainAdmin) public returns (address mainVault) {
+        vm.startBroadcast();
         MainVault _mainVault = new MainVault(ERC20(_ghoToken), _mainAdmin);
         vm.stopBroadcast();
 
@@ -21,17 +18,16 @@ contract DeployMainVault is Script {
         console2.log("MainVault deployed at: %s", address(_mainVault));
     }
 
-    function deployMainVaultUsingConfigs(address _ghoToken) public returns (address mainVault) {
+    function deployMainVaultUsingConfigs() public returns (address mainVault) {
         HelperConfig _helperConfigs = new HelperConfig();
 
-        // address _ghoToken = _helperConfigs.s_ghoToken();
-        uint256 _mainDeployerKey = _helperConfigs.s_mainDeployerKey();
+        address _ghoToken = _helperConfigs.getGHOToken(block.chainid);
         address _mainAdmin = _helperConfigs.s_mainAdmin();
 
-        mainVault = deployMainVault(_ghoToken, _mainDeployerKey, _mainAdmin);
+        mainVault = deployMainVault(_ghoToken, _mainAdmin);
     }
 
-    function run(address _ghoToken) public returns (address mainVault) {
-        mainVault = deployMainVaultUsingConfigs(_ghoToken);
+    function run() public returns (address mainVault) {
+        mainVault = deployMainVaultUsingConfigs();
     }
 }

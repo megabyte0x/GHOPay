@@ -105,6 +105,9 @@ deployRPool:
 deployMainVault:
 	@forge script script/DeployMainVault.s.sol:DeployMainVault $(NETWORK_ARGS)
 
+deployPartnerContractsDeployer:
+	@forge script script/DeployPartnerContractsDeployer.s.sol:DeployPartnerContractsDeployer $(NETWORK_ARGS)
+
 setUpForTestingMainVault:
 	make deployTestGHO && make deployGHOPassport && make deployGHOPartnerPassport && make deployUtils && make deployRPool && make deployMainVault
 
@@ -116,14 +119,26 @@ deployMainPayment:
 
 # Commands for Testnets
 
-deployMainVaultOnSepolia:
-	make deployMainVault ARGS="--network sepolia"
+deployTestGHOOnSepolia:
+	make deployTestGHO ARGS="--network sepolia"
 
-deployRPoolOnSepolia:
-	make deployRPool ARGS="--network sepolia"
+deployGHOPassportOnSepolia:
+	make deployGHOPassport ARGS="--network sepolia"
+
+deployGHOPartnerPassportOnSepolia:
+	make deployGHOPartnerPassport ARGS="--network sepolia"
 
 deployUtilsOnSepolia:
 	make deployUtils ARGS="--network sepolia"
 
+deployRPoolOnSepolia:
+	make deployRPool ARGS="--network sepolia"
+
+deployMainVaultOnSepolia:
+	make deployMainVault ARGS="--network sepolia"
+
 deployMainPaymentOnSepolia:
 	make deployMainPayment ARGS="--network sepolia"
+
+deployPartnerContractsDeployerOnSepolia:
+	make deployPartnerContractsDeployer ARGS="--network sepolia"

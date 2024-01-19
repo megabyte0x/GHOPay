@@ -2,6 +2,7 @@
 pragma solidity 0.8.20;
 
 import {Script} from "forge-std/Script.sol";
+import {console2} from "forge-std/console2.sol";
 
 import {MainPayment} from "../src/MainPayment.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
@@ -13,10 +14,9 @@ contract DeployMainPayment is Script {
         address _ghoToken,
         address _ghoPassport,
         uint256 _minimumAmt,
-        uint256 _mainDeployerKey,
         address _mainAdmin
     ) public returns (address mainPayment) {
-        vm.startBroadcast(_mainDeployerKey);
+        vm.startBroadcast();
         MainPayment _mainPayment = new MainPayment(
         _ghoToken, _gpToken, _ghoPassport, _utils,_minimumAmt, _mainAdmin
         );
@@ -33,11 +33,17 @@ contract DeployMainPayment is Script {
         address ghoPassport = helperConfig.getGhoPassport(_chainId);
         address mainAdmin = helperConfig.s_mainAdmin();
 
-        address ghoToken = helperConfig.s_ghoToken();
+        address ghoToken = helperConfig.getGHOToken(_chainId);
         uint256 minimumAmt = helperConfig.MINIMUM_REWARD_AMOUNT();
-        uint256 mainDeployerKey = helperConfig.s_mainDeployerKey();
 
-        mainPayment = deployMainPayment(utils, gpToken, ghoToken, ghoPassport, minimumAmt, mainDeployerKey, mainAdmin);
+        console2.log("utils: %s", utils);
+        console2.log("gpToken: %s", gpToken);
+        console2.log("ghoToken: %s", ghoToken);
+        console2.log("ghoPassport: %s", ghoPassport);
+        console2.log("minimumAmt: %s", minimumAmt);
+        console2.log("mainAdmin: %s", mainAdmin);
+
+        mainPayment = deployMainPayment(utils, gpToken, ghoToken, ghoPassport, minimumAmt, mainAdmin);
     }
 
     function run() external returns (address mainPayment) {

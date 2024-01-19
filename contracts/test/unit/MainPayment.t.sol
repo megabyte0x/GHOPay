@@ -83,7 +83,7 @@ contract MainPaymentTest is Test {
 
     modifier setUpUtils() {
         vm.startPrank(ADMIN);
-        s_utils.addPartnerContracts(PARTNER_PAYMENT_CONTRACT, makeAddr("partner_vault"));
+        s_utils.addPartnerContracts(ADMIN, PARTNER_PAYMENT_CONTRACT, makeAddr("partner_vault"));
         vm.stopPrank();
 
         _;

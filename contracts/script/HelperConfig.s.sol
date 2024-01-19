@@ -64,10 +64,17 @@ contract HelperConfig is Script {
         ghoPartnerPassport = DevOpsTools.get_most_recent_deployment("TestGHOPartnerPassport", _chainId);
     }
 
+    function getGHOToken(uint256 _chainId) public view returns (address ghoToken) {
+        ghoToken = DevOpsTools.get_most_recent_deployment("TestGHO", _chainId);
+    }
+
+    function getMainPayment(uint256 _chainId) public view returns (address mainPayment) {
+        mainPayment = DevOpsTools.get_most_recent_deployment("MainPayment", _chainId);
+    }
+
     function getSepoliaConfigs() public {
         s_mainDeployerKey = vm.envUint("PRIVATE_KEY");
-        s_ghoToken = 0xc4bF5CbDaBE595361438F8c6a187bDc330539c60;
-        s_mainDeployer = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;
+        s_mainAdmin = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;
         s_partnerAdmin = 0xa60f738a60BCA515Ac529b7335EC7CB2eE3891d2;
     }
 
