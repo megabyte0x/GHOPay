@@ -1,7 +1,8 @@
 import Image from "next/image";
 import React from "react";
 
-const PartnerStore = () => {
+const PartnerStore = ({ params }: any) => {
+  // console.log(params.partner);
   return (
     <div className="w-full px-20 py-[64px] flex flex-col gap-[48px]">
       <div className="flex gap-[24px]">
