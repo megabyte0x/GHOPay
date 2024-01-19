@@ -19,6 +19,8 @@ const CreateVaultModal = ({
   const [symbol, setSymbol] = useState("");
   const [message, setMessage] = useState("");
   const [stakeGHO, setStakeGHO] = useState(0);
+  const [ratio1, setRatio1] = useState(0);
+  const [ratio2, setRatio2] = useState(0);
   const handleNext = () => {
     if (vaultName && symbol) {
       onNext();
@@ -144,19 +146,42 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                     <label className="text-[14px] font-medium leading-[20px] text-[#f5f3ff]">
                       Ratio*
                     </label>
-                    <div
-                      className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#491c96] 
+                    <div className="flex gap-[12px] w-full items-center justify-center">
+                      <div
+                        className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#491c96] 
                 text-[#A48AFB]
               flex justify-between items-center gap-[8px]"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Enter a ratio"
-                        className="bg-[#00000000] border-0 w-full
+                      >
+                        <input
+                          onChange={(e) => {
+                            setRatio1(parseFloat(e.target.value));
+                          }}
+                          type="number"
+                          placeholder="Enter XX"
+                          className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] px-[14px]"
-                      />
+                        />
+                      </div>
+                      <h1 className="text-[24px] font-bold text-[#f5f3ff]">
+                        :
+                      </h1>
+                      <div
+                        className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#491c96] 
+                text-[#A48AFB]
+              flex justify-between items-center gap-[8px]"
+                      >
+                        <input
+                          onChange={(e) => {
+                            setRatio2(parseFloat(e.target.value));
+                          }}
+                          type="number"
+                          placeholder="Enter XX"
+                          className="bg-[#00000000] border-0 w-full
+                  text-[16px] leading-[24px] py-[10px] px-[14px]"
+                        />
+                      </div>
                     </div>
-                    <h3 className="text-[12px] leading-[20px] text-[#DBD2EFCC]">
+                    <h3 className="text-[12px] leading-[20px] text-[#DBD2EFCC] self-center">
                       Conversion ratio from Reward Points to GHO.
                     </h3>
                   </div>
@@ -251,7 +276,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                       <input
                         type="number"
                         onChange={(e) => {
-                          // setStakeGHO(e.target.value);
+                          setStakeGHO(parseFloat(e.target.value));
                         }}
                         placeholder="0"
                         className="bg-[#00000000] border-0 w-full
