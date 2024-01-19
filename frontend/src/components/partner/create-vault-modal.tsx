@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -14,6 +15,38 @@ const CreateVaultModal = ({
   step,
   onBack,
 }: CreateVaultModalProps) => {
+  const [vaultName, setVaultName] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [message, setMessage] = useState("");
+  const [stakeGHO, setStakeGHO] = useState(0);
+  const handleNext = () => {
+    if (vaultName && symbol) {
+      onNext();
+    } else {
+      setMessage("Please Fill all fields");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+  const handleBack = () => {
+    onBack();
+  };
+  const handleCreate = () => {
+    if (stakeGHO) {
+      onNext();
+      setTimeout(() => {
+        onClose();
+      }, 500);
+    } else {
+      setMessage("Please Enter GHO to Stake");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    }
+  };
+  const handleBuyGHO = () => {};
+  const handleStakeAll = () => {};
   return (
     <>
       {step > 0 && (
@@ -67,12 +100,16 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                     >
                       <input
+                        maxLength={30}
+                        onChange={(e) => {
+                          setVaultName(e.target.value);
+                        }}
                         type="text"
                         placeholder="Enter a Name for your Vault"
                         className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
                       />
-                      <h6 className="pr-[14px]">0/30</h6>
+                      <h6 className="pr-[14px]">{vaultName.length}/30</h6>
                     </div>
                     <h3 className="text-[12px] leading-[20px] text-[#DBD2EFCC]">
                       This cannot be changed later.
@@ -88,12 +125,16 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                     >
                       <input
+                        onChange={(e) => {
+                          setSymbol(e.target.value);
+                        }}
+                        maxLength={4}
                         type="text"
                         placeholder="Enter a 4 letter Symbol name for your vault e.g. GHOV, SHAR"
                         className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
                       />
-                      <h6 className="pr-[14px]">0/4</h6>
+                      <h6 className="pr-[14px]">{symbol.length}/4</h6>
                     </div>
                     <h3 className="text-[12px] leading-[20px] text-[#DBD2EFCC]">
                       This cannot be changed later.
@@ -120,26 +161,28 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                     </h3>
                   </div>
                 </form>
-                <div className="grid grid-cols-2 gap-[12px]">
-                  <button
-                    onClick={onBack}
-                    className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
+                <div className="flex flex-col">
+                  <div className="grid grid-cols-2 gap-[12px]">
+                    <button
+                      onClick={onBack}
+                      className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
         border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
         flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
         hover:opacity-60 "
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={onNext}
-                    className="font-semibold leading-[24px] text-white text-[16px]
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-60"
-                  >
-                    Next
-                  </button>
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -173,6 +216,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                   </div>
                 </div>
                 <Image
+                  onClick={onClose}
                   src={"/x-close.svg"}
                   alt="Xclose"
                   width={24}
@@ -189,9 +233,12 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                       </h1>
                       <div className="flex gap-2">
                         <h3 className="text-right text-[14px] leading-[20px] text-[#DBD2EFCC]">
-                          Available GHO: 00.0
+                          Available GHO: {availableGHO}
                         </h3>
-                        <h4 className="text-right text-[14px] underline font-semibold leading-[20px] text-[#c3b5fd]">
+                        <h4
+                          onClick={handleBuyGHO}
+                          className="text-right text-[14px] underline font-semibold leading-[20px] text-[#c3b5fd] hover:underline-offset-[2px]"
+                        >
                           Buy more GHO
                         </h4>
                       </div>
@@ -202,75 +249,98 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               flex justify-between items-center gap-[8px]"
                     >
                       <input
-                        type="text"
-                        placeholder="0.00 GHO"
+                        type="number"
+                        onChange={(e) => {
+                          // setStakeGHO(e.target.value);
+                        }}
+                        placeholder="0"
                         className="bg-[#00000000] border-0 w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
                       />
-                      <h6 className="pr-[14px] min-w-fit">Stake All</h6>
+                      <h6
+                        onClick={handleStakeAll}
+                        className="pr-[14px] min-w-fit hover:underline cursor-pointer"
+                      >
+                        Stake All
+                      </h6>
                     </div>
                   </div>
-                  <div
-                    className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+                  {stakeGHO > availableGHO && (
+                    <div
+                      className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
                 text-[#A48AFB]
               flex justify-between gap-[8px] w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
-                  >
-                    <div className="flex gap-2">
-                      <Image
-                        src={"/info-circle.svg"}
-                        alt="info"
-                        width={20}
-                        height={20}
-                      />
-                      <h3 className="text-left">
-                        You don’t have enough GHO to stake.
-                      </h3>
+                    >
+                      <div className="flex gap-2">
+                        <Image
+                          src={"/info-circle.svg"}
+                          alt="info"
+                          width={20}
+                          height={20}
+                        />
+                        <h3 className="text-left">
+                          You don’t have enough GHO to stake.
+                        </h3>
+                      </div>
+                      <h6 className="pr-[14px] min-w-fit underline font-semibold text-right place-self-end">
+                        Buy GHO
+                      </h6>
                     </div>
-                    <h6 className="pr-[14px] min-w-fit underline font-semibold text-right place-self-end">
-                      Buy GHO
-                    </h6>
-                  </div>
+                  )}
+
                   <div className="border-b-[1px] border-solid border-[#491C96]"></div>
                   <div className="flex flex-col gap-[6px]">
                     <h3 className="text-[14px] font-medium leading-[20px] text-[#f5f3ff]">
                       Mint Reward Points
                     </h3>
-                    <div
-                      className="rounded-[8px] border-dashed border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+                    {stakeGHO == 0 && (
+                      <div
+                        className="rounded-[8px] border-dashed border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
                 text-[#A48AFB]
                w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
-                    >
-                      Stake GHO first to receive reward points
-                    </div>
+                      >
+                        Stake GHO first to receive reward points
+                      </div>
+                    )}
+                    {stakeGHO > 0 && (
+                      <div
+                        className="rounded-[8px] border-dashed border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+                text-[#A48AFB]
+               w-full
+                  text-[16px] leading-[24px] py-[10px] pl-[14px]"
+                      >
+                        You’ll be eligible to mint {rewardPoints} Reward Points
+                      </div>
+                    )}
                   </div>
                 </form>
-                <div className="grid grid-cols-2 gap-[12px]">
-                  <button
-                    onClick={onBack}
-                    className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
+                <div className="flex flex-col">
+                  <h3 className="self-end text-[#ed8484cc] text-[12px]">
+                    {message}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-[12px]">
+                    <button
+                      onClick={handleBack}
+                      className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
         border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
         flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
         hover:opacity-60"
-                  >
-                    Go Back
-                  </button>
-                  <button
-                    onClick={() => {
-                      onNext();
-                      setTimeout(() => {
-                        onClose();
-                      }, 500);
-                    }}
-                    className="font-semibold leading-[24px] text-white text-[16px]
+                    >
+                      Go Back
+                    </button>
+                    <button
+                      onClick={handleCreate}
+                      className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-75"
-                  >
-                    Create Vault
-                  </button>
+                    >
+                      Create Vault
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -298,3 +368,6 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
 };
 
 export default CreateVaultModal;
+
+const availableGHO = 0.0;
+const rewardPoints = 0;
