@@ -1,3 +1,4 @@
+import { toBigNumber } from "@/utils/helper-functions";
 import {
   AdminContractCollection,
   ChainInfo,
@@ -165,3 +166,5 @@ export const CONTRACTS: {
     },
   },
 };
+
+export const MAX_REWARDS_PERCENTAGE_CLAIMABLE = toBigNumber(0.5);

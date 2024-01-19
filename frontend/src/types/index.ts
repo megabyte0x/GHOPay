@@ -83,6 +83,7 @@ export type PublicContractCollection = {
   MainVault: PublicContract;
   MainPayment: PublicContract;
   PartnerContractsDeployer: PublicContract;
+  TestGHO: PublicContract;
 };
 
 export type PartnerContractCollection = {

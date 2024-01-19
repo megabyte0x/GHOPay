@@ -1,6 +1,12 @@
 "use client";
+import { CONTRACTS, MAX_REWARDS_PERCENTAGE_CLAIMABLE } from "@/constants";
+import { EPublicContracts } from "@/types";
+import { publicClient, writePublicContract } from "@/utils/contract";
+import { toBigNumber } from "@/utils/helper-functions";
 import Image from "next/image";
 import React, { useState } from "react";
+import { getContract } from "viem";
+import { useAccount } from "wagmi";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -21,6 +27,7 @@ const CreateVaultModal = ({
   const [stakeGHO, setStakeGHO] = useState(0);
   const [ratio1, setRatio1] = useState(0);
   const [ratio2, setRatio2] = useState(0);
+  const { address } = useAccount();
   const handleNext = () => {
     if (vaultName && symbol) {
       onNext();
@@ -34,17 +41,33 @@ const CreateVaultModal = ({
   const handleBack = () => {
     onBack();
   };
-  const handleCreate = () => {
-    if (stakeGHO) {
+  const handleCreate = async () => {
+    try {
       onNext();
-      setTimeout(() => {
-        onClose();
-      }, 500);
-    } else {
-      setMessage("Please Enter GHO to Stake");
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
+      if (!address) throw "Please Log in.";
+      const ghoTokenContract = getContract({
+        address: CONTRACTS.PUBLIC.TestGHO.address,
+        abi: CONTRACTS.PUBLIC.TestGHO.ABI,
+        publicClient,
+      });
+      const ratioCalc = toBigNumber(ratio1 / ratio2);
+      console.log("address", address, ghoTokenContract, ratioCalc);
+      const response = await writePublicContract(
+        EPublicContracts.PartnerContractsDeployer,
+        "registerAsPartner",
+        address,
+        [ghoTokenContract.address, vaultName, symbol, 3, 50],
+      );
+      console.log(response);
+      onNext();
+    } catch (error) {
+      if (typeof error === "string") {
+        setMessage(error);
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      }
+      console.error(error);
     }
   };
   const handleBuyGHO = () => {};
@@ -198,22 +221,38 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                       Cancel
                     </button>
                     <button
-                      onClick={handleNext}
+                      onClick={handleCreate}
                       className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-60"
                     >
-                      Next
+                      Create Vault
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           )}
-          {/* STEP2 */}
+          {/* FINAL vault create Loader */}
           {step == 2 && (
+            <div
+              className="border-solid border-[#5720b7] border-[1px] rounded-[12px] shadow-[0px_8px_8px_-4px_rgba(16,_24,_40,_0.04),_0px_20px_24px_-4px_rgba(16,_24,_40,_0.1)] bg-[#2e125e] 
+p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
+            >
+              <div className="flex flex-col gap-[8px] w-full text-center">
+                <div className=" text-[20px] font-semibold leading-[28px] text-[#dbd2ef]">
+                  Your vault is being created
+                </div>
+                <div className="text-[16px] leading-[28px] text-[#DBD2EFCC] w-full">
+                  You’ll be redirected in just a moment
+                </div>
+              </div>
+            </div>
+          )}
+          {/* STEP2 */}
+          {step == 3 && (
             <div
               className="border-solid border-[#5720b7] border-[1px] rounded-[12px] shadow-[0px_8px_8px_-4px_rgba(16,_24,_40,_0.04),_0px_20px_24px_-4px_rgba(16,_24,_40,_0.1)] bg-[#2e125e] 
 p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
@@ -356,14 +395,14 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                       Go Back
                     </button>
                     <button
-                      onClick={handleCreate}
+                      // onClick={handleCreate} TODO: Mint rp token function
                       className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-75"
                     >
-                      Create Vault
+                      Mint RP
                     </button>
                   </div>
                 </div>
@@ -371,14 +410,14 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             </div>
           )}
           {/* FINAL vault create Loader */}
-          {step == 3 && (
+          {step == 4 && (
             <div
               className="border-solid border-[#5720b7] border-[1px] rounded-[12px] shadow-[0px_8px_8px_-4px_rgba(16,_24,_40,_0.04),_0px_20px_24px_-4px_rgba(16,_24,_40,_0.1)] bg-[#2e125e] 
 p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             >
               <div className="flex flex-col gap-[8px] w-full text-center">
                 <div className=" text-[20px] font-semibold leading-[28px] text-[#dbd2ef]">
-                  Your vault is being created
+                  Your tokens are getting minted
                 </div>
                 <div className="text-[16px] leading-[28px] text-[#DBD2EFCC] w-full">
                   You’ll be redirected in just a moment
