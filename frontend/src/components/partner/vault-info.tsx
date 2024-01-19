@@ -2,6 +2,8 @@ import Image from "next/image";
 import React from "react";
 
 const VaultInfo = () => {
+  const handleWithdraw = () => {};
+  const handleStakeMore = () => {};
   return (
     <div className="flex flex-col gap-[48px] px-[112px] py-[48px]">
       <div
@@ -16,9 +18,11 @@ const VaultInfo = () => {
         </div>
         <div className="flex gap-[16px]">
           <button
+            onClick={handleWithdraw}
             className="bg-[rgba(105,_65,_198,_0.3)] rounded-lg
       flex justify-center items-center
-      gap-[8px] cursor-pointer py-[10px] px-[20px]"
+      gap-[8px] cursor-pointer py-[10px] px-[20px]
+      hover:opacity-80"
           >
             <Image alt="withdraw" src={"/upload.svg"} height={20} width={20} />
             <div className="font-semibold text-[16px] leading-[24px] text-[#c3b5fd]">
@@ -26,8 +30,10 @@ const VaultInfo = () => {
             </div>
           </button>
           <button
+            onClick={handleStakeMore}
             className="border-solid border-[#a48afb] border-[1px] rounded-lg shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#6941c6] 
-        flex items-center justify-center cursor-pointer px-[20px] py-[10px] "
+        flex items-center justify-center cursor-pointer px-[20px] py-[10px] 
+        hover:opacity-80"
           >
             <Image alt="stake" src={"/plus.svg"} height={20} width={20} />
             <div className="font-semibold text-[16px] leading-[24px] text-[#FBFAFF]">
@@ -53,7 +59,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            10000.0
+            {totalTokensSupply}
           </div>
         </div>
         <div
@@ -67,7 +73,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            10000.0
+            {partnerTokens}
           </div>
         </div>
         <div
@@ -81,7 +87,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            10000.0
+            {totalTokensUsers}
           </div>
         </div>
       </div>
@@ -106,7 +112,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            MonkeDAO
+            {vaultName}
           </div>
         </div>
         <div
@@ -125,7 +131,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            Monke
+            {symbol}
           </div>
         </div>
         <div
@@ -139,7 +145,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            156.0
+            {stakedGHO}
           </div>
         </div>
         <div
@@ -158,7 +164,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            156
+            {rewardPoints}
           </div>
         </div>
       </div>
@@ -167,3 +173,11 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
 };
 
 export default VaultInfo;
+
+const totalTokensSupply = 0;
+const partnerTokens = 0;
+const totalTokensUsers = 0;
+const vaultName = "MonkeDAO";
+const symbol = "MONKE";
+const stakedGHO = 0;
+const rewardPoints = 0;
