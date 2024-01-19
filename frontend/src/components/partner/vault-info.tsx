@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const PartnerStats = () => {
+const VaultInfo = () => {
   return (
     <div className="flex flex-col gap-[48px] px-[112px] py-[48px]">
       <div
@@ -166,4 +166,4 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
   );
 };
 
-export default PartnerStats;
+export default VaultInfo;

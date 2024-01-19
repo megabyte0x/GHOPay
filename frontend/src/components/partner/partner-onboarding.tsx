@@ -1,11 +1,15 @@
 "use client";
-import CreateVaultModal from "@/components/partner/CreateVaultModal";
+import CreateVaultModal from "@/components/partner/create-vault-modal";
 import Image from "next/image";
 import React, { useState } from "react";
 import BUTTONS from "../landing/Buttons";
 
-const Home = () => {
+const PartnerOnboarding = () => {
   const [step, setStep] = useState(0);
+
+  const handleCreateVault = () => {
+    setStep(1);
+  };
 
   return (
     <>
@@ -42,9 +46,7 @@ const Home = () => {
               </h4>
             </div>
             <BUTTONS.PURPLE
-              onClick={() => {
-                setStep(1);
-              }}
+              onClick={handleCreateVault}
               text="Create a Vault"
               style="px-[16px] py-[10px] text-[16px]"
             />
@@ -67,4 +69,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default PartnerOnboarding;

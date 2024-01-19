@@ -4,9 +4,11 @@ import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
 import useAppNavigation from "@/hooks/useAppNavigation";
 import WalletInfo from "./WalletInfo";
+import useWalletInfo from "@/hooks/user/useWalletInfo";
 
 const NavBar = () => {
   const { isConnected } = useAccount();
+  const { isUser } = useWalletInfo();
   const { goToHome, isDashboard, isLanding, handleLandingOpen } =
     useAppNavigation();
 
@@ -28,10 +30,10 @@ const NavBar = () => {
             <li>Team</li>
           </ul>
         )}
-        {isDashboard && (
+        {isDashboard && isUser && (
           <ul className="flex flex-row gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
             <li>Shop</li>
-            <li>Apply As Partner</li>
+            <li>Apply as a partner</li>
           </ul>
         )}
       </div>

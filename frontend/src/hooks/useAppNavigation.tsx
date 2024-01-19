@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useAccount } from "wagmi";
-import { useLandingPage } from "./context/Landing";
+import { useLandingPage } from "./context/LandingProvider";
 import { useModal } from "connectkit";
 
 function useAppNavigation() {

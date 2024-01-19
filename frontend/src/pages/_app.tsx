@@ -7,7 +7,7 @@ import { ConnectKitProvider } from "connectkit";
 import { useEffect, useState } from "react";
 import { createWalletConfig } from "@/utils/createWalletConfig";
 import { NavBar } from "@/components";
-import { LandingPageProvider } from "@/hooks/context/Landing";
+import { LandingPageProvider } from "@/hooks/context/LandingProvider";
 
 function App({ Component, pageProps }: AppProps) {
   // setup to avoid hydration mismatch

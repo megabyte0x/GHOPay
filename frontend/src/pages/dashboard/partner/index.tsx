@@ -1,4 +1,4 @@
-import Home from "../../../components/partner/home";
+import Home from "../../../components/partner/partner-onboarding";
 
 const Partner = () => {
   return (
