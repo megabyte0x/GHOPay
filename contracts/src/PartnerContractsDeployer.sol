@@ -41,7 +41,7 @@ contract PartnerContractsDeployer is Ownable {
             s_rPool,
             _ratio
         );
-        uint256 _rpToGHORatio = (_ratio * 10e18);
+        uint256 _rpToGHORatio = (uint256(_ratio) * 10e18);
         PartnerPayment partnerPayment = new PartnerPayment(
             address(partnerVault),
             s_mainPayment,
