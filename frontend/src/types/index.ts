@@ -23,3 +23,15 @@ export type ChainInfo = {
   isStripePaymentsEnabled: boolean;
   isMoneriumPaymentsEnabled: boolean;
 };
+
+export enum EContracts {
+  TestGHO = "TestGHO",
+  GHOPassport = "GHOPassport",
+  GHOPartnerPassport = "GHOPartnerPassport",
+  Utils = "Utils",
+  RPool = "RPool",
+  MainVault = "MainVault",
+  MainPayment = "MainPayment",
+  PartnerContractsDeployer = "PartnerContractsDeployer",
+  Admin = "Admin",
+}
