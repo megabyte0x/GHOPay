@@ -27,7 +27,7 @@ contract MainPaymentTest is Test {
     address public immutable USER = makeAddr("user");
     address public immutable ADMIN = makeAddr("admin");
     address public immutable RECIPIENT = makeAddr("recipient");
-    address public immutable PARTNER_BOOKING_CONTRACT = makeAddr("partnerBookingContract");
+    address public immutable PARTNER_PAYMENT_CONTRACT = makeAddr("partnerPaymentContract");
 
     function setUp() external {
         s_utils = new Utils();
@@ -83,7 +83,7 @@ contract MainPaymentTest is Test {
 
     modifier setUpUtils() {
         vm.startPrank(ADMIN);
-        s_utils.addPartnerBookingContract(PARTNER_BOOKING_CONTRACT);
+        s_utils.addPartnerContracts(PARTNER_PAYMENT_CONTRACT, makeAddr("partner_vault"));
         vm.stopPrank();
 
         _;
@@ -92,7 +92,7 @@ contract MainPaymentTest is Test {
     function testPayWithGHOthroughPartner() public setUpVault setUpUtils {
         uint256 _mainPaymentGPBalanceBefore = s_mainVault.balanceOf(address(s_mainPayment));
 
-        vm.startPrank(PARTNER_BOOKING_CONTRACT);
+        vm.startPrank(PARTNER_PAYMENT_CONTRACT);
         s_mainPayment.payWithGHO(USER, RECIPIENT, GHO_TO_TRANSFER);
         vm.stopPrank();
 
