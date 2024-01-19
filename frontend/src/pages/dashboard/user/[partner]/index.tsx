@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
-const PartnerStore = () => {
+const PartnerStore = ({ params }: any) => {
+  // console.log(params.partner);
+  const handleBookNow = () => {};
   return (
     <div className="w-full px-20 py-[64px] flex flex-col gap-[48px]">
       <div className="flex gap-[24px]">
@@ -45,6 +47,7 @@ const PartnerStore = () => {
               $50<span className="font-medium"> GHO Points</span>
             </div>
             <button
+              onClick={handleBookNow}
               className="text-[14px] font-semibold leading-[20px] text-white 
               border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#6941c6] 
               flex items-center justify-center cursor-pointer px-[20px] py-[8px] "

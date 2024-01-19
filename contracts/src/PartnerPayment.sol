@@ -38,12 +38,12 @@ contract PartnerPayment is Ownable {
 
     address public s_partnerAdmin;
     uint256 public s_rpToGHORatio;
-    uint8 public s_maxAmtPercentInRp;
+    uint256 public s_maxAmtPercentInRp;
 
     constructor(
         address _rpToken,
         address _mainPayment,
-        uint8 _maxAmtPercentInRp,
+        uint256 _maxAmtPercentInRp,
         address _partnerAdmin,
         uint256 _rpToGHORatio
     ) Ownable(_partnerAdmin) {
@@ -171,7 +171,7 @@ contract PartnerPayment is Ownable {
      * @param _serviceAmount The cost of the service.
      */
     function maxAmountPayInRpCalculator(uint256 _serviceAmount) public view returns (uint256 maxUtilisableRp) {
-        uint256 maxAmountPayInRp = FixedPointMathLib.mulWadUp(_serviceAmount, s_maxAmtPercentInRp) / 100;
+        uint256 maxAmountPayInRp = FixedPointMathLib.mulWadUp(_serviceAmount, s_maxAmtPercentInRp);
         maxUtilisableRp = FixedPointMathLib.mulWadUp(maxAmountPayInRp, s_rpToGHORatio);
     }
 

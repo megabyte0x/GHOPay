@@ -1,7 +1,7 @@
 // src/hooks/useAppNavigation.js
 import { ROUTES } from "@/constants";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { useLandingPage } from "./context/LandingProvider";

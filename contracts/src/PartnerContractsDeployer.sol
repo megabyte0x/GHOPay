@@ -31,7 +31,7 @@ contract PartnerContractsDeployer is Ownable {
         string memory _name,
         string memory _symbol,
         uint8 _ratio,
-        uint8 _maxAmtPercentInRp
+        uint256 _maxAmtPercentInRp
     ) public {
         PartnerVault partnerVault = new PartnerVault(
             _ghoToken,
@@ -41,12 +41,13 @@ contract PartnerContractsDeployer is Ownable {
             s_rPool,
             _ratio
         );
+        uint256 _rpToGHORatio = (_ratio * 10e18);
         PartnerPayment partnerPayment = new PartnerPayment(
             address(partnerVault),
             s_mainPayment,
             _maxAmtPercentInRp,
             msg.sender,
-            _ratio
+            _rpToGHORatio
         );
 
         s_utilsContract.addPartnerContracts(msg.sender, address(partnerPayment), address(partnerVault));
