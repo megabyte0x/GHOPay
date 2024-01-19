@@ -6,7 +6,7 @@ import {console2} from "forge-std/console2.sol";
 
 import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
 
-import {TestGHO} from "../test/unit/mocks/TestGHO.sol";
+import {TestGHO} from "../test/mocks/TestGHO.sol";
 import {DeployTestGHO} from "./DeployTestGHO.s.sol";
 import {DeployTestGHOPassport} from "./DeployTestGHOPassport.s.sol";
 import {DeployTestGHOPartnerPassport} from "./DeployTestGHOPartnerPassport.s.sol";

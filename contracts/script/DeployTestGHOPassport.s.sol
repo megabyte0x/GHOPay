@@ -4,7 +4,7 @@ pragma solidity 0.8.20;
 import {Script} from "forge-std/Script.sol";
 import {console2} from "forge-std/console2.sol";
 
-import {TestGHOPassport} from "../test/unit/mocks/TestGHOPassport.sol";
+import {TestGHOPassport} from "../test/mocks/TestGHOPassport.sol";
 
 contract DeployTestGHOPassport is Script {
     function run() public returns (address ghoPassport) {

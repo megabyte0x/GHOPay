@@ -1,14 +1,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import {ERC20} from "@solmate/contracts/tokens/ERC20.sol";
+import {ERC20} from "../../src/ERC4626Flatten.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {SafeTransferLib} from "@solmate/contracts/utils/SafeTransferLib.sol";
-import {FixedPointMathLib} from "@solmate/contracts/utils/FixedPointMathLib.sol";
+import {SafeTransferLib} from "../../src/ERC4626Flatten.sol";
+import {FixedPointMathLib} from "../../src/ERC4626Flatten.sol";
 
-import {Utils} from "../../../src/Utils.sol";
-import {MainVault} from "../../../src/MainVault.sol";
-import {PartnerVault} from "../../../src/PartnerVault.sol";
+import {Utils} from "../../src/Utils.sol";
+import {MainVault} from "../../src/MainVault.sol";
+import {PartnerVault} from "../../src/PartnerVault.sol";
 
 /**
  * @title RPool

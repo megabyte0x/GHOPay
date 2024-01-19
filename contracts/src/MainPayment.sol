@@ -75,7 +75,7 @@ contract MainPayment is Ownable {
     }
 
     modifier isPartnerBookingContract() {
-        if (!(s_utils.isPartnerBookingContractVaild(msg.sender))) revert MainPayment__OnlyPartnerBookingContract();
+        if (!(s_utils.isPartnerPaymentContract(msg.sender))) revert MainPayment__OnlyPartnerBookingContract();
         _;
     }
 
