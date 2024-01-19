@@ -27,14 +27,14 @@ contract PartnerContractsDeployer is Ownable {
     }
 
     function registerAsPartner(
-        ERC20 _ghoToken,
+        address _ghoToken,
         string memory _name,
         string memory _symbol,
         uint8 _ratio,
         uint256 _maxAmtPercentInRp
     ) public {
         PartnerVault partnerVault = new PartnerVault(
-            _ghoToken,
+            ERC20(_ghoToken),
             _name,
             _symbol,
             msg.sender,
