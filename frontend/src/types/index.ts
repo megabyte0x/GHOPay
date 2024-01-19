@@ -19,7 +19,7 @@ export type ChainInfo = {
   rpcUrl: string;
   blockExplorerUrl: string;
   color: string;
-  faucetUrl: string;
+  faucetUrl?: string;
   isStripePaymentsEnabled: boolean;
   isMoneriumPaymentsEnabled: boolean;
 };

@@ -86,7 +86,6 @@ export const CHAINS: { [chainId: number]: ChainInfo } = {
     rpcUrl: "https://cloudflare-eth.com",
     blockExplorerUrl: "https://etherscan.io",
     color: "#DDDDDD",
-    transactionServiceUrl: "https://safe-transaction-mainnet.safe.global",
     isStripePaymentsEnabled: false,
     isMoneriumPaymentsEnabled: false,
   },
