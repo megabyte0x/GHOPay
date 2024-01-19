@@ -1,4 +1,4 @@
-import Partner from "./partner/home";
+import Partner from "../../components/partner/home";
 import User from "./user";
 import { useAccount } from "wagmi";
 

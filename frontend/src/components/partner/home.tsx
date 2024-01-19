@@ -2,7 +2,7 @@
 import CreateVaultModal from "@/components/partner/CreateVaultModal";
 import Image from "next/image";
 import React, { useState } from "react";
-import BUTTONS from "../../../components/landing/Buttons";
+import BUTTONS from "../landing/Buttons";
 
 const Home = () => {
   const [step, setStep] = useState(0);

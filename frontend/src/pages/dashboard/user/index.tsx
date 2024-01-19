@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Swap from "./swap";
-import Shop from "./shop";
+import Swap from "../../../components/user/swap";
+import Shop from "../../../components/user/shop";
 import classNames from "classnames";
 
 enum ENav {
