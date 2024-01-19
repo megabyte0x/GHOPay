@@ -22,7 +22,7 @@ const CreateVaultModal = ({
   const [ratio1, setRatio1] = useState(0);
   const [ratio2, setRatio2] = useState(0);
   const handleNext = () => {
-    if (vaultName && symbol) {
+    if (vaultName && symbol && ratio1 && ratio2) {
       onNext();
     } else {
       setMessage("Please Fill all fields");
@@ -198,6 +198,9 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                   </div>
                 </form>
                 <div className="flex flex-col">
+                  <h3 className="self-end text-[#ed8484cc] text-[12px]">
+                    {message}
+                  </h3>
                   <div className="grid grid-cols-2 gap-[12px]">
                     <button
                       onClick={onBack}
@@ -317,7 +320,10 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
                           You don’t have enough GHO to stake.
                         </h3>
                       </div>
-                      <h6 className="pr-[14px] min-w-fit underline font-semibold text-right place-self-end">
+                      <h6
+                        className="hover:underline-offset-[2px] cursor-pointer
+                      pr-[14px] min-w-fit underline font-semibold text-right place-self-end"
+                      >
                         Buy GHO
                       </h6>
                     </div>
