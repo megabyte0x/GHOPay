@@ -1,4 +1,5 @@
 import Image from "next/image";
+import BUTTONS from "../landing/Buttons";
 
 export const Swap = () => {
   return (

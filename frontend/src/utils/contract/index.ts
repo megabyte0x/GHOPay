@@ -1,7 +1,7 @@
-import { EContracts } from "@/types";
 import { createPublicClient, createWalletClient, http } from "viem";
 import { sepolia } from "wagmi";
 import { CONTRACTS } from "@/constants";
+import { EPublicContracts, PublicContractCollection } from "@/types";
 
 const clientConfig = {
   chain: sepolia,
@@ -11,12 +11,16 @@ const clientConfig = {
 const publicClient = createPublicClient(clientConfig);
 const walletClient = createWalletClient(clientConfig);
 
-export const readContract = (
-  _contract: EContracts,
+export const readPublicContract = (
+  _contract: EPublicContracts,
   functionName: string,
   args?: Array<unknown>,
 ) => {
-  const { ABI, address } = CONTRACTS[_contract];
+  if (!(_contract in CONTRACTS.PUBLIC)) {
+    throw new Error(`Invalid contract key: ${_contract}`);
+  }
+  const { ABI, address } =
+    CONTRACTS.PUBLIC[_contract as keyof PublicContractCollection];
 
   return publicClient.readContract({
     abi: ABI,

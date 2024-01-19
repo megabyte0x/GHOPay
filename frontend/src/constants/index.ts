@@ -1,11 +1,21 @@
-import { ChainInfo, Partner, TeamMember } from "../types";
 import {
+  AdminContractCollection,
+  ChainInfo,
+  Partner,
+  PartnerContractCollection,
+  PublicContractCollection,
+  TeamMember,
+} from "../types";
+import {
+  GHOPartnerPassportABI,
+  GHOPassportABI,
   MainPaymentABI,
   MainVaultABI,
   PartnerContractsDeployerABI,
   PartnerPaymentABI,
   PartnerVaultABI,
   RPoolABI,
+  TestGHOABI,
   UtilsABI,
 } from "./ABI/index";
 
@@ -100,77 +110,58 @@ export const CHAINS: { [chainId: number]: ChainInfo } = {
   },
 };
 
-type ABI = Array<object>;
-
-type Contract = {
-  address: `0x${string}`;
-  ABI: ABI;
-};
-
-type ContractCollection = {
-  TestGHO: Contract;
-  GHOPassport: Contract;
-  GHOPartnerPassport: Contract;
-  Utils: Contract;
-  RPool: Contract;
-  MainVault: Contract;
-  MainPayment: Contract;
-  PartnerContractsDeployer: Contract;
-  Admin: {
-    address: `0x${string}`;
-  };
-  PartnerVault: {
-    address?: `0x${string}`;
-    ABI: ABI;
-  };
-  PartnerPayment: {
-    address?: `0x${string}`;
-    ABI: ABI;
-  };
-};
-
-export const CONTRACTS: ContractCollection = {
-  TestGHO: {
-    address: "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
-    ABI: [{}],
+export const CONTRACTS: {
+  PUBLIC: PublicContractCollection;
+  ADMIN: AdminContractCollection;
+  PARTNER: PartnerContractCollection;
+} = {
+  PUBLIC: {
+    TestGHO: {
+      address: "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
+      ABI: TestGHOABI,
+    },
+    GHOPassport: {
+      address: "0x17206705e75249b2cb885423937e88fc8f068338",
+      ABI: GHOPassportABI,
+    },
+    GHOPartnerPassport: {
+      address: "0xea9b91d90ff3e904ecf230296d88c30c78e1e4c8",
+      ABI: GHOPartnerPassportABI,
+    },
+    Utils: {
+      address: "0xa9429c88ff54d00d96896cad67e8ebd60e63238d",
+      ABI: UtilsABI,
+    },
+    RPool: {
+      address: "0xede73ab19f7ec894c01b70b2be2300b4cd1c3c50",
+      ABI: RPoolABI,
+    },
+    MainVault: {
+      address: "0x93ebcd57712b37084564259168b3a1d5738ef76b",
+      ABI: MainVaultABI,
+    },
+    MainPayment: {
+      address: "0x871886faf72978697829d0a988dd71db5f8f17d2",
+      ABI: MainPaymentABI,
+    },
+    PartnerContractsDeployer: {
+      address: "0x100d3d398ccb077a668dffc9413a147aced36a6e",
+      ABI: PartnerContractsDeployerABI,
+    },
   },
-  GHOPassport: {
-    address: "0x17206705e75249b2cb885423937e88fc8f068338",
-    ABI: [{}],
+  ADMIN: {
+    Admin: {
+      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+    },
   },
-  GHOPartnerPassport: {
-    address: "0xea9b91d90ff3e904ecf230296d88c30c78e1e4c8",
-    ABI: [{}],
-  },
-  Utils: {
-    address: "0xa9429c88ff54d00d96896cad67e8ebd60e63238d",
-    ABI: UtilsABI,
-  },
-  RPool: {
-    address: "0xede73ab19f7ec894c01b70b2be2300b4cd1c3c50",
-    ABI: RPoolABI,
-  },
-  MainVault: {
-    address: "0x93ebcd57712b37084564259168b3a1d5738ef76b",
-    ABI: MainVaultABI,
-  },
-  MainPayment: {
-    address: "0x871886faf72978697829d0a988dd71db5f8f17d2",
-    ABI: MainPaymentABI,
-  },
-  PartnerContractsDeployer: {
-    address: "0x100d3d398ccb077a668dffc9413a147aced36a6e",
-    ABI: PartnerContractsDeployerABI,
-  },
-  Admin: {
-    address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
-  },
-  PartnerVault: {
-    address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
-    ABI: PartnerVaultABI,
-  },
-  PartnerPayment: {
-    address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
-    ABI: PartnerPaymentABI,
+  PARTNER: {
+    PartnerVault: {
+      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+      ABI: PartnerVaultABI,
+    },
+    PartnerPayment: {
+      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+      ABI: PartnerPaymentABI,
+    },
   },
 };
