@@ -56,7 +56,7 @@ const CreateVaultModal = ({
         EPublicContracts.PartnerContractsDeployer,
         "registerAsPartner",
         address,
-        [ghoTokenContract.address, vaultName, symbol, 3, 50],
+        [ghoTokenContract.address, vaultName, symbol, 1000, 5e18],
       );
       console.log(response);
       onNext();
