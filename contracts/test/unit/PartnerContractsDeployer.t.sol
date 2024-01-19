@@ -72,7 +72,7 @@ contract PartnerContractDeployerTest is Test {
 
     function testRegisterAsPartner() external {
         vm.startPrank(PARTNER_ADMIN);
-        s_partnerContractsDeployer.registerAsPartner(ERC20(address(s_ghoToken)), "name", "symbol", 2, 10);
+        s_partnerContractsDeployer.registerAsPartner((address(s_ghoToken)), "name", "symbol", 2, 10);
         vm.stopPrank();
 
         (address partnerPaymentContract, address partnerVaultContract) =
