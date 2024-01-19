@@ -2,16 +2,14 @@ import Image from "next/image";
 import { ConnectKitButton } from "connectkit";
 import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
+import useAppNavigation from "@/hooks/useAppNavigation";
 import WalletInfo from "./WalletInfo";
-import useHandleNavigation from "@/hooks/useHandlerNavigation";
 
-type NavBarProps = {
-  setHandleOpenDapp?: (handleOpenDapp: () => void) => void;
-};
-
-const NavBar = ({}: NavBarProps) => {
+const NavBar = () => {
   const { isConnected } = useAccount();
-  const { goToHome, isDashboard, isLanding } = useHandleNavigation();
+  const { goToHome, isDashboard, isLanding, handleLandingOpen } =
+    useAppNavigation();
+
   return (
     <div className="border-b-[1px] border-[#DBD2EF1A] bg-[#14141B] h-[68px] px-20 flex items-center justify-between ">
       <div className="flex gap-[40px]">
@@ -43,7 +41,7 @@ const NavBar = ({}: NavBarProps) => {
         <BUTTONS.PURPLE
           text="Launch Dapp"
           style="text-[16px] px-[18px] py-[12px]"
-          onClick={() => {}}
+          onClick={handleLandingOpen}
         />
       ) : (
         <ConnectKitButton />
