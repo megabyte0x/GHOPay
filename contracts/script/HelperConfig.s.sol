@@ -18,6 +18,7 @@ contract HelperConfig is Script {
     address public s_mainDeployer;
     uint256 public s_mainDeployerKey;
     address public s_partnerAdmin;
+    address public s_user;
 
     // Variables which will differ depending on the network
     address public s_utils;
@@ -76,6 +77,7 @@ contract HelperConfig is Script {
         s_mainDeployerKey = vm.envUint("PRIVATE_KEY");
         s_mainAdmin = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;
         s_partnerAdmin = 0xa60f738a60BCA515Ac529b7335EC7CB2eE3891d2;
+        s_user = 0xdDCc06f98A7C71Ab602b8247d540dA5BD8f5D2A2;
     }
 
     function getAnvilConfigs() public {
@@ -84,5 +86,6 @@ contract HelperConfig is Script {
         s_ghoToken = 0xfbAb4aa40C202E4e80390171E82379824f7372dd;
         s_mainDeployer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
         s_partnerAdmin = makeAddr("PARTNER_ADMIN");
+        s_user = makeAddr("USER");
     }
 }

@@ -108,12 +108,20 @@ deployMainVault:
 deployPartnerContractsDeployer:
 	@forge script script/DeployPartnerContractsDeployer.s.sol:DeployPartnerContractsDeployer $(NETWORK_ARGS)
 
-setUpForTestingMainVault:
-	make deployTestGHO && make deployGHOPassport && make deployGHOPartnerPassport && make deployUtils && make deployRPool && make deployMainVault
-
 deployMainPayment:
 	@forge script script/DeployMainPayment.s.sol:DeployMainPayment $(NETWORK_ARGS)
 
+mintGHOToken:
+	@forge script script/Interactions.s.sol:MintGHOToken $(NETWORK_ARGS)
+
+mintNFT:
+	@forge script script/Interactions.s.sol:MintNFT $(NETWORK_ARGS)
+
+setMainPayment:
+	@forge script script/Interactions.s.sol:SetMainPayment $(NETWORK_ARGS)
+
+depositGHOInMainVault:
+	@forge script script/Interactions.s.sol:DepositGHOInMainVault $(NETWORK_ARGS)
 
 
 
@@ -142,3 +150,15 @@ deployMainPaymentOnSepolia:
 
 deployPartnerContractsDeployerOnSepolia:
 	make deployPartnerContractsDeployer ARGS="--network sepolia"
+
+mintGHOTokenOnSepolia:
+	make mintGHOToken ARGS="--network sepolia"
+
+mintNFTOnSepolia:
+	make mintNFT ARGS="--network sepolia"
+
+setMainPaymentOnSepolia:
+	make setMainPayment ARGS="--network sepolia"
+
+depositGHOInMainVaultOnSepolia:
+	make depositGHOInMainVault ARGS="--network sepolia"

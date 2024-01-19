@@ -1,0 +1,60 @@
+{
+  "transactions": [
+    {
+      "hash": "0x1cc779949bf0f7e1901180add07510a30c0871b0b1c0bb38cdaccf8cab2ee062",
+      "transactionType": "CALL",
+      "contractName": "TestGHO",
+      "contractAddress": "0xBdD9c513Be2514F83B72761503F0be2134ec6A1a",
+      "function": "approve(address,uint256):(bool)",
+      "arguments": [
+        "0x93EBcd57712B37084564259168b3a1d5738ef76b",
+        "10000000000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
+        "gas": "0x107d0",
+        "value": "0x0",
+        "data": "0x095ea7b300000000000000000000000093ebcd57712b37084564259168b3a1d5738ef76b00000000000000000000000000000000000000000000021e19e0c9bab2400000",
+        "nonce": "0x217",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": "0xab76b664a310a0a843842595833751ee9114fdf90ffa931cff56a6a2f7373d2d",
+      "transactionType": "CALL",
+      "contractName": "MainVault",
+      "contractAddress": "0x93EBcd57712B37084564259168b3a1d5738ef76b",
+      "function": "depositGHO(uint256)",
+      "arguments": [
+        "10000000000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0x93ebcd57712b37084564259168b3a1d5738ef76b",
+        "gas": "0x25303",
+        "value": "0x0",
+        "data": "0x7709b6ab00000000000000000000000000000000000000000000021e19e0c9bab2400000",
+        "nonce": "0x218",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x1cc779949bf0f7e1901180add07510a30c0871b0b1c0bb38cdaccf8cab2ee062",
+    "0xab76b664a310a0a843842595833751ee9114fdf90ffa931cff56a6a2f7373d2d"
+  ],
+  "returns": {},
+  "timestamp": 1705695180,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "004767c"
+}
