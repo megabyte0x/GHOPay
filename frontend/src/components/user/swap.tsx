@@ -124,13 +124,13 @@ max-w-[480px]"
           </h3>
         </div>
       </div>
-      {/* <BUTTONS
+      <BUTTONS.PURPLE
         text="Swap"
         style="px-[18px] py-[10px] text-[16px]"
         onClick={() => {
           console.log("clicked swap");
         }}
-      /> */}
+      />
     </div>
   );
 };
