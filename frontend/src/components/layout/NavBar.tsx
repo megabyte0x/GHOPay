@@ -28,8 +28,6 @@ const NavBar = () => {
     }
   };
 
-  console.log(isUser);
-  console.log(isPartner);
   return (
     <div
       className="fixed top-0 w-[100vw] backdrop-blur z-30

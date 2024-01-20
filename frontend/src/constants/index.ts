@@ -69,10 +69,10 @@ export const PARTNERS: Partner[] = [
 export const ROUTES = {
   LANDING: "/",
   DASHBOARD: "/dashboard",
-  USERPARTNER: "/dashboard/user/applyAsPartner",
-  USERSHOPSWAP: "/dashboard/user",
-  PARTNERVAULT: "/dashboard/partner",
-  PARTNERSHOP: "/dashboard/partner/shop",
+  USER_PARTNER: "/dashboard/user/applyAsPartner",
+  USER_SHOP_SWAP: "/dashboard/user",
+  PARTNER_VAULT: "/dashboard/partner",
+  PARTNER_SHOP: "/dashboard/partner/shop",
 };
 
 export const CHAINS: { [chainId: number]: ChainInfo } = {

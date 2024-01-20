@@ -54,10 +54,10 @@ function useAppNavigation() {
     }
   }, [isConnected, isDashboard, router, setArrivedFromLandingPage]);
 
-  const userPartner = pathname == ROUTES.USERPARTNER;
-  const userShopSwap = pathname == ROUTES.USERSHOPSWAP;
-  const partnerVault = pathname == ROUTES.PARTNERVAULT;
-  const partnerShop = pathname == ROUTES.PARTNERSHOP;
+  const userPartner = pathname == ROUTES.USER_PARTNER;
+  const userShopSwap = pathname == ROUTES.USER_SHOP_SWAP;
+  const partnerVault = pathname == ROUTES.PARTNER_VAULT;
+  const partnerShop = pathname == ROUTES.PARTNER_SHOP;
 
   return {
     goToDashboard,
