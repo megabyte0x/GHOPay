@@ -43,11 +43,18 @@ contract MintGHOToken is Script {
 }
 
 contract MintNFT is Script {
-    function mintNFT(address _ghoPassport, address _ghoPartnerPassport, address _user, address _partner) public {
+    function mintNFT(
+        address _ghoPassport,
+        address _ghoPartnerPassport,
+        address _user,
+        address _partner,
+        address _danish
+    ) public {
         vm.startBroadcast();
         TestGHOPassport ghoPassport = TestGHOPassport(_ghoPassport);
         TestGHOPartnerPassport ghoPartnerPassport = TestGHOPartnerPassport(_ghoPartnerPassport);
         ghoPassport.mint(_user, 1);
+        ghoPassport.mint(_danish, 2);
         ghoPartnerPassport.mint(_partner, 1);
         vm.stopBroadcast();
     }
@@ -61,7 +68,8 @@ contract MintNFT is Script {
         address _ghoPartnerPassport = helperConfigs.getGhoPartnerPassport(_chainId);
         address _partnerAdmin = helperConfigs.s_partnerAdmin();
         address _user = helperConfigs.s_user();
-        mintNFT(_ghoPassport, _ghoPartnerPassport, _user, _partnerAdmin);
+        address _danish = 0xAE5c72E8dE74AdB50942ecE179e0dE27A8Cab61F;
+        mintNFT(_ghoPassport, _ghoPartnerPassport, _user, _partnerAdmin, _danish);
     }
 
     function run() public {
