@@ -31,15 +31,15 @@ export const TEAM: TeamMember[] = [
   {
     name: "Lucifer",
     role: "Smart Contract Dev",
-    twit: "",
-    gitHub: "",
+    twit: "https://x.com/Lucifer0x17?t=jSI9Ft4M76R6ka7X1ScORg&s=09",
+    gitHub: "https://github.com/Lucifer0x17",
     img: "/team/lucifer.png",
   },
   {
     name: "Lilith",
     role: "Smart Contract Dev",
-    twit: "",
-    gitHub: "",
+    twit: "https://x.com/0xLPircy?t=3mEAkYIV5XzTV1Z9fMxAEg&s=09",
+    gitHub: "https://github.com/0xLPircy",
     img: "/team/lilith.png",
   },
   {

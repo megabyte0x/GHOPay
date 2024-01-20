@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <div className="border-t-[1px] border-[#dbd2ef36] pt-[32px] gap-[56px] flex flex-col bg-[#14141B]">
       {currentPage == "/" && (
-        <div className="flex md:flex-row flex-col md:gap-0 gap-12 pt-[32px] w-[100vw] justify-between px-20">
+        <div className="flex md:flex-row flex-col md:gap-0 gap-12 pt-[32px] w-[100vw] justify-between items-center px-20">
           <div className="flex flex-col gap-[32px] self-start max-w-[390px]">
             <div className="flex gap-[8px] ">
               <Image src={"/logo.svg"} height={32} width={32} alt="logo" />
@@ -28,7 +28,7 @@ const Footer = () => {
           </div>
           <BUTTONS.PURPLE
             text="Launch Dapp"
-            style="text-[16px] px-[18px] py-[12px]"
+            style="text-[16px] px-[18px] py-[12px] h-fit"
             onClick={() => {}}
           />
         </div>

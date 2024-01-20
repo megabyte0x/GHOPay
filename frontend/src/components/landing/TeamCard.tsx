@@ -36,10 +36,10 @@ const TeamCard = ({ member }: TeamCardProps) => {
           </Link>
           <Link href={`${member.gitHub}`}>
             <Image
-              src={"/linkedinIcon.svg"}
+              src={"/githubIcon.svg"}
               height={24}
               width={24}
-              alt="linkedin"
+              alt="github"
               className="hover:p-[1px]"
             />
           </Link>
