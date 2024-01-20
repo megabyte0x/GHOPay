@@ -83,7 +83,7 @@ contract RPoolTest is Test {
         s_mainVault.approve(address(s_rPool), GHO_TO_TRANSFER);
         vm.stopPrank();
 
-        // Partner deposit GHO to Partner Vault and mint CV to Reward Payment
+        // Partner deposit GHO to Partner Vault and mint CV to Partner Payment
         vm.startPrank(PARTNER);
         s_ghoToken.approve(address(s_partnerVault), GHO_TO_DEPOSIT);
         s_partnerVault.depositGHO(GHO_TO_DEPOSIT);
