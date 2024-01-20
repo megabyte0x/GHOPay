@@ -6,7 +6,6 @@ type Props = {
   handleVaultName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSymbol: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRatio1: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRatio2: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleCreate: () => void;
   message: string;
   vaultName: string;
@@ -19,7 +18,6 @@ const Step1 = ({
   handleVaultName,
   handleSymbol,
   handleRatio1,
-  handleRatio2,
   handleCreate,
   message,
   vaultName,
@@ -129,17 +127,12 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               </div>
               <h1 className="text-[24px] font-bold text-[#f5f3ff]">:</h1>
               <div
-                className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] bg-[#491c96] 
+                className="rounded-[8px]
                 text-[#A48AFB]
               flex justify-between items-center gap-[8px]"
               >
-                <input
-                  onChange={handleRatio2}
-                  type="number"
-                  placeholder="Enter XX"
-                  className="bg-[#00000000] border-0 w-full
-                  text-[16px] leading-[24px] py-[10px] px-[14px]"
-                />
+                For every 2 $GHO = 100 {symbol} Token will be minted, for 3 =
+                1000, amd so on
               </div>
             </div>
             <h3 className="text-[12px] leading-[20px] text-[#DBD2EFCC] self-center">

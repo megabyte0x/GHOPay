@@ -23,8 +23,6 @@ export const writePublicContract = async (
   const { ABI, address } =
     CONTRACTS.PUBLIC[_contract as keyof PublicContractCollection];
 
-  console.log(">>>>>>>", typeof address, args, account);
-
   try {
     const { request } = await publicClient.simulateContract({
       account,
