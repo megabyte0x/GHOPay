@@ -1,5 +1,6 @@
 "use client";
 import { CONTRACTS } from "@/constants";
+import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
@@ -10,16 +11,21 @@ type BookDealModalProps = {
   onNext: () => void;
 };
 
-const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
+const ghoPoints = 0;
+const gasFee = 0;
+const availableGHO = 0;
+
+const BookDealModal = ({ onClose }: BookDealModalProps) => {
   const [amountPay, setAmountPay] = useState(0);
   const [tnc, setTnc] = useState(false);
   const [message, setMessage] = useState("");
 
   const { address } = useAccount();
+  const { partnerPaymentAddr } = usePartnerDetails();
 
   const { writeAsync } = useContractWrite({
     account: address,
-    address: CONTRACTS.PARTNER.PartnerPayment.address,
+    address: partnerPaymentAddr,
     abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
     functionName: "bookAService",
     args: [BigInt(100 * 10e17), BigInt(amountPay * 10e17)],
@@ -37,9 +43,9 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
     if (!amountPay) {
       setMessage("Enter Amount");
     }
-    // if (!tnc) {
-    //   setMessage("Accept TnC");
-    // }
+    if (!tnc) {
+      setMessage("Accept TnC");
+    }
 
     const { hash } = await writeAsync();
     console.log(`Transaction hash: ${hash}`);
@@ -191,6 +197,3 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
 };
 
 export default BookDealModal;
-const ghoPoints = 0;
-const gasFee = 0;
-const availableGHO = 0;
