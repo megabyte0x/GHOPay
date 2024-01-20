@@ -97,7 +97,7 @@ const CreateVaultModal = ({
     abi: CONTRACTS.PUBLIC.TestGHO.ABI,
     address: CONTRACTS.PUBLIC.TestGHO.address,
     functionName: "approve",
-    args: [partnerVaultAddress, BigInt("1111111111111111111111111111")],
+    args: [partnerVaultAddress, BigInt(Number.MAX_VALUE)],
   }).writeAsync;
 
   const handleCreate = async () => {
