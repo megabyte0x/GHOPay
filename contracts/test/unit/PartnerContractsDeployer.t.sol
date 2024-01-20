@@ -72,10 +72,12 @@ contract PartnerContractDeployerTest is Test {
 
     function testRegisterAsPartner() external {
         vm.startPrank(PARTNER_ADMIN);
-        s_partnerContractsDeployer.registerAsPartner((address(s_ghoToken)), "name", "symbol", 2, 10);
+        (address _partnerVault, address _partnerPay) =
+            s_partnerContractsDeployer.registerAsPartner((address(s_ghoToken)), "name", "symbol", 2, 10);
         vm.stopPrank();
 
-        (address partnerPaymentContract, address partnerVaultContract) =
-            s_utils.s_addressToPartnerDetails(PARTNER_ADMIN);
+        (address partnerVault, address partnerPayment) = s_utils.getPartnerDetails(PARTNER_ADMIN);
+        assertEq(_partnerVault, partnerVault);
+        assertEq(_partnerPay, partnerPayment);
     }
 }

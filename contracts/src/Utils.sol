@@ -22,7 +22,7 @@ contract Utils {
     function addPartnerContracts(address partner, address _partnerPayment, address _partnerVault) public {
         s_addressToPartnerDetails[partner] =
             PartnerDetails({s_partnerVault: _partnerVault, s_partnerPayment: _partnerPayment});
-        s_partners.push(_partnerPayment);
+        s_partners.push(partner);
         s_isPartnerPaymentContract[_partnerPayment] = true;
         s_isPartner[partner] = true;
 
