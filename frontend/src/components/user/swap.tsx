@@ -1,7 +1,10 @@
+"use client";
 import Image from "next/image";
 import BUTTONS from "../landing/Buttons";
+import { useState } from "react";
 
 export const Swap = () => {
+  const [vis, setVis] = useState(false);
   return (
     <div
       className="pt-[32px] px-[24px] pb-[24px] rounded-[12px]
@@ -21,8 +24,16 @@ max-w-[480px]"
           border-[1px] rounded-[8px] border-[#6927DA] bg-[#2E125E]
           text-[16px] leading-[24px]"
           >
-            <div className="py-[10px] min-w-fit">
-              <div className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit">
+            <div className="py-[10px] min-w-fit flex flex-col">
+              <div
+                onMouseEnter={() => {
+                  setVis(true);
+                }}
+                onMouseLeave={() => {
+                  setVis(false);
+                }}
+                className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
+              >
                 <h3 className="text-[#C3B5FD] min-w-fit">GHO Points</h3>
                 <Image
                   src={"/downArrow.svg"}
@@ -30,16 +41,27 @@ max-w-[480px]"
                   width={20}
                   alt="dropdown"
                 />
-              </div>
-              {/* <ol
-                className="px-[10px] py-[8px] flex flex-col gap-[12px] 
-              border-[1px] border-solid bg-[#491d97] border-[#DBD2EF] rounded-[6px]
+
+                {vis && (
+                  <ol
+                    className="fixed mt-[27px] justify-right
+
+                   flex flex-col 
+              border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
               text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
-              >
-                <li>GHO Points</li>
-                <li>Option</li>
-                <li>Optiom</li>
-              </ol> */}
+                  >
+                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                      GHO Points
+                    </li>
+                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                      Option
+                    </li>
+                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                      Optiom
+                    </li>
+                  </ol>
+                )}
+              </div>
             </div>
 
             <input
