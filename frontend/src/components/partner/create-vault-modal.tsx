@@ -1,14 +1,12 @@
 "use client";
 import { CONTRACTS } from "@/constants";
-import React, { useCallback, useEffect, useState } from "react";
-import { useAccount, useBalance, useContractWrite } from "wagmi";
+import React, { useEffect, useState } from "react";
+import { useAccount, useContractWrite } from "wagmi";
 import Step1 from "./create-vault/step1";
 import Step2 from "./create-vault/step2";
 import Step3 from "./create-vault/step3";
 import Step4 from "./create-vault/step4";
 import { waitForTransaction } from "wagmi/actions";
-import { readPublicContract } from "@/utils/contract";
-import { EPublicContracts } from "@/types";
 import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 import useApprovals from "@/hooks/useApprovals";
 import useBalances from "@/hooks/useBalances";
@@ -31,7 +29,6 @@ const CreateVaultModal = ({
   const [message, setMessage] = useState("");
   const [stakeGHO, setStakeGHO] = useState(0);
   const [ratio1, setRatio1] = useState(2);
-  const [availableGHO, setAvailableGHO] = useState(0);
   const [rewardPoints, setRewardPoints] = useState(0);
 
   const { address } = useAccount();
@@ -119,7 +116,7 @@ const CreateVaultModal = ({
 
   const handleBuyGHO = () => {};
   const handleStakeAll = () => {
-    setStakeGHO(availableGHO);
+    setStakeGHO(availableGho as number);
   };
 
   const handleVaultName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,7 +162,7 @@ const CreateVaultModal = ({
               handleBuyGHO={handleBuyGHO}
               handleBack={onBack}
               message={message}
-              availableGHO={availableGHO}
+              availableGho={availableGho as number}
               stakeGHO={stakeGHO}
               rewardPoints={rewardPoints}
               handleMintGHO={handleMintGHO}

@@ -7,7 +7,7 @@ type Props = {
   handleBuyGHO: () => void;
   handleBack: () => void;
   message: string;
-  availableGHO: number;
+  availableGho: number;
   stakeGHO: number;
   rewardPoints: number;
   handleMintGHO: () => void;
@@ -20,7 +20,7 @@ const Step3 = ({
   handleBuyGHO,
   handleBack,
   message,
-  availableGHO,
+  availableGho,
   stakeGHO,
   rewardPoints,
   handleMintGHO,
@@ -70,7 +70,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               </h1>
               <div className="flex gap-2">
                 <h3 className="text-right text-[14px] leading-[20px] text-[#DBD2EFCC]">
-                  Available GHO: {availableGHO}
+                  Available GHO: {availableGho}
                 </h3>
                 <h4
                   onClick={handleBuyGHO}
@@ -101,7 +101,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
               </h6>
             </div>
           </div>
-          {stakeGHO > availableGHO && (
+          {stakeGHO > availableGho && (
             <div
               className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
                 text-[#A48AFB]
