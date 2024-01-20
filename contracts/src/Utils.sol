@@ -55,6 +55,10 @@ contract Utils {
         return (partnerDetails.s_partnerVault, partnerDetails.s_partnerPayment);
     }
 
+    function getPartners() public view returns (address[] memory) {
+        return s_partners;
+    }
+
     function balanceOf(address _user) public view returns (address[] memory, uint256[] memory) {
         // get the balances of each partnerVault for the user
         uint256[] memory balances = new uint256[](s_partners.length);
