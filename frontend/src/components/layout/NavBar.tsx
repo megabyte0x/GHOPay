@@ -150,16 +150,16 @@ const NavBar = () => {
           </>
         )}
         {isDashboard && (
-          <div className="flex items-center gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
-            <p
+          <ul className="flex items-center gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
+            <li
               className={classNames(
-                "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
+                "text-[14px] text-[#dbd2ef] cursor-pointer px-[18px] py-[4px]",
                 {
-                  "bg-[#491C96] border-[#6927DA] border-[1px] border-solid rounded-[6px] px-[8px] py-[4px] text-[14px] text-[#DDD6FE] leading-[20px] font-semibold cursor-pointer":
+                  "bg-[#491C96] border-[#6927DA] border-[1px] border-solid rounded-[6px]  text-[14px] text-[#DDD6FE]  font-semibold ":
                     navSelected === EDashboardNavSelected.SHOP,
                 },
                 {
-                  "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] px-[8px] py-[4px] text-[14px] hover:text-[#DDD6FE] leading-[20px] font-medium cursor-pointer":
+                  "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px]  text-[14px] hover:text-[#DDD6FE] font-medium ":
                     navSelected === EDashboardNavSelected.APPLY_AS_A_PARTNER,
                 }
               )}
@@ -168,16 +168,16 @@ const NavBar = () => {
               }}
             >
               Shop
-            </p>
-            <p
+            </li>
+            <li
               className={classNames(
-                "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
+                "text-[14px] text-[#dbd2ef] cursor-pointer px-[18px] py-[4px]",
                 {
-                  "bg-[#491C96] border-[#6927DA] border-[1px] border-solid rounded-[6px] px-[8px] py-[4px] text-[14px] text-[#DDD6FE] leading-[20px] font-semibold cursor-pointer":
+                  "bg-[#491C96] border-[#6927DA] border-[1px] border-solid rounded-[6px]  text-[14px] text-[#DDD6FE] font-semibold ":
                     navSelected === EDashboardNavSelected.APPLY_AS_A_PARTNER,
                 },
                 {
-                  "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] px-[8px] py-[4px] text-[14px] hover:text-[#DDD6FE] leading-[20px] font-medium cursor-pointer":
+                  "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] text-[14px] hover:text-[#DDD6FE]  font-medium":
                     navSelected === EDashboardNavSelected.SHOP,
                 }
               )}
@@ -186,8 +186,8 @@ const NavBar = () => {
               }}
             >
               Apply as a partner
-            </p>
-          </div>
+            </li>
+          </ul>
         )}
       </div>
       {isConnected ? (
