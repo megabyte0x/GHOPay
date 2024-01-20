@@ -1,8 +1,10 @@
 "use client";
 import { CONTRACTS } from "@/constants";
 import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
+import useApprovals from "@/hooks/useApprovals";
+import useBalances from "@/hooks/useBalances";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 
@@ -13,7 +15,6 @@ type BookDealModalProps = {
 
 const ghoPoints = 0;
 const gasFee = 0;
-const availableGHO = 0;
 
 const BookDealModal = ({ onClose }: BookDealModalProps) => {
   const [amountPay, setAmountPay] = useState(0);
@@ -22,8 +23,12 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
 
   const { address } = useAccount();
   const { partnerPaymentAddr } = usePartnerDetails();
+  const { approveTestGhoForMain, approveTestGhoForPartner } = useApprovals();
+  const { availableGho } = useBalances();
 
-  const { writeAsync } = useContractWrite({
+  useEffect(() => {});
+
+  const { writeAsync: bookService } = useContractWrite({
     account: address,
     address: partnerPaymentAddr,
     abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
@@ -51,10 +56,14 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
     //   setMessage("Accept TnC");
     // }
     try {
-      const { hash } = await writeAsync();
-      console.log(`Transaction hash: ${hash}`);
+      console.info(`Approving Test GHO for partner and main vault`);
+      await Promise.all([approveTestGhoForMain(), approveTestGhoForPartner()]);
+
+      const { hash } = await bookService();
+      console.info(`Book Service: Transaction hash: ${hash}`);
 
       await waitForTransaction({ hash, chainId: 11155111 });
+      console.info(`Book Service: Transaction successful`);
     } catch (error) {
       console.error(Object.keys(error));
       console.log(Object.values(error));
@@ -124,7 +133,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
               </h1>
 
               <h3 className="text-right text-[14px] leading-[20px] text-[#DBD2EFCC]">
-                Available GHO: {availableGHO}
+                Available GHO: {availableGho}
               </h3>
             </label>
             <div
@@ -142,7 +151,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
             </div>
           </div>
           {/* CHECK BASED ON? XX */}
-          {amountPay > availableGHO && (
+          {availableGho && amountPay > availableGho && (
             <div
               className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
                 text-[#A48AFB]

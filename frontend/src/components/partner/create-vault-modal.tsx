@@ -1,7 +1,7 @@
 "use client";
 import { CONTRACTS } from "@/constants";
 import React, { useCallback, useEffect, useState } from "react";
-import { useAccount, useContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite } from "wagmi";
 import Step1 from "./create-vault/step1";
 import Step2 from "./create-vault/step2";
 import Step3 from "./create-vault/step3";
@@ -10,6 +10,8 @@ import { waitForTransaction } from "wagmi/actions";
 import { readPublicContract } from "@/utils/contract";
 import { EPublicContracts } from "@/types";
 import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
+import useApprovals from "@/hooks/useApprovals";
+import useBalances from "@/hooks/useBalances";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -34,12 +36,9 @@ const CreateVaultModal = ({
 
   const { address } = useAccount();
   const { partnerVaultAddr } = usePartnerDetails();
+  const { getAvailableGHO } = useBalances();
 
-  const getAvailableGHO = useCallback(async () => {
-    return await readPublicContract(EPublicContracts.TestGHO, "balanceOf", [
-      address,
-    ]);
-  }, [address]);
+  const { approveTestGhoForPartner } = useApprovals();
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
@@ -77,14 +76,6 @@ const CreateVaultModal = ({
     args: [BigInt(stakeGHO ? stakeGHO : 0)],
   });
 
-  const { writeAsync: writeAsyncApproveTestGHO } = useContractWrite({
-    account: address,
-    abi: CONTRACTS.PUBLIC.TestGHO.ABI,
-    address: CONTRACTS.PUBLIC.TestGHO.address,
-    functionName: "approve",
-    args: [partnerVaultAddr, BigInt(1111111111111111)],
-  });
-
   const handleVaultCreate = async () => {
     if (!address) throw "Please Log in.";
     if (!ratio1 || !symbol || !vaultName) throw "Please fill all fields.";
@@ -116,8 +107,7 @@ const CreateVaultModal = ({
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
 
-      const { hash: ghoHash } = await writeAsyncApproveTestGHO();
-      await waitForTransaction({ hash: ghoHash, chainId: 11155111 });
+      await approveTestGhoForPartner();
 
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);

@@ -16,8 +16,8 @@ function useWalletInfo() {
 
   // return { isPartner, isUser: !isPartner };
   return {
-    isPartner: true,
-    isUser: false,
+    isPartner: false,
+    isUser: true,
   };
 }
 

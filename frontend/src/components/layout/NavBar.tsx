@@ -9,6 +9,7 @@ import { useAppProvider } from "@/hooks/context/AppProvider";
 import { EDashboardNavSelected } from "@/types";
 import classNames from "classnames";
 import { useState } from "react";
+import useWalletInfo from "@/hooks/user/useWalletInfo";
 
 const NavBar = () => {
   const [dropdownVis, setDropdownVis] = useState(false);
@@ -16,6 +17,8 @@ const NavBar = () => {
   const { goToHome, isDashboard, isLanding, handleLandingOpen } =
     useAppNavigation();
   const { navSelected, setNavSelected } = useAppProvider();
+
+  const { isUser } = useWalletInfo();
 
   const handleClickScroll = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -149,7 +152,7 @@ const NavBar = () => {
             )}
           </>
         )}
-        {isDashboard && (
+        {isDashboard && isUser && (
           <ul className="flex items-center gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
             <li
               className={classNames(
@@ -161,7 +164,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px]  text-[14px] hover:text-[#DDD6FE] font-medium ":
                     navSelected === EDashboardNavSelected.APPLY_AS_A_PARTNER,
-                }
+                },
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.SHOP);
@@ -179,7 +182,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] text-[14px] hover:text-[#DDD6FE]  font-medium":
                     navSelected === EDashboardNavSelected.SHOP,
-                }
+                },
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.APPLY_AS_A_PARTNER);
