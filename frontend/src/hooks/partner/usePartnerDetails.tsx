@@ -1,4 +1,4 @@
-import { getPartnerDetails } from "@/utils/contract/getDeployedContracts";
+import { getPartnerDetails } from "@/utils/contract/getPartnerDetails";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 

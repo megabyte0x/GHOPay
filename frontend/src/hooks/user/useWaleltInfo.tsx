@@ -1,6 +1,7 @@
-import { isVaultOwner } from "@/utils/contract/isVaultOwner";
+import { CONTRACTS } from "@/constants";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import { readContract } from "wagmi/actions";
 
 function useWalletInfo() {
   const { address } = useAccount();
@@ -21,5 +22,14 @@ function useWalletInfo() {
     isUser: true,
   };
 }
+
+const isVaultOwner = async (address: string): Promise<boolean> => {
+  return (await readContract({
+    abi: CONTRACTS.PUBLIC.Utils.ABI,
+    address: CONTRACTS.PUBLIC.Utils.address,
+    functionName: "isPartner",
+    args: [address],
+  })) as boolean;
+};
 
 export default useWalletInfo;

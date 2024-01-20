@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import BUTTONS from "../landing/Buttons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useBalance } from "wagmi";
 
 const minRecieved = 0;
 const currentExchangeRate = 0;
@@ -10,16 +11,25 @@ const minGHORecieve = 0;
 const usdOfMinGHORecieved = 0;
 
 export const Swap = () => {
-  const [vis, setVis] = useState(false);
-  const [fromToken, setFromToken] = useState("GHO Points");
+  const availableTokens = ["gho", "uni"];
+  const [tokenSelectionVisibility, setTokenSelectionVisibility] =
+    useState(false);
+
+  const { data, error, isLoading } = useBalance({ watch: true });
+
+  const [fromToken, setFromToken] = useState("Select a token");
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
 
-  const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    const token = e.currentTarget.textContent;
-    if (!token) return;
+  useEffect(() => {
+    console.log({ data, error, isLoading });
+  }, [isLoading, data, error]);
 
-    setFromToken(token);
+  const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    const tokenName = e.currentTarget.textContent;
+    if (!tokenName) return;
+
+    setFromToken(tokenName);
   };
   const handleFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromAmount(parseFloat(e.target.value));
@@ -50,10 +60,10 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
             <div className="py-[10px] min-w-fit flex flex-col">
               <div
                 onMouseEnter={() => {
-                  setVis(true);
+                  setTokenSelectionVisibility(true);
                 }}
                 onMouseLeave={() => {
-                  setVis(false);
+                  setTokenSelectionVisibility(false);
                 }}
                 className="cursor-pointer flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
               >
@@ -64,7 +74,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                   width={20}
                   alt="dropdown"
                 />
-                {vis && (
+                {tokenSelectionVisibility && (
                   <ol
                     className="fixed mt-[27px] justify-right
 
@@ -72,14 +82,14 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
               border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
               text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
                   >
-                    {[].map(() => {
+                    {availableTokens.map((tokenName) => {
                       return (
                         <li
                           key={Math.random()}
                           onClick={handleFromTokenSelect}
                           className="hover:bg-[#3e2072] px-[10px] py-[8px]"
                         >
-                          GHO Points
+                          {tokenName}
                         </li>
                       );
                     })}
