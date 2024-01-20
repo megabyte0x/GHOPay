@@ -7,7 +7,7 @@ import { ConnectKitProvider } from "connectkit";
 import { useEffect, useState } from "react";
 import { createWalletConfig } from "@/utils/createWalletConfig";
 import { NavBar } from "@/components";
-import { LandingPageProvider } from "@/hooks/context/LandingProvider";
+import { AppProvider } from "@/hooks/context/AppProvider";
 
 function App({ Component, pageProps }: AppProps) {
   // setup to avoid hydration mismatch
@@ -20,12 +20,12 @@ function App({ Component, pageProps }: AppProps) {
     <WagmiConfig config={createWalletConfig()}>
       <ConnectKitProvider>
         {client && (
-          <LandingPageProvider>
+          <AppProvider>
             <main className="bg-[#14141B] min-h-[100vh]">
               <NavBar />
               <Component {...pageProps} />
             </main>
-          </LandingPageProvider>
+          </AppProvider>
         )}
       </ConnectKitProvider>
     </WagmiConfig>
