@@ -1,9 +1,4 @@
-import {
-  createPublicClient,
-  createWalletClient,
-  getContract,
-  http,
-} from "viem";
+import { createPublicClient, createWalletClient, http } from "viem";
 import { sepolia } from "viem/chains";
 import { CONTRACTS } from "@/constants";
 import { EPublicContracts, PublicContractCollection } from "@/types";

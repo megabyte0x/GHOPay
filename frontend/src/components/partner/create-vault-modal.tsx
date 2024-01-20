@@ -1,6 +1,5 @@
 "use client";
-import { CHAINS, CONTRACTS } from "@/constants";
-import { toBigNumber } from "@/utils/helper-functions";
+import { CONTRACTS } from "@/constants";
 import React, { useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import Step1 from "./create-vault/step1";

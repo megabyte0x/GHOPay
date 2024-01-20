@@ -1,39 +1,50 @@
 "use client";
+import { CONTRACTS } from "@/constants";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useAccount, useContractWrite } from "wagmi";
+import { waitForTransaction } from "wagmi/actions";
 
 type BookDealModalProps = {
   onClose: () => void;
   onNext: () => void;
-  onBack: () => void;
 };
 
-const BookDealModal = ({ onClose, onNext, onBack }: BookDealModalProps) => {
+const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
   const [amountPay, setAmountPay] = useState(0);
   const [tnc, setTnc] = useState(false);
   const [message, setMessage] = useState("");
-  const handleAmountPay = (e: any) => {
+
+  const { address } = useAccount();
+
+  const { writeAsync } = useContractWrite({
+    account: address,
+    address: CONTRACTS.PARTNER.PartnerPayment.address,
+    abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
+    functionName: "bookAService",
+    args: [BigInt(100 * 10e17), BigInt(amountPay * 10e17)],
+  });
+
+  const handleAmountPay = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmountPay(parseFloat(e.target.value));
   };
-  const handleTnc = (e: any) => {
-    setTnc(e.target.value);
+  const handleTnc = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setTnc(e.target.value);
     console.log(tnc);
+    console.log(e.target.value);
   };
-  const handleCancel = () => {
-    onBack();
-  };
-  const handleBook = () => {
-    if (amountPay) {
-      onNext();
-      setTimeout(() => {
-        onClose();
-      }, 500);
-    } else {
+  const handleBook = async () => {
+    if (!amountPay) {
       setMessage("Enter Amount");
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
     }
+    // if (!tnc) {
+    //   setMessage("Accept TnC");
+    // }
+
+    const { hash } = await writeAsync();
+    console.log(`Transaction hash: ${hash}`);
+
+    await waitForTransaction({ hash, chainId: 11155111 });
   };
   return (
     <div
@@ -154,7 +165,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
           <h3 className="self-end text-[#ed8484cc] text-[12px]">{message}</h3>
           <div className="grid grid-cols-2 gap-[12px]">
             <button
-              onClick={handleCancel}
+              onClick={onClose}
               className="font-semibold leading-[24px] text-[#a48afb] text-[16px]
         border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
         flex flex-row justify-center cursor-pointer px-[18px] py-[10px]

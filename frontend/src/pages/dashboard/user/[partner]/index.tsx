@@ -1,8 +1,11 @@
 import Image from "next/image";
 import React from "react";
 
-const PartnerStore = ({ params }: any) => {
-  // console.log(params.partner);
+type Props = {
+  //
+};
+
+const PartnerStore = ({}: Props) => {
   const handleBookNow = () => {};
   return (
     <div className="w-full px-20 py-[64px] flex flex-col gap-[48px]">
