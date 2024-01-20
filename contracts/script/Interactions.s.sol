@@ -11,12 +11,15 @@ import {TestGHOPartnerPassport} from "../test/mocks/TestGHOPartnerPassport.sol";
 import {MainVault} from "../src/MainVault.sol";
 
 contract MintGHOToken is Script {
-    function mintGHOToken(address _ghoToken, address _mainAdmin, address _partner, address _user) public {
+    function mintGHOToken(address _ghoToken, address _mainAdmin, address _partner, address _user, address _danish)
+        public
+    {
         vm.startBroadcast();
         TestGHO ghoToken = TestGHO(_ghoToken);
         ghoToken.mint(_mainAdmin, 10000e18);
         ghoToken.mint(_partner, 10000e18);
         ghoToken.mint(_user, 10000e18);
+        ghoToken.mint(_danish, 10000e18);
         vm.stopBroadcast();
     }
 
@@ -29,8 +32,9 @@ contract MintGHOToken is Script {
         address mainAdmin = helperConfigs.s_mainAdmin();
         address partnerAdmin = helperConfigs.s_partnerAdmin();
         address user = helperConfigs.s_user();
+        address danish = 0xAE5c72E8dE74AdB50942ecE179e0dE27A8Cab61F;
 
-        mintGHOToken(ghoToken, mainAdmin, partnerAdmin, user);
+        mintGHOToken(ghoToken, mainAdmin, partnerAdmin, user, danish);
     }
 
     function run() public {

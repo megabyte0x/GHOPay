@@ -65,7 +65,7 @@ contract RPoolTest is Test {
             ADMIN
         );
         s_partnerVault =
-            new PartnerVault(ERC20(address(s_ghoToken)), "CLUB VISTARA", "CV", PARTNER, address(s_rPool),RP_TO_GHO);
+        new PartnerVault(ERC20(address(s_ghoToken)), "CLUB VISTARA", "CV", PARTNER, address(s_rPool),ADMIN,RP_TO_GHO);
     }
 
     modifier setUpScene() {
@@ -83,7 +83,7 @@ contract RPoolTest is Test {
         s_mainVault.approve(address(s_rPool), GHO_TO_TRANSFER);
         vm.stopPrank();
 
-        // Partner deposit GHO to Partner Vault and mint CV to Reward Payment
+        // Partner deposit GHO to Partner Vault and mint CV to Partner Payment
         vm.startPrank(PARTNER);
         s_ghoToken.approve(address(s_partnerVault), GHO_TO_DEPOSIT);
         s_partnerVault.depositGHO(GHO_TO_DEPOSIT);

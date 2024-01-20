@@ -15,10 +15,12 @@ const Shop = () => {
         </div>
       </div>
       {showBookDeal && (
-        <BookDealModal
-          onClose={() => setShowBookDeal(false)}
-          onNext={() => setShowBookDeal(false)}
-        />
+        <div className="items-center justify-center bg-[#21212198] backdrop-blur-md fixed inset-0 flex">
+          <BookDealModal
+            onClose={() => setShowBookDeal(false)}
+            onNext={() => setShowBookDeal(false)}
+          />
+        </div>
       )}
     </div>
   );

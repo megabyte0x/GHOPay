@@ -69,6 +69,10 @@ export const PARTNERS: Partner[] = [
 export const ROUTES = {
   LANDING: "/",
   DASHBOARD: "/dashboard",
+  USER_PARTNER: "/dashboard/user/applyAsPartner",
+  USER_SHOP_SWAP: "/dashboard/user",
+  PARTNER_VAULT: "/dashboard/partner",
+  PARTNER_SHOP: "/dashboard/partner/shop",
 };
 
 export const CHAINS: { [chainId: number]: ChainInfo } = {
@@ -157,11 +161,9 @@ export const CONTRACTS: {
   },
   PARTNER: {
     PartnerVault: {
-      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
       ABI: PartnerVaultABI,
     },
     PartnerPayment: {
-      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
       ABI: PartnerPaymentABI,
     },
   },

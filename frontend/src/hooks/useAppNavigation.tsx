@@ -54,7 +54,22 @@ function useAppNavigation() {
     }
   }, [isConnected, isDashboard, router, setArrivedFromLandingPage]);
 
-  return { goToDashboard, goToHome, handleLandingOpen, isDashboard, isLanding };
+  const userPartner = pathname == ROUTES.USER_PARTNER;
+  const userShopSwap = pathname == ROUTES.USER_SHOP_SWAP;
+  const partnerVault = pathname == ROUTES.PARTNER_VAULT;
+  const partnerShop = pathname == ROUTES.PARTNER_SHOP;
+
+  return {
+    goToDashboard,
+    goToHome,
+    handleLandingOpen,
+    isDashboard,
+    isLanding,
+    userPartner,
+    userShopSwap,
+    partnerVault,
+    partnerShop,
+  };
 }
 
 export default useAppNavigation;

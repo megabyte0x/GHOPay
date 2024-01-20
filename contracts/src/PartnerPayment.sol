@@ -43,6 +43,7 @@ contract PartnerPayment is Ownable {
     constructor(
         address _rpToken,
         address _mainPayment,
+        address _ghoPassport,
         uint256 _maxAmtPercentInRp,
         address _partnerAdmin,
         uint256 _rpToGHORatio
@@ -52,6 +53,7 @@ contract PartnerPayment is Ownable {
         s_partnerAdmin = _partnerAdmin;
         s_rpToGHORatio = _rpToGHORatio;
         s_maxAmtPercentInRp = _maxAmtPercentInRp;
+        s_ghoPassport = IERC721(_ghoPassport);
     }
 
     /*
@@ -145,12 +147,15 @@ contract PartnerPayment is Ownable {
 
         if (_rpAmount > 0) {
             uint256 maxUtilisableRp = maxAmountPayInRpCalculator(_serviceAmount);
-            uint256 amountToPayInGHO = rpUtilisationCalculator(_rpAmount, _serviceAmount);
+            uint256 amountToPayInGHO;
 
             if (_rpAmount > maxUtilisableRp) {
+                amountToPayInGHO = rpUtilisationCalculator(maxUtilisableRp, _serviceAmount);
                 // If _rpAmount is greater than maxUtilisableRp, then transfer maxUtilisableRp to Partner Admin Address
                 s_rpToken.transferFrom(sender, s_partnerAdmin, maxUtilisableRp);
             } else {
+                amountToPayInGHO = rpUtilisationCalculator(_rpAmount, _serviceAmount);
+
                 s_rpToken.transferFrom(sender, s_partnerAdmin, _rpAmount);
             }
 
