@@ -7,7 +7,8 @@ const Hero = () => {
   const { handleLandingOpen } = useAppNavigation();
   return (
     <div
-      className="heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
+      id="home-section"
+      className=" heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
     lg:flex-row flex-col"
     >
       <div className="flex flex-col lg:items-start items-center gap-[48px] lg:text-start text-center">

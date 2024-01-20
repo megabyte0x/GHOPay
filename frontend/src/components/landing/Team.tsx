@@ -5,7 +5,10 @@ import React from "react";
 
 const Team = () => {
   return (
-    <div className="py-[96px] gap-[64px] flex flex-col items-center justify-center">
+    <div
+      id="team-section"
+      className="py-[96px] gap-[64px] flex flex-col items-center justify-center"
+    >
       <BasicHeadings
         subH1="The team"
         mainH="Meet the team behind GHOPayments"
