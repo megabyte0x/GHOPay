@@ -10,7 +10,6 @@ function useWalletInfo() {
     if (!address || isPartner) return;
     (async () => {
       const isPartner = await isVaultOwner(address);
-      console.log({ isPartner });
       setIsPartner(isPartner);
     })();
   }, [address, isPartner]);

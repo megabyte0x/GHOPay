@@ -4,15 +4,15 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useAccount } from "wagmi";
-import { useLandingPage } from "./context/LandingProvider";
 import { useModal } from "connectkit";
+import { useAppProvider } from "./context/AppProvider";
 
 function useAppNavigation() {
   const router = useRouter();
   const { isConnected } = useAccount();
   const { setOpen } = useModal();
   const { arrivedFromLandingPage, setArrivedFromLandingPage } =
-    useLandingPage();
+    useAppProvider();
   const pathname = usePathname();
   const isDashboard = pathname.startsWith(ROUTES.DASHBOARD);
   const isLanding = pathname === ROUTES.LANDING;
@@ -54,21 +54,12 @@ function useAppNavigation() {
     }
   }, [isConnected, isDashboard, router, setArrivedFromLandingPage]);
 
-  const userPartner = pathname == ROUTES.USER_PARTNER;
-  const userShopSwap = pathname == ROUTES.USER_SHOP_SWAP;
-  const partnerVault = pathname == ROUTES.PARTNER_VAULT;
-  const partnerShop = pathname == ROUTES.PARTNER_SHOP;
-
   return {
     goToDashboard,
     goToHome,
     handleLandingOpen,
     isDashboard,
     isLanding,
-    userPartner,
-    userShopSwap,
-    partnerVault,
-    partnerShop,
   };
 }
 

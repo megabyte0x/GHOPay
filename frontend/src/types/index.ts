@@ -11,6 +11,11 @@ export type Partner = {
   img: string;
 };
 
+export enum EDashboardNavSelected {
+  SHOP = "shop",
+  APPLY_AS_A_PARTNER = "apply-as-a-partner",
+}
+
 export type ChainInfo = {
   id: string;
   token: string;
