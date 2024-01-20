@@ -27,7 +27,7 @@ const CreateVaultModal = ({
   const [symbol, setSymbol] = useState("");
   const [message, setMessage] = useState("");
   const [stakeGHO, setStakeGHO] = useState(0);
-  const [ratio1, setRatio1] = useState(1);
+  const [ratio1, setRatio1] = useState(2);
   const [availableGHO, setAvailableGHO] = useState(0);
   const [rewardPoints, setRewardPoints] = useState(0);
   const [partnerVaultAddress, setPartnerVaultAddress] = useState("");
@@ -59,6 +59,7 @@ const CreateVaultModal = ({
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
+    console.log(zerosToAdd,ratio1)
     setRewardPoints(Number(`${1}${zerosToAdd}`) * stakeGHO);
   }, [ratio1, stakeGHO]);
 
@@ -97,7 +98,7 @@ const CreateVaultModal = ({
     abi: CONTRACTS.PUBLIC.TestGHO.ABI,
     address: CONTRACTS.PUBLIC.TestGHO.address,
     functionName: "approve",
-    args: [partnerVaultAddress, BigInt(Number.MAX_VALUE)],
+    args: [partnerVaultAddress, BigInt(1111111111111111)],
   }).writeAsync;
 
   const handleCreate = async () => {
@@ -145,11 +146,11 @@ const CreateVaultModal = ({
       if (!stakeGHO) throw "Please fill all fields.";
 
       const txn = await writeAsyncApproveTestGHO();
-      await waitForTransaction({ hash: txn.hash, chainId: 11155111 });
 
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
       await Promise.all([
+        waitForTransaction({ hash: txn.hash, chainId: 11155111 }),
         waitForTransaction({ hash, chainId: 11155111 }),
         getAvailableGHO(),
       ]);
@@ -177,11 +178,11 @@ const CreateVaultModal = ({
   };
   const handleRatio1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
-    setRatio1(parseFloat(e.target.value));
+    setRatio1(Number(e.target.value));
     // XX VALUE printing pre change
   };
   const handleStakedGHO = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStakeGHO(parseFloat(e.target.value));
+    setStakeGHO(Number(e.target.value));
   };
   return (
     <>

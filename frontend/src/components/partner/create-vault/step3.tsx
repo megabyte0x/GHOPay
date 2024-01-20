@@ -87,6 +87,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             >
               <input
                 type="number"
+                value={stakeGHO}
                 onChange={handleStakedGHO}
                 placeholder="0"
                 className="bg-[#00000000] border-0 w-full

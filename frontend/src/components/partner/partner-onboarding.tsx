@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import BUTTONS from "../landing/Buttons";
 
 const PartnerOnboarding = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
 
   const handleCreateVault = () => {
     setStep(1);
