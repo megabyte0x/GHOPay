@@ -16,6 +16,13 @@ const usePartnerDetails = () => {
 
       const { partnerPaymentAddr, partnerVaultAddr } = details;
 
+      if (
+        partnerPaymentAddr === "0x0000000000000000000000000000000000000000" ||
+        partnerVaultAddr === "0x0000000000000000000000000000000000000000"
+      ) {
+        return;
+      }
+
       setPartnerPaymentAddr(partnerPaymentAddr);
       setPartnerVaultAddr(partnerVaultAddr);
     })();

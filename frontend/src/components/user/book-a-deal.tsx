@@ -28,7 +28,7 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
     address: partnerPaymentAddr,
     abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
     functionName: "bookAService",
-    args: [BigInt(100 * 10e17), BigInt(amountPay * 10e17)],
+    args: [BigInt(0 * 10e17), BigInt(amountPay * 10e17)],
   });
 
   const handleAmountPay = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,17 +40,25 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
     console.log(e.target.value);
   };
   const handleBook = async () => {
+    console.log({ partnerPaymentAddr });
+    if (!partnerPaymentAddr) {
+      throw new Error("Partner Payment Address not found");
+    }
     if (!amountPay) {
       setMessage("Enter Amount");
     }
     // else if (!tnc) {
     //   setMessage("Accept TnC");
     // }
-    else {
+    try {
       const { hash } = await writeAsync();
       console.log(`Transaction hash: ${hash}`);
 
       await waitForTransaction({ hash, chainId: 11155111 });
+    } catch (error) {
+      console.error(Object.keys(error));
+      console.log(Object.values(error));
+      // console.error((error as any).Error);
     }
   };
   return (

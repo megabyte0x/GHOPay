@@ -26,6 +26,54 @@ export const ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "_user",
+        type: "address",
+      },
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_partner",
+        type: "address",
+      },
+    ],
+    name: "getPartnerDetails",
+    outputs: [
+      {
+        internalType: "address",
+        name: "_partnerVault",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_partnerPayment",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_partner",
         type: "address",
       },

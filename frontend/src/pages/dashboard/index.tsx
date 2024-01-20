@@ -1,7 +1,7 @@
 import User from "./user";
 import { useAccount } from "wagmi";
 import useAppNavigation from "@/hooks/useAppNavigation";
-import useWalletInfo from "@/hooks/user/useWaleltInfo";
+import useWalletInfo from "@/hooks/user/useWalletInfo";
 import Partner from "./partner";
 
 const Dapp = () => {
