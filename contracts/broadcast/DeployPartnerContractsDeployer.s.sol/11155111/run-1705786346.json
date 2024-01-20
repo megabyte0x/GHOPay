@@ -26,49 +26,18 @@
       "isFixedGasLimit": false
     }
   ],
-  "receipts": [
-    {
-      "transactionHash": "0xb3833aea1f7e8ef4214ac14ca5bf2c2a694dd9c639711fcdb2efde67d87394c4",
-      "transactionIndex": "0xe",
-      "blockHash": "0x0467b2a028f8071c7202aacad7ef95dc61a2cd7ed6522e676edc9009f85330a3",
-      "blockNumber": "0x4e2ad2",
-      "from": "0x1Cb30cb181D7854F91c2410BD037E6F42130e860",
-      "to": null,
-      "cumulativeGasUsed": "0x472e55",
-      "gasUsed": "0x31f495",
-      "contractAddress": "0x109e0682A08106945Bf689DF8148766B2f013Bf3",
-      "logs": [
-        {
-          "address": "0x109e0682A08106945Bf689DF8148766B2f013Bf3",
-          "topics": [
-            "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "0x0000000000000000000000001cb30cb181d7854f91c2410bd037e6f42130e860"
-          ],
-          "data": "0x",
-          "blockHash": "0x0467b2a028f8071c7202aacad7ef95dc61a2cd7ed6522e676edc9009f85330a3",
-          "blockNumber": "0x4e2ad2",
-          "transactionHash": "0xb3833aea1f7e8ef4214ac14ca5bf2c2a694dd9c639711fcdb2efde67d87394c4",
-          "transactionIndex": "0xe",
-          "logIndex": "0x1c",
-          "removed": false
-        }
-      ],
-      "status": "0x1",
-      "logsBloom": "0x02002000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000800000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000020000000000400000000000000000000000000000000000000000000000000000000",
-      "type": "0x2",
-      "effectiveGasPrice": "0xb4bf4c29"
-    }
-  ],
+  "receipts": [],
   "libraries": [],
-  "pending": [],
+  "pending": [
+    "0xb3833aea1f7e8ef4214ac14ca5bf2c2a694dd9c639711fcdb2efde67d87394c4"
+  ],
   "returns": {
     "partnerContractsDeployer": {
       "internal_type": "address",
       "value": "0x109e0682A08106945Bf689DF8148766B2f013Bf3"
     }
   },
-  "timestamp": 1705786389,
+  "timestamp": 1705786346,
   "chain": 11155111,
   "multi": false,
   "commit": "43a9b4f"

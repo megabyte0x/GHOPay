@@ -38,7 +38,7 @@ contract PartnerContractsDeployer is Ownable {
         string memory _symbol,
         uint8 _ratio,
         uint256 _maxAmtPercentInRp
-    ) public {
+    ) public returns (address partnerVaultContractAddress, address partnerPaymentContractAddress) {
         PartnerVault partnerVault = new PartnerVault(
             ERC20(_ghoToken),
             _name,
@@ -61,6 +61,8 @@ contract PartnerContractsDeployer is Ownable {
         s_utilsContract.addPartnerContracts(msg.sender, address(partnerPayment), address(partnerVault));
 
         emit PartnerContractsDeployer__RegisterAsPartner(msg.sender, address(partnerVault), address(partnerPayment));
+
+        return (address(partnerVault), address(partnerPayment));
     }
 
     function setMainPayment(address _mainPayment) public onlyOwner {

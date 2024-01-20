@@ -4,6 +4,10 @@ pragma solidity 0.8.20;
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
 
 contract Utils {
+    event Utils__PartnerContractsAdded(
+        address indexed partner, address indexed partnerPayment, address indexed partnerVault
+    );
+
     address[] public s_partners;
 
     struct PartnerDetails {
@@ -21,6 +25,8 @@ contract Utils {
         s_partners.push(_partnerPayment);
         s_isPartnerPaymentContract[_partnerPayment] = true;
         s_isPartner[partner] = true;
+
+        emit Utils__PartnerContractsAdded(partner, _partnerPayment, _partnerVault);
     }
 
     function isPartnerPaymentContract(address _partnerPayment) public view returns (bool) {
