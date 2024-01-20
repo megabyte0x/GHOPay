@@ -122,35 +122,35 @@ export const CONTRACTS: {
 } = {
   PUBLIC: {
     TestGHO: {
-      address: "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
+      address: "0xBdD9c513Be2514F83B72761503F0be2134ec6A1a",
       ABI: TestGHOABI,
     },
     GHOPassport: {
-      address: "0x17206705e75249b2cb885423937e88fc8f068338",
+      address: "0x17206705E75249B2Cb885423937e88Fc8f068338",
       ABI: GHOPassportABI,
     },
     GHOPartnerPassport: {
-      address: "0xea9b91d90ff3e904ecf230296d88c30c78e1e4c8",
+      address: "0xEa9b91D90ff3e904EcF230296D88c30c78E1E4c8",
       ABI: GHOPartnerPassportABI,
     },
     Utils: {
-      address: "0xa9429c88ff54d00d96896cad67e8ebd60e63238d",
+      address: "0x9033821b7D8dF7dbbEAF6D11da132479c79Ab4ce",
       ABI: UtilsABI,
     },
     RPool: {
-      address: "0xede73ab19f7ec894c01b70b2be2300b4cd1c3c50",
+      address: "0xDADD435D62948F421a9CFa3DAdD3BBB77cEA00EE",
       ABI: RPoolABI,
     },
     MainVault: {
-      address: "0x93ebcd57712b37084564259168b3a1d5738ef76b",
+      address: "0x2f78e1b3CA6073C396d5e194f1199377fD23Ee48",
       ABI: MainVaultABI,
     },
     MainPayment: {
-      address: "0x871886faf72978697829d0a988dd71db5f8f17d2",
+      address: "0x3911cFf70c360558a8D99c7386656C0bAAdF9382",
       ABI: MainPaymentABI,
     },
     PartnerContractsDeployer: {
-      address: "0xF5D0Fc99c552C33C33066f16A6Ab1D49d49B37ce",
+      address: "0x7595365b2D245b08814aA4f9C05A1AC9be2451f7",
       ABI: PartnerContractsDeployerABI,
     },
   },

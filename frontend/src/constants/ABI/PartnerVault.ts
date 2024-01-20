@@ -27,6 +27,11 @@ export const ABI = [
         type: "address",
       },
       {
+        internalType: "address",
+        name: "_mainAdminFeeCollector",
+        type: "address",
+      },
+      {
         internalType: "uint8",
         name: "ratio",
         type: "uint8",
@@ -722,9 +727,9 @@ export const ABI = [
     name: "s_partnerFee",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -761,9 +766,9 @@ export const ABI = [
     name: "s_withdrawalFee",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

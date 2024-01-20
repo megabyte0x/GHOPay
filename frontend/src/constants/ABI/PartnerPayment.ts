@@ -12,9 +12,14 @@ export const ABI = [
         type: "address",
       },
       {
-        internalType: "uint8",
+        internalType: "address",
+        name: "_ghoPassport",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
         name: "_maxAmtPercentInRp",
-        type: "uint8",
+        type: "uint256",
       },
       {
         internalType: "address",
@@ -247,9 +252,9 @@ export const ABI = [
     name: "s_maxAmtPercentInRp",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
