@@ -4,7 +4,10 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <div className="py-[96px] flex flex-col gap-[64px] items-center">
+    <div
+      id="how-section"
+      className="py-[96px] flex flex-col gap-[64px] items-center"
+    >
       <BasicHeadings
         subH1="How it Works"
         mainH="GHOPay: Your Passport to Rewarding Transactions"

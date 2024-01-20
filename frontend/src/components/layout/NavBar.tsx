@@ -11,9 +11,17 @@ const NavBar = () => {
   const { isUser } = useWalletInfo();
   const { goToHome, isDashboard, isLanding, handleLandingOpen } =
     useAppNavigation();
-
+  const handleClickScroll = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
-    <div className="border-b-[1px] border-[#DBD2EF1A] bg-[#14141B] h-[68px] px-20 flex items-center justify-between ">
+    <div
+      className="fixed top-0 w-[100vw] backdrop-blur z-30
+    border-b-[1px] border-[#DBD2EF1A] bg-[#14141b75] h-[68px] px-20 flex items-center justify-between "
+    >
       <div className="flex gap-[40px]">
         <div className="flex gap-[8px] cursor-pointer" onClick={goToHome}>
           <Image src={"/logo.svg"} width={32} height={32} alt="logo" />{" "}
@@ -22,12 +30,47 @@ const NavBar = () => {
           </h1>
         </div>
         {isLanding && (
-          <ul className="flex flex-row gap-[32px] text-[16px] leading-[24px] font-semibold text-[#A69DB9]">
-            <li>Home</li>
-            <li>How it Works</li>
-            <li>Partner</li>
-            <li>Features</li>
-            <li>Team</li>
+          <ul className="flex flex-row gap-[32px] text-[16px] items-center font-semibold text-[#A69DB9]">
+            <li
+              className="hover:bg-[#c3b8db] hover:text-[#14141B] cursor-pointer px-[15px] py-[1px] rounded-md h-fit"
+              onClick={() => {
+                handleClickScroll("home-section");
+              }}
+            >
+              Home
+            </li>
+            <li
+              className="hover:bg-[#c3b8db] hover:text-[#14141B] cursor-pointer px-[15px] py-[1px] rounded-md h-fit"
+              onClick={() => {
+                handleClickScroll("how-section");
+              }}
+            >
+              How it Works
+            </li>
+            <li
+              className="hover:bg-[#c3b8db] hover:text-[#14141B] cursor-pointer px-[15px] py-[1px] rounded-md h-fit"
+              onClick={() => {
+                handleClickScroll("partner-section");
+              }}
+            >
+              Partner
+            </li>
+            <li
+              className="hover:bg-[#c3b8db] hover:text-[#14141B] cursor-pointer px-[15px] py-[1px] rounded-md h-fit"
+              onClick={() => {
+                handleClickScroll("feature-section");
+              }}
+            >
+              Features
+            </li>
+            <li
+              className="hover:bg-[#c3b8db] hover:text-[#14141B] cursor-pointer px-[15px] py-[1px] rounded-md h-fit"
+              onClick={() => {
+                handleClickScroll("team-section");
+              }}
+            >
+              Team
+            </li>
           </ul>
         )}
         {isDashboard && isUser && (

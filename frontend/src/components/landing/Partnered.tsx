@@ -5,7 +5,10 @@ import React from "react";
 
 const Partnered = () => {
   return (
-    <div className="py-[96px] flex gap-[64px] flex-col text-center bg-[#1B171F] w-[100vw]">
+    <div
+      id="partner-section"
+      className="py-[96px] flex gap-[64px] flex-col text-center bg-[#1B171F] w-[100vw]"
+    >
       <BasicHeadings
         subH1="Exclusive Partnerships, Exclusive Rewards"
         mainH="Partnered Brands"

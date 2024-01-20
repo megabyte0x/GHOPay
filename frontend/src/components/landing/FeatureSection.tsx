@@ -4,7 +4,10 @@ import React from "react";
 
 const FeatureSection = () => {
   return (
-    <div className="py-[96px] flex flex-col gap-[64px] items-center justify-center">
+    <div
+      id="feature-section"
+      className="py-[96px] flex flex-col gap-[64px] items-center justify-center"
+    >
       <BasicHeadings
         subH1="Features"
         mainH="Elevate Your Rewards Experience with GHO Payments"
