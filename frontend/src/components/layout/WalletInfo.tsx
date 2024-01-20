@@ -7,6 +7,7 @@ const rewardPoints = 0;
 
 const WalletInfo = () => {
   const [vis, setVis] = useState(false);
+  const handleLogout = () => {};
   return (
     <div className="flex gap-[8px] items-center">
       <div className="flex gap-[6px] items-center text-[#ddd7fe]">
@@ -34,6 +35,7 @@ const WalletInfo = () => {
         </div>
         {vis && (
           <div
+            onClick={handleLogout}
             className="absolute right-20 top-[45px] flex gap-[8px] pl-[10px] py-[8px] pr-[27px]
         text-[#DBD2EF] text-[14px] leading-[20px] font-medium
       rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]

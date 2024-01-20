@@ -23,6 +23,7 @@ export const Swap = ({
   toTokenList = DEFAULT_TOKENS,
 }: SwapModalProps) => {
   const [fromVis, setFromVis] = useState(false);
+  const [toVis, setToVis] = useState(false);
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
 
@@ -157,7 +158,15 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
           text-[16px] leading-[24px]"
           >
             <div className="py-[10px] min-w-fit">
-              <div className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit">
+              <div
+                onMouseEnter={() => {
+                  setToVis(true);
+                }}
+                onMouseLeave={() => {
+                  setToVis(false);
+                }}
+                className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
+              >
                 {/* <Image alt="gho" src={"/GHOLogo.svg"} height={15} width={20} /> */}
                 <h3 className="text-[#C3B5FD] min-w-fit">
                   {toTokenList.length === 1 ? toTokenList[0] : toToken}
@@ -170,7 +179,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                       width={20}
                       alt="dropdown"
                     />
-                    {fromVis && (
+                    {toVis && (
                       <ol
                         className="fixed mt-[27px] justify-right
                     z-50
