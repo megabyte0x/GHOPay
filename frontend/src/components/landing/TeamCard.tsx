@@ -10,7 +10,13 @@ type TeamCardProps = {
 const TeamCard = ({ member }: TeamCardProps) => {
   return (
     <div className="flex flex-col gap-[20px] items-center justify-center ">
-      <Image src={member.img} height={96} width={96} alt="pfp" />
+      <Image
+        src={member.img}
+        height={150}
+        width={150}
+        alt="pfp"
+        className="rounded-[9px]"
+      />
       <div className="flex flex-col items-center justify-center text-center text-[#F5F5F6]">
         <h2 className="text-[16px] font-semibold leading-[24px]">
           {member.name}

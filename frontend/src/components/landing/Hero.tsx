@@ -7,7 +7,6 @@ const Hero = () => {
   const { handleLandingOpen } = useAppNavigation();
   return (
     <div
-      id="home-section"
       className=" heroBg flex gap-[32px] items-center justify-center max-w-[1280px]
     lg:flex-row flex-col"
     >
@@ -37,7 +36,7 @@ const Hero = () => {
       </div>
       <div>
         <Image
-          src={"/heroShowcase.svg"}
+          src={"/heroShowcase.png"}
           height={600}
           width={600}
           alt="hero-3d"
