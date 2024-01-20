@@ -3,6 +3,9 @@ import Image from "next/image";
 import React from "react";
 
 const Shop = () => {
+  const onBookingHandle = () => {
+    console.log("booking handler");
+  };
   return (
     <div className="flex flex-col gap-[24px] px-20 py-[64px]">
       <div className="flex flex-col gap-[4px]">
@@ -79,7 +82,7 @@ const Shop = () => {
               <BUTTONS.PURPLE
                 style="text-[14px] px-[20px] py-[8px]"
                 text="View Details and Book"
-                onClick={() => {}}
+                onClick={onBookingHandle}
               />
             </div>
           </div>

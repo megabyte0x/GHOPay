@@ -4,7 +4,7 @@ import BUTTONS from "../landing/Buttons";
 import { useAccount } from "wagmi";
 import useAppNavigation from "@/hooks/useAppNavigation";
 import WalletInfo from "./WalletInfo";
-import useWalletInfo from "@/hooks/user/usePartnerInfo";
+import useWalletInfo from "@/hooks/user/useWaleltInfo";
 
 const NavBar = () => {
   const { isConnected } = useAccount();
