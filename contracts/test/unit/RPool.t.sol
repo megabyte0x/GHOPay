@@ -65,7 +65,7 @@ contract RPoolTest is Test {
             ADMIN
         );
         s_partnerVault =
-            new PartnerVault(ERC20(address(s_ghoToken)), "CLUB VISTARA", "CV", PARTNER, address(s_rPool),RP_TO_GHO);
+        new PartnerVault(ERC20(address(s_ghoToken)), "CLUB VISTARA", "CV", PARTNER, address(s_rPool),ADMIN,RP_TO_GHO);
     }
 
     modifier setUpScene() {

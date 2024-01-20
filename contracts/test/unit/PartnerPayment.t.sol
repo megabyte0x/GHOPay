@@ -68,12 +68,14 @@ contract PartnerPaymentTest is Test {
             "CV",
             PARTNER,
             address(s_rPool),
+            ADMIN,
             RP_TO_GHO_RATIO_DECIMALS
         );
 
         s_partnerPayment = new PartnerPayment(
             address(s_rpToken),
             address(s_mainPayment),
+            address(s_ghoPassport),
             MAX_AMT_PERCENT_IN_RP,
             PARTNER,
             RP_TO_GHO_RATIO

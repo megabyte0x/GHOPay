@@ -53,7 +53,7 @@ contract PartnerContractDeployerTest is Test {
             ADMIN
         );
         s_partnerContractsDeployer =
-            new PartnerContractsDeployer(address(s_mainPayment), ADMIN, address(s_utils),makeAddr("rpool"));
+        new PartnerContractsDeployer(address(s_mainPayment), ADMIN, address(s_utils),makeAddr("rpool"), address(s_ghoPassport));
     }
 
     modifier setUpVault() {
