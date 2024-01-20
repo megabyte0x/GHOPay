@@ -123,6 +123,9 @@ setMainPayment:
 depositGHOInMainVault:
 	@forge script script/Interactions.s.sol:DepositGHOInMainVault $(NETWORK_ARGS)
 
+registerAsPartner:
+	@forge script script/Interactions.s.sol:RegisterAsPartner $(NETWORK_ARGS)
+
 
 
 # Commands for Testnets
@@ -162,3 +165,6 @@ setMainPaymentOnSepolia:
 
 depositGHOInMainVaultOnSepolia:
 	make depositGHOInMainVault ARGS="--network sepolia"
+
+registerAsPartnerOnSepolia:
+	make registerAsPartner ARGS="--network sepolia"

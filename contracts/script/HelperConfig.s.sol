@@ -73,6 +73,10 @@ contract HelperConfig is Script {
         mainPayment = DevOpsTools.get_most_recent_deployment("MainPayment", _chainId);
     }
 
+    function getPartnerContractsDeployer(uint256 _chainId) public view returns (address partnerContractsDeployer) {
+        partnerContractsDeployer = DevOpsTools.get_most_recent_deployment("PartnerContractsDeployer", _chainId);
+    }
+
     function getSepoliaConfigs() public {
         s_mainDeployerKey = vm.envUint("PRIVATE_KEY");
         s_mainAdmin = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;

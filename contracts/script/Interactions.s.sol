@@ -9,6 +9,7 @@ import {TestGHO} from "../test/mocks/TestGHO.sol";
 import {TestGHOPassport} from "../test/mocks/TestGHOPassport.sol";
 import {TestGHOPartnerPassport} from "../test/mocks/TestGHOPartnerPassport.sol";
 import {MainVault} from "../src/MainVault.sol";
+import {PartnerContractsDeployer} from "../src/PartnerContractsDeployer.sol";
 
 contract MintGHOToken is Script {
     function mintGHOToken(address _ghoToken, address _mainAdmin, address _partner, address _user, address _danish)
@@ -123,5 +124,28 @@ contract DepositGHOInMainVault is Script {
 
     function run() public {
         depositGHOInMainVaultUsingConfigs();
+    }
+}
+
+contract RegisterAsPartner is Script {
+    function registerAsAPartner(address _partnerContractsDeployer, address _ghoToken) public {
+        vm.startBroadcast();
+
+        PartnerContractsDeployer(_partnerContractsDeployer).registerAsPartner(_ghoToken, "TestPartner", "TP", 1, 100);
+        vm.stopBroadcast();
+    }
+
+    function registerAsAPartnerUsingConfigs() public {
+        HelperConfig helperConfigs = new HelperConfig();
+
+        uint256 _chainId = block.chainid;
+        address _partnerContractsDeployer = helperConfigs.getPartnerContractsDeployer(_chainId);
+        address _ghoToken = helperConfigs.getGHOToken(_chainId);
+
+        registerAsAPartner(_partnerContractsDeployer, _ghoToken);
+    }
+
+    function run() public {
+        registerAsAPartnerUsingConfigs();
     }
 }
