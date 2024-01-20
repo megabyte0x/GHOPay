@@ -1,4 +1,4 @@
-import { toBigNumber } from "@/utils/helper-functions";
+import { toBigNumber } from "@/utils/numbers";
 import {
   AdminContractCollection,
   ChainInfo,

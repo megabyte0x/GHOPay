@@ -1,15 +1,17 @@
 "use client";
 import CreateVaultModal from "@/components/partner/create-vault-modal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BUTTONS from "../landing/Buttons";
 
 const PartnerOnboarding = () => {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
-  const handleCreateVault = () => {
-    setStep(1);
-  };
+  useEffect(() => {
+    if (step > 4) {
+      setStep(0);
+    }
+  }, [step]);
 
   return (
     <>
@@ -46,7 +48,10 @@ const PartnerOnboarding = () => {
               </h4>
             </div>
             <BUTTONS.PURPLE
-              onClick={handleCreateVault}
+              onClick={() => {
+                console.log("here");
+                setStep(1);
+              }}
               text="Create a Vault"
               style="px-[16px] py-[10px] text-[16px]"
             />
@@ -58,10 +63,11 @@ const PartnerOnboarding = () => {
             setStep(0);
           }}
           onNext={() => {
-            setStep(step + 1);
+            console.log("onnext");
+            setStep((step) => step + 1);
           }}
           onBack={() => {
-            setStep(step - 1);
+            setStep((step) => step - 1);
           }}
         />
       </div>

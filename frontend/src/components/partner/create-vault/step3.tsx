@@ -47,7 +47,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             <h2 className="text-[18px] font-semibold leading-[28px] text-[#dbd2ef]">
               Create a Vault
             </h2>
-            <h4 className="text-[14px] leading-[20px] text-[#c3b5fd] border-solid border-[1px] rounded-[4px] border-[#5720b7] flex items-center justofy-center px-[8px] py-[4px]">
+            <h4 className="text-[14px] leading-[20px] text-[#c3b5fd] border-solid border-[1px] rounded-[4px] border-[#5720b7] flex items-center justify-center px-[8px] py-[4px]">
               Step 2 of 2
             </h4>
           </div>

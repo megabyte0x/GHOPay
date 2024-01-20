@@ -9,6 +9,7 @@ import Step4 from "./create-vault/step4";
 import { waitForTransaction } from "wagmi/actions";
 import { readPublicContract } from "@/utils/contract";
 import { EPublicContracts } from "@/types";
+import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -30,9 +31,9 @@ const CreateVaultModal = ({
   const [ratio1, setRatio1] = useState(2);
   const [availableGHO, setAvailableGHO] = useState(0);
   const [rewardPoints, setRewardPoints] = useState(0);
-  const [partnerVaultAddress, setPartnerVaultAddress] = useState("");
 
   const { address } = useAccount();
+  const { partnerVaultAddr } = usePartnerDetails();
 
   const getAvailableGHO = useCallback(async () => {
     return await readPublicContract(EPublicContracts.TestGHO, "balanceOf", [
@@ -40,26 +41,9 @@ const CreateVaultModal = ({
     ]);
   }, [address]);
 
-  const getPartnerVault = useCallback(async () => {
-    return await readPublicContract(
-      EPublicContracts.Utils,
-      "s_addressToPartnerDetails",
-      [address],
-    );
-  }, [address]);
-
-  useEffect(() => {
-    const getVault = async () => {
-      const res = (await getPartnerVault()) as string[];
-      console.log(res[0]);
-      setPartnerVaultAddress(res[0]);
-    };
-    getVault();
-  }, [address, getPartnerVault]);
-
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
-    console.log(zerosToAdd,ratio1)
+    console.log(zerosToAdd, ratio1);
     setRewardPoints(Number(`${1}${zerosToAdd}`) * stakeGHO);
   }, [ratio1, stakeGHO]);
 
@@ -85,32 +69,34 @@ const CreateVaultModal = ({
     ],
   });
 
-  const writeAsyncPartnerVault = useContractWrite({
+  const { writeAsync: writeAsyncPartnerVault } = useContractWrite({
     account: address,
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
-    address: partnerVaultAddress as `0x{string}`,
+    address: partnerVaultAddr,
     functionName: "depositGHO",
     args: [BigInt(stakeGHO ? stakeGHO : 0)],
-  }).writeAsync;
+  });
 
-  const writeAsyncApproveTestGHO = useContractWrite({
+  const { writeAsync: writeAsyncApproveTestGHO } = useContractWrite({
     account: address,
     abi: CONTRACTS.PUBLIC.TestGHO.ABI,
     address: CONTRACTS.PUBLIC.TestGHO.address,
     functionName: "approve",
-    args: [partnerVaultAddress, BigInt(1111111111111111)],
-  }).writeAsync;
+    args: [partnerVaultAddr, BigInt(1111111111111111)],
+  });
 
-  const handleCreate = async () => {
+  const handleVaultCreate = async () => {
+    if (!address) throw "Please Log in.";
+    if (!ratio1 || !symbol || !vaultName) throw "Please fill all fields.";
+
+    onNext();
+
     try {
-      onNext();
-      if (!address) throw "Please Log in.";
-      if (!ratio1 || !symbol || !vaultName) throw "Please fill all fields.";
-
       const { hash } = await writeAsync();
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 });
       console.log("Transaction successful");
+
       onNext();
     } catch (error) {
       if (typeof error === "string") {
@@ -123,34 +109,19 @@ const CreateVaultModal = ({
     }
   };
 
-  const handleNext = () => {
-    if (vaultName && symbol && ratio1) {
-      onNext();
-    } else {
-      setMessage("Please Fill all fields");
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    }
-  };
-
-  const handleBuyGHO = () => {};
-  const handleStakeAll = () => {
-    setStakeGHO(availableGHO);
-  };
-
   const handleMintGHO = async () => {
     try {
       onNext();
+
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
 
-      const txn = await writeAsyncApproveTestGHO();
+      const { hash: ghoHash } = await writeAsyncApproveTestGHO();
+      await waitForTransaction({ hash: ghoHash, chainId: 11155111 });
 
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
       await Promise.all([
-        waitForTransaction({ hash: txn.hash, chainId: 11155111 }),
         waitForTransaction({ hash, chainId: 11155111 }),
         getAvailableGHO(),
       ]);
@@ -165,6 +136,11 @@ const CreateVaultModal = ({
       }
       console.error(error);
     }
+  };
+
+  const handleBuyGHO = () => {};
+  const handleStakeAll = () => {
+    setStakeGHO(availableGHO);
   };
 
   const handleVaultName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +171,7 @@ const CreateVaultModal = ({
               handleVaultName={handleVaultName}
               handleSymbol={handleSymbol}
               handleRatio1={handleRatio1}
-              handleCreate={handleCreate}
+              handleCreate={handleVaultCreate}
               message={message}
               vaultName={vaultName}
               symbol={symbol}
@@ -216,7 +192,6 @@ const CreateVaultModal = ({
               handleMintGHO={handleMintGHO}
             />
           )}
-          {/* FINAL vault create Loader */}
           {step == 4 && <Step4 />}
         </div>
       )}
@@ -225,6 +200,3 @@ const CreateVaultModal = ({
 };
 
 export default CreateVaultModal;
-
-const availableGHO = 0.0;
-const rewardPoints = 0;
