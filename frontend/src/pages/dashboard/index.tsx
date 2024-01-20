@@ -1,9 +1,9 @@
-import useWalletInfo from "@/hooks/user/useWalletInfo";
 import User from "./user";
 import { useAccount } from "wagmi";
 import useAppNavigation from "@/hooks/useAppNavigation";
-import PartnerOnboarding from "../../components/partner/partner-onboarding";
 import VaultInfo from "@/components/partner/vault-info";
+import useWalletInfo from "@/hooks/user/usePartnerInfo";
+import Partner from "./partner";
 
 const Dapp = () => {
   const { isPartner, isUser } = useWalletInfo();
@@ -15,11 +15,7 @@ const Dapp = () => {
   }
 
   if (isPartner) {
-    if (isPartner.registered) {
-      return <VaultInfo />;
-    } else {
-      return <PartnerOnboarding />;
-    }
+    return <Partner />;
   }
 
   if (isUser) {
