@@ -51,7 +51,7 @@ export const User = () => {
               <Shop />
             ) : (
               <div className="flex w-full items-center justify-center py-[48px]">
-                <Swap swapType="userSwap" />
+                <Swap />
               </div>
             )}
           </div>

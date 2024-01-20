@@ -5,6 +5,12 @@ type Props = {
   onBookingHandle: () => void;
 };
 
+const ratio = {
+  ratio1: 1,
+  ratio2: 2,
+};
+const partnerToken = "RP";
+
 const BookingTile = ({ onBookingHandle }: Props) => {
   return (
     <div
@@ -22,16 +28,16 @@ const BookingTile = ({ onBookingHandle }: Props) => {
         <h1 className="text-[20px] font-semibold leading-[28px] text-[#c3b5fd]">
           Save up to $150 on Europe Trips
         </h1>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <h3
             className="text-[18px] font-bold leading-[20px] text-[#a48afb] 
                 border-dashed border-[#875bf7] border-[1px] rounded-[2px]
                 flex flex-row py-[4px] px-[8px]"
           >
-            $50<span className="font-medium"> GHO Points</span>
+            $50 <span className="font-medium"> GHO Points</span>
           </h3>
-          <div className="text-right text-[14px] font-semibold leading-[20px] text-[#875bf7]">
-            Ratio
+          <div className="text-right text-[15px] font-semibold leading-[20px] text-[#875bf7]">
+            {ratio.ratio1} {partnerToken} : {ratio.ratio2} GP
           </div>
         </div>
         <BUTTONS.PURPLE
