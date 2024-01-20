@@ -19,11 +19,17 @@ contract PartnerContractsDeployer is Ownable {
 
     address public s_mainPayment;
     address public s_rPool;
+    address public s_mainAdmin;
+    address public s_ghoPassport;
 
-    constructor(address _mainPayment, address _mainAdmin, address _utils, address _rPool) Ownable(_mainAdmin) {
+    constructor(address _mainPayment, address _mainAdmin, address _utils, address _rPool, address _ghoPassport)
+        Ownable(_mainAdmin)
+    {
         s_mainPayment = _mainPayment;
         s_utilsContract = Utils(_utils);
         s_rPool = _rPool;
+        s_mainAdmin = _mainAdmin;
+        s_ghoPassport = _ghoPassport;
     }
 
     function registerAsPartner(
@@ -39,12 +45,14 @@ contract PartnerContractsDeployer is Ownable {
             _symbol,
             msg.sender,
             s_rPool,
+            s_mainAdmin,
             _ratio
         );
         uint256 _rpToGHORatio = (uint256(_ratio) * 10e18);
         PartnerPayment partnerPayment = new PartnerPayment(
             address(partnerVault),
             s_mainPayment,
+            s_ghoPassport,
             _maxAmtPercentInRp,
             msg.sender,
             _rpToGHORatio

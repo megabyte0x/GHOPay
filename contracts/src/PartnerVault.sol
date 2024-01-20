@@ -31,8 +31,8 @@ contract PartnerVault is ERC4626, Ownable {
 
     ERC20 public immutable i_ghoToken;
 
-    uint8 public s_withdrawalFee;
-    uint8 public s_partnerFee;
+    uint256 public s_withdrawalFee;
+    uint256 public s_partnerFee;
     address public s_rewardPool;
     address public s_partnerFeeCollector;
 
@@ -42,10 +42,12 @@ contract PartnerVault is ERC4626, Ownable {
         string memory _symbol,
         address _partnerAddress,
         address _rewardPool,
+        address _mainAdminFeeCollector,
         uint8 ratio
     ) Ownable(_partnerAddress) ERC4626(_ghoToken, _name, _symbol, (_ghoToken.decimals() + ratio)) {
         i_ghoToken = _ghoToken;
         s_rewardPool = _rewardPool;
+        s_partnerFeeCollector = _mainAdminFeeCollector;
     }
 
     modifier isZeroAdrress(address _address) {

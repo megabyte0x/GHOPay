@@ -43,6 +43,7 @@ contract PartnerPayment is Ownable {
     constructor(
         address _rpToken,
         address _mainPayment,
+        address _ghoPassport,
         uint256 _maxAmtPercentInRp,
         address _partnerAdmin,
         uint256 _rpToGHORatio
@@ -52,6 +53,7 @@ contract PartnerPayment is Ownable {
         s_partnerAdmin = _partnerAdmin;
         s_rpToGHORatio = _rpToGHORatio;
         s_maxAmtPercentInRp = _maxAmtPercentInRp;
+        s_ghoPassport = IERC721(_ghoPassport);
     }
 
     /*
