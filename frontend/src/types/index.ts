@@ -73,17 +73,11 @@ export type AdminContractCollection = {
 
 type PartnerContract = {
   address: `0x${string}`;
+  ABI: ABI;
 };
 
 export type PublicContractCollection = {
-  GHOPassport: PublicContract;
-  GHOPartnerPassport: PublicContract;
-  Utils: PublicContract;
-  RPool: PublicContract;
-  MainVault: PublicContract;
-  MainPayment: PublicContract;
-  PartnerContractsDeployer: PublicContract;
-  TestGHO: PublicContract;
+  [K in EPublicContracts]: PublicContract;
 };
 
 export type PartnerContractCollection = {

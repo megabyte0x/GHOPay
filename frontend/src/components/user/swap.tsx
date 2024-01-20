@@ -3,18 +3,28 @@ import Image from "next/image";
 import BUTTONS from "../landing/Buttons";
 import { useState } from "react";
 
+const minRecieved = 0;
+const currentExchangeRate = 0;
+const gasFee = 0;
+const minGHORecieve = 0;
+const usdOfMinGHORecieved = 0;
+
 export const Swap = () => {
   const [vis, setVis] = useState(false);
   const [fromToken, setFromToken] = useState("GHO Points");
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
-  const handleFromToken = (token: any) => {
+
+  const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    const token = e.currentTarget.textContent;
+    if (!token) return;
+
     setFromToken(token);
   };
-  const handleFromAmount = (e: any) => {
+  const handleFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromAmount(parseFloat(e.target.value));
   };
-  const handleToAmount = (e: any) => {
+  const handleToAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToAmount(parseFloat(e.target.value));
   };
   const handleSwap = () => {};
@@ -62,30 +72,17 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
               border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
               text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
                   >
-                    <li
-                      onClick={() => {
-                        handleFromToken("GHO Points");
-                      }}
-                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
-                    >
-                      GHO Points
-                    </li>
-                    <li
-                      onClick={() => {
-                        handleFromToken("GHO Points1");
-                      }}
-                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
-                    >
-                      Option
-                    </li>
-                    <li
-                      onClick={() => {
-                        handleFromToken("GHO Points2");
-                      }}
-                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
-                    >
-                      Optiom
-                    </li>
+                    {[].map(() => {
+                      return (
+                        <li
+                          key={Math.random()}
+                          onClick={handleFromTokenSelect}
+                          className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                        >
+                          GHO Points
+                        </li>
+                      );
+                    })}
                   </ol>
                 )}
               </div>
@@ -186,9 +183,3 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
 };
 
 export default Swap;
-
-const minRecieved = 0;
-const currentExchangeRate = 0;
-const gasFee = 0;
-const minGHORecieve = 0;
-const usdOfMinGHORecieved = 0;
