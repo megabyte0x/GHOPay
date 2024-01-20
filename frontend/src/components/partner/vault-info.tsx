@@ -3,15 +3,14 @@ import React, { useState } from "react";
 import Swap from "../user/swap";
 
 const VaultInfo = () => {
-  const [swapVis, setSwapVis] = useState(false);
-  const [swapType, setSwapType] = useState("");
+  const [openStakeMore, setOpenStakeMore] = useState(false);
+  const [openWithdraw, setOpenWithdraw] = useState(false);
+
   const handleWithdraw = () => {
-    setSwapType("withdraw");
-    setSwapVis(true);
+    setOpenWithdraw(true);
   };
   const handleStakeMore = () => {
-    setSwapType("stakeMore");
-    setSwapVis(true);
+    setOpenStakeMore(true);
   };
   return (
     <div className="flex flex-col gap-[48px] px-[112px] pb-[48px] pt-[96px]">
@@ -177,14 +176,15 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
           </div>
         </div>
       </div>
-      {swapVis && (
+      {(openStakeMore || openWithdraw) && (
         <div className="items-center justify-center bg-[#21212198] backdrop-blur-md fixed inset-0 flex">
           <Swap
-            swapType={swapType}
             onClose={() => {
-              setSwapVis(false);
+              openStakeMore && setOpenStakeMore(false);
+              openWithdraw && setOpenWithdraw(false);
             }}
-            fromTokenList={["token1", "token2"]}
+            fromTokenList={openStakeMore ? ["GHO"] : ["Partner Point"]}
+            toTokenList={openStakeMore ? ["Partner Point"] : ["GHO"]}
           />
         </div>
       )}

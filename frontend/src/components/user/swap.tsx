@@ -8,45 +8,51 @@ const currentExchangeRate = 0;
 const gasFee = 0;
 const minGHORecieve = 0;
 const usdOfMinGHORecieved = 0;
-const partnerToken: string = "RP";
-enum ESwapType {
-  WITHDRAW = "withdraw",
-  STAKE_MORE = "stakeMore",
-  USER_SWAP = "userSwap",
-}
 
 type SwapModalProps = {
   onClose?: () => void;
   fromTokenList?: any[];
   toTokenList?: any[];
-  swapType: string;
 };
+
+const DEFAULT_TOKENS = ["GHO", "UNI"];
 
 export const Swap = ({
   onClose,
-  fromTokenList,
-  toTokenList,
-  swapType,
+  fromTokenList = DEFAULT_TOKENS,
+  toTokenList = DEFAULT_TOKENS,
 }: SwapModalProps) => {
-  console.log(swapType);
-  console.log(swapType != ESwapType.USER_SWAP);
   const [fromVis, setFromVis] = useState(false);
-  const [fromToken, setFromToken] = useState("GHO Points");
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
+
+  const [fromToken, setFromToken] = useState<any>(fromTokenList[0]);
+  const [toToken, setToToken] = useState<any>(toTokenList[0]);
+
+  const isUser = true;
 
   const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
     const token = e.currentTarget.textContent;
     if (!token) return;
     setFromToken(token);
   };
+
+  const handleToTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    const token = e.currentTarget.textContent;
+    if (!token) return;
+    setToToken(token);
+  };
+
   const handleFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFromAmount(parseFloat(e.target.value));
   };
   const handleToAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setToAmount(parseFloat(e.target.value));
   };
-  const handleSwap = () => {};
+
+  const handleSwap = () => {
+    console.log({ toAmount, fromAmount, fromToken, toToken });
+  };
   return (
     <div
       className="pt-[32px] px-[24px] pb-[24px] rounded-[12px]
@@ -54,7 +60,7 @@ bg-[#1B0F31] border-[1px] border-solid border-[#5720B7]
 max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
     >
       <div className="flex flex-col gap-[16px]">
-        {swapType != ESwapType.USER_SWAP && (
+        {isUser && (
           <Image
             onClick={onClose}
             src={"/x-close.svg"}
@@ -87,13 +93,9 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                 className="cursor-pointer flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
               >
                 <h3 className="text-[#C3B5FD] min-w-fit">
-                  {fromTokenList
-                    ? fromTokenList[0]
-                    : swapType == ESwapType.WITHDRAW
-                      ? partnerToken
-                      : "GHO"}
+                  {fromTokenList?.length === 1 ? fromTokenList[0] : fromToken}
                 </h3>
-                {fromTokenList && (
+                {fromTokenList.length > 1 && (
                   <>
                     <Image
                       src={"/downArrow.svg"}
@@ -158,13 +160,9 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
               <div className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit">
                 {/* <Image alt="gho" src={"/GHOLogo.svg"} height={15} width={20} /> */}
                 <h3 className="text-[#C3B5FD] min-w-fit">
-                  {toTokenList
-                    ? toTokenList[0]
-                    : swapType == ESwapType.STAKE_MORE
-                      ? partnerToken
-                      : "GHO"}
+                  {toTokenList.length === 1 ? toTokenList[0] : toToken}
                 </h3>
-                {toTokenList && (
+                {toTokenList.length > 1 && (
                   <>
                     <Image
                       src={"/downArrow.svg"}
@@ -184,7 +182,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                           return (
                             <li
                               key={Math.random()}
-                              onClick={handleFromTokenSelect}
+                              onClick={handleToTokenSelect}
                               className="hover:bg-[#3e2072] px-[10px] py-[8px]"
                             >
                               {token}
