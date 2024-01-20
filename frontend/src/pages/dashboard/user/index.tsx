@@ -20,7 +20,7 @@ export const User = () => {
     <>
       {navSelected === EDashboardNavSelected.SHOP ? (
         <div>
-          <div className="flex flex-col px-20 pt-[72px]">
+          <div className="flex flex-col px-20 pt-[96px]">
             <div className="border-solid border-b-[1px] border-[#FFFFFF33] flex gap-[20px]  justify-start items-start">
               <button
                 className={classNames(
