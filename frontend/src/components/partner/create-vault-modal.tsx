@@ -1,12 +1,12 @@
 "use client";
-import { CONTRACTS, MAX_REWARDS_PERCENTAGE_CLAIMABLE } from "@/constants";
+import { CONTRACTS } from "@/constants";
 import { EPublicContracts } from "@/types";
 import { publicClient, writePublicContract } from "@/utils/contract";
 import { toBigNumber } from "@/utils/helper-functions";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getContract } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -28,6 +28,16 @@ const CreateVaultModal = ({
   const [ratio1, setRatio1] = useState(0);
   const [ratio2, setRatio2] = useState(0);
   const { address } = useAccount();
+
+  const { writeAsync, data } = useContractWrite({
+    account: address,
+    address: CONTRACTS.PUBLIC.PartnerContractsDeployer.address,
+    abi: CONTRACTS.PUBLIC.PartnerContractsDeployer.ABI,
+    functionName: "registerAsPartner",
+    args: [CONTRACTS.PUBLIC.TestGHO.address, vaultName, symbol, 5, BigInt(100)],
+  });
+  console.log(">>>>>>>", writeAsync);
+
   const handleNext = () => {
     if (vaultName && symbol && ratio1 && ratio2) {
       onNext();
@@ -51,14 +61,15 @@ const CreateVaultModal = ({
         publicClient,
       });
       const ratioCalc = toBigNumber(ratio1 / ratio2);
-      console.log("address", address, ghoTokenContract, ratioCalc);
-      const response = await writePublicContract(
-        EPublicContracts.PartnerContractsDeployer,
-        "registerAsPartner",
-        address,
-        [ghoTokenContract.address, vaultName, symbol, 1000, 5e18],
-      );
-      console.log(response);
+      console.log("address", address, ghoTokenContract, ratioCalc, BigInt(100));
+      const response = await writeAsync();
+      // const response = await writePublicContract(
+      //   EPublicContracts.PartnerContractsDeployer,
+      //   "registerAsPartner",
+      //   address,
+      //   [ghoTokenContract.address, vaultName, symbol, 5, BigInt(100)],
+      // );
+      console.log(response, data);
       onNext();
     } catch (error) {
       if (typeof error === "string") {

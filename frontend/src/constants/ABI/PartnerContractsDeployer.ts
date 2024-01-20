@@ -107,7 +107,7 @@ export const ABI = [
   {
     inputs: [
       {
-        internalType: "contract ERC20",
+        internalType: "address",
         name: "_ghoToken",
         type: "address",
       },

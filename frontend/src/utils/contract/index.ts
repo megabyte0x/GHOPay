@@ -1,5 +1,10 @@
-import { createPublicClient, createWalletClient, http } from "viem";
-import { sepolia } from "wagmi";
+import {
+  createPublicClient,
+  createWalletClient,
+  getContract,
+  http,
+} from "viem";
+import { sepolia } from "viem/chains";
 import { CONTRACTS } from "@/constants";
 import { EPublicContracts, PublicContractCollection } from "@/types";
 

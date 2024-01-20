@@ -146,7 +146,7 @@ export const CONTRACTS: {
       ABI: MainPaymentABI,
     },
     PartnerContractsDeployer: {
-      address: "0x857661CFA34689AbbB5d2fcc9f508b543461C4B0",
+      address: "0xF5D0Fc99c552C33C33066f16A6Ab1D49d49B37ce",
       ABI: PartnerContractsDeployerABI,
     },
   },
