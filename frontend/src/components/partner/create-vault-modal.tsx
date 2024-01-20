@@ -92,6 +92,14 @@ const CreateVaultModal = ({
     args: [BigInt(stakeGHO ? stakeGHO : 0)],
   }).writeAsync;
 
+  const writeAsyncApproveTestGHO = useContractWrite({
+    account: address,
+    abi: CONTRACTS.PUBLIC.TestGHO.ABI,
+    address: CONTRACTS.PUBLIC.TestGHO.address,
+    functionName: "approve",
+    args: [partnerVaultAddress, BigInt("1111111111111111111111111111")],
+  }).writeAsync;
+
   const handleCreate = async () => {
     try {
       onNext();
@@ -136,11 +144,16 @@ const CreateVaultModal = ({
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
 
+      const txn = await writeAsyncApproveTestGHO();
+      await waitForTransaction({ hash: txn.hash, chainId: 11155111 });
+
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
-      await waitForTransaction({ hash, chainId: 11155111 });
+      await Promise.all([
+        waitForTransaction({ hash, chainId: 11155111 }),
+        getAvailableGHO(),
+      ]);
       console.log("Transaction successful");
-      await getAvailableGHO();
       onNext();
     } catch (error) {
       if (typeof error === "string") {
