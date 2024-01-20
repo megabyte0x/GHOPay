@@ -36,7 +36,7 @@ const CreateVaultModal = ({
 
   const { address } = useAccount();
   const { partnerVaultAddr } = usePartnerDetails();
-  const { getAvailableGHO } = useBalances();
+  const { availableGho } = useBalances();
 
   const { approveTestGhoForPartner } = useApprovals();
 
@@ -45,14 +45,6 @@ const CreateVaultModal = ({
     console.log(zerosToAdd, ratio1);
     setRewardPoints(Number(`${1}${zerosToAdd}`) * stakeGHO);
   }, [ratio1, stakeGHO]);
-
-  useEffect(() => {
-    const getGHO = async () => {
-      const res = await getAvailableGHO();
-      setAvailableGHO(Number(res));
-    };
-    getGHO();
-  }, [availableGHO, address, getAvailableGHO]);
 
   const { writeAsync } = useContractWrite({
     account: address,
@@ -73,7 +65,7 @@ const CreateVaultModal = ({
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
     address: partnerVaultAddr,
     functionName: "depositGHO",
-    args: [BigInt(stakeGHO ? stakeGHO : 0)],
+    args: [BigInt(stakeGHO * 10e17)],
   });
 
   const handleVaultCreate = async () => {
@@ -111,11 +103,8 @@ const CreateVaultModal = ({
 
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
-      await Promise.all([
-        waitForTransaction({ hash, chainId: 11155111 }),
-        getAvailableGHO(),
-      ]);
-      console.log("Transaction successful");
+      await waitForTransaction({ hash, chainId: 11155111 }),
+        console.log("Transaction successful");
       onNext();
     } catch (error) {
       if (typeof error === "string") {
