@@ -22,7 +22,11 @@ contract Utils {
     function addPartnerContracts(address partner, address _partnerPayment, address _partnerVault) public {
         s_addressToPartnerDetails[partner] =
             PartnerDetails({s_partnerVault: _partnerVault, s_partnerPayment: _partnerPayment});
-        s_partners.push(partner);
+
+        if (!isPartnerAlreadyAdded(partner)) {
+            s_partners.push(partner);
+        }
+
         s_isPartnerPaymentContract[_partnerPayment] = true;
         s_isPartner[partner] = true;
 
@@ -35,6 +39,15 @@ contract Utils {
 
     function isPartner(address _partner) public view returns (bool) {
         return s_isPartner[_partner];
+    }
+
+    function isPartnerAlreadyAdded(address _partner) public view returns (bool) {
+        for (uint256 i = 0; i < s_partners.length; i++) {
+            if (s_partners[i] == _partner) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function getPartnerDetails(address _partner) public view returns (address _partnerVault, address _partnerPayment) {
