@@ -7,13 +7,16 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 import {console2} from "forge-std/console2.sol";
 
 contract DeployPartnerContractsDeployer is Script {
-    function deployPartnerContractsDeployer(address _mainPayment, address _mainAdmin, address _utils, address _rPool)
-        public
-        returns (address partnerContractsDeployer)
-    {
+    function deployPartnerContractsDeployer(
+        address _mainPayment,
+        address _mainAdmin,
+        address _utils,
+        address _rPool,
+        address _ghoPassport
+    ) public returns (address partnerContractsDeployer) {
         vm.startBroadcast();
         PartnerContractsDeployer _partnerContractDeployer =
-            new PartnerContractsDeployer(_mainPayment, _mainAdmin, _utils, _rPool);
+            new PartnerContractsDeployer(_mainPayment, _mainAdmin, _utils, _rPool, _ghoPassport);
         vm.stopBroadcast();
         partnerContractsDeployer = address(_partnerContractDeployer);
     }
@@ -25,13 +28,15 @@ contract DeployPartnerContractsDeployer is Script {
         address mainAdmin = helperConfigs.s_mainAdmin();
         address utils = helperConfigs.getUtils(_chainId);
         address rPool = helperConfigs.getRPoolAddress(_chainId);
+        address ghoPassport = helperConfigs.getGhoPassport(_chainId);
 
         console2.log("mainPayment: %s", mainPayment);
         console2.log("mainAdmin: %s", mainAdmin);
         console2.log("utils: %s", utils);
         console2.log("rPool: %s", rPool);
+        console2.log("ghoPassport: %s", ghoPassport);
 
-        partnerContractsDeployer = deployPartnerContractsDeployer(mainPayment, mainAdmin, utils, rPool);
+        partnerContractsDeployer = deployPartnerContractsDeployer(mainPayment, mainAdmin, utils, rPool, ghoPassport);
     }
 
     function run() external returns (address partnerContractsDeployer) {
