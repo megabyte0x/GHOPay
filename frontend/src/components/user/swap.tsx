@@ -8,9 +8,29 @@ const currentExchangeRate = 0;
 const gasFee = 0;
 const minGHORecieve = 0;
 const usdOfMinGHORecieved = 0;
+const partnerToken: string = "RP";
+enum ESwapType {
+  WITHDRAW = "withdraw",
+  STAKE_MORE = "stakeMore",
+  USER_SWAP = "userSwap",
+}
 
-export const Swap = () => {
-  const [vis, setVis] = useState(false);
+type SwapModalProps = {
+  onClose?: () => void;
+  fromTokenList?: any[];
+  toTokenList?: any[];
+  swapType: string;
+};
+
+export const Swap = ({
+  onClose,
+  fromTokenList,
+  toTokenList,
+  swapType,
+}: SwapModalProps) => {
+  console.log(swapType);
+  console.log(swapType != ESwapType.USER_SWAP);
+  const [fromVis, setFromVis] = useState(false);
   const [fromToken, setFromToken] = useState("GHO Points");
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
@@ -18,7 +38,6 @@ export const Swap = () => {
   const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
     const token = e.currentTarget.textContent;
     if (!token) return;
-
     setFromToken(token);
   };
   const handleFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +54,16 @@ bg-[#1B0F31] border-[1px] border-solid border-[#5720B7]
 max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
     >
       <div className="flex flex-col gap-[16px]">
+        {swapType != ESwapType.USER_SWAP && (
+          <Image
+            onClick={onClose}
+            src={"/x-close.svg"}
+            alt="Xclose"
+            width={24}
+            height={24}
+            className=" self-end hover:opacity-90 p-[1px] hover:bg-[#5720b7d3] rounded-full mt-[-12px] mb-[-21px]"
+          />
+        )}
         <div className="flex flex-col gap-[6px] text-start">
           <label
             htmlFor=""
@@ -50,40 +79,50 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
             <div className="py-[10px] min-w-fit flex flex-col">
               <div
                 onMouseEnter={() => {
-                  setVis(true);
+                  setFromVis(true);
                 }}
                 onMouseLeave={() => {
-                  setVis(false);
+                  setFromVis(false);
                 }}
                 className="cursor-pointer flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
               >
-                <h3 className="text-[#C3B5FD] min-w-fit">{fromToken}</h3>
-                <Image
-                  src={"/downArrow.svg"}
-                  height={20}
-                  width={20}
-                  alt="dropdown"
-                />
-                {vis && (
-                  <ol
-                    className="fixed mt-[27px] justify-right
-
+                <h3 className="text-[#C3B5FD] min-w-fit">
+                  {fromTokenList
+                    ? fromTokenList[0]
+                    : swapType == ESwapType.WITHDRAW
+                      ? partnerToken
+                      : "GHO"}
+                </h3>
+                {fromTokenList && (
+                  <>
+                    <Image
+                      src={"/downArrow.svg"}
+                      height={20}
+                      width={20}
+                      alt="dropdown"
+                    />
+                    {fromVis && (
+                      <ol
+                        className="fixed mt-[27px] justify-right
+                    z-50
                    flex flex-col 
               border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
               text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
-                  >
-                    {[].map(() => {
-                      return (
-                        <li
-                          key={Math.random()}
-                          onClick={handleFromTokenSelect}
-                          className="hover:bg-[#3e2072] px-[10px] py-[8px]"
-                        >
-                          GHO Points
-                        </li>
-                      );
-                    })}
-                  </ol>
+                      >
+                        {fromTokenList.map((token) => {
+                          return (
+                            <li
+                              key={Math.random()}
+                              onClick={handleFromTokenSelect}
+                              className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                            >
+                              {token}
+                            </li>
+                          );
+                        })}
+                      </ol>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -117,8 +156,45 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
           >
             <div className="py-[10px] min-w-fit">
               <div className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit">
-                <Image alt="gho" src={"/GHOLogo.svg"} height={15} width={20} />
-                <h3 className="text-[#C3B5FD] min-w-fit">GHO</h3>
+                {/* <Image alt="gho" src={"/GHOLogo.svg"} height={15} width={20} /> */}
+                <h3 className="text-[#C3B5FD] min-w-fit">
+                  {toTokenList
+                    ? toTokenList[0]
+                    : swapType == ESwapType.STAKE_MORE
+                      ? partnerToken
+                      : "GHO"}
+                </h3>
+                {toTokenList && (
+                  <>
+                    <Image
+                      src={"/downArrow.svg"}
+                      height={20}
+                      width={20}
+                      alt="dropdown"
+                    />
+                    {fromVis && (
+                      <ol
+                        className="fixed mt-[27px] justify-right
+                    z-50
+                   flex flex-col 
+              border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
+              text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
+                      >
+                        {toTokenList.map((token) => {
+                          return (
+                            <li
+                              key={Math.random()}
+                              onClick={handleFromTokenSelect}
+                              className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                            >
+                              {token}
+                            </li>
+                          );
+                        })}
+                      </ol>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 

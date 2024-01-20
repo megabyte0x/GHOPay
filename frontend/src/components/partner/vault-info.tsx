@@ -1,11 +1,20 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import Swap from "../user/swap";
 
 const VaultInfo = () => {
-  const handleWithdraw = () => {};
-  const handleStakeMore = () => {};
+  const [swapVis, setSwapVis] = useState(false);
+  const [swapType, setSwapType] = useState("");
+  const handleWithdraw = () => {
+    setSwapType("withdraw");
+    setSwapVis(true);
+  };
+  const handleStakeMore = () => {
+    setSwapType("stakeMore");
+    setSwapVis(true);
+  };
   return (
-    <div className="flex flex-col gap-[48px] px-[112px] py-[48px]">
+    <div className="flex flex-col gap-[48px] px-[112px] pb-[48px] pt-[96px]">
       <div
         className="border-solid border-b-[1px] border-[#FFFFFF1A] 
   flex justify-between w-full pb-[24px]"
@@ -168,6 +177,17 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
           </div>
         </div>
       </div>
+      {swapVis && (
+        <div className="items-center justify-center bg-[#21212198] backdrop-blur-md fixed inset-0 flex">
+          <Swap
+            swapType={swapType}
+            onClose={() => {
+              setSwapVis(false);
+            }}
+            fromTokenList={["token1", "token2"]}
+          />
+        </div>
+      )}
     </div>
   );
 };

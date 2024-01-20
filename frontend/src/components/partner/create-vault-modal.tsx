@@ -114,6 +114,11 @@ const CreateVaultModal = ({
     }
   };
 
+  if (!availableGho) {
+    console.warn("Waiting...");
+    return;
+  }
+
   const handleBuyGHO = () => {};
   const handleStakeAll = () => {
     setStakeGHO(availableGho as number);
