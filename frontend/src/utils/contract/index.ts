@@ -1,9 +1,4 @@
-import {
-  createPublicClient,
-  createWalletClient,
-  getContract,
-  http,
-} from "viem";
+import { createPublicClient, createWalletClient, http } from "viem";
 import { sepolia } from "viem/chains";
 import { CONTRACTS } from "@/constants";
 import { EPublicContracts, PublicContractCollection } from "@/types";
@@ -27,8 +22,6 @@ export const writePublicContract = async (
   }
   const { ABI, address } =
     CONTRACTS.PUBLIC[_contract as keyof PublicContractCollection];
-
-  console.log(">>>>>>>", typeof address, args, account);
 
   try {
     const { request } = await publicClient.simulateContract({

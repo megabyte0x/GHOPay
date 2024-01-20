@@ -1,13 +1,14 @@
 "use client";
-import { CHAINS, CONTRACTS } from "@/constants";
-import { toBigNumber } from "@/utils/helper-functions";
-import React, { useState } from "react";
+import { CONTRACTS } from "@/constants";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import Step1 from "./create-vault/step1";
 import Step2 from "./create-vault/step2";
 import Step3 from "./create-vault/step3";
 import Step4 from "./create-vault/step4";
 import { waitForTransaction } from "wagmi/actions";
+import { readPublicContract } from "@/utils/contract";
+import { EPublicContracts } from "@/types";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -27,8 +28,23 @@ const CreateVaultModal = ({
   const [message, setMessage] = useState("");
   const [stakeGHO, setStakeGHO] = useState(0);
   const [ratio1, setRatio1] = useState(0);
-  const [ratio2, setRatio2] = useState(0);
+  const [availableGHO, setAvailableGHO] = useState(0);
+
   const { address } = useAccount();
+
+  const getAvailableGHO = useCallback(async () => {
+    return await readPublicContract(EPublicContracts.TestGHO, "balanceOf", [
+      address,
+    ]);
+  }, [address]);
+
+  useEffect(() => {
+    const getGHO = async () => {
+      const res = await getAvailableGHO();
+      setAvailableGHO(Number(res));
+    };
+    getGHO();
+  }, [availableGHO, address, getAvailableGHO]);
 
   const { writeAsync } = useContractWrite({
     account: address,
@@ -44,12 +60,16 @@ const CreateVaultModal = ({
     ],
   });
 
+  const interactWithartnerVault = useContractWrite({
+    account:address,
+    abi: CONTRACTS.PARTNER.PartnerVault.
+  })
+
   const handleCreate = async () => {
     try {
       onNext();
       if (!address) throw "Please Log in.";
-      if (!ratio1 || !ratio2 || !symbol || !vaultName)
-        throw "Please fill all fields.";
+      if (!ratio1 || !symbol || !vaultName) throw "Please fill all fields.";
 
       const { hash } = await writeAsync();
       console.log("Hash generated: ", hash);
@@ -68,7 +88,7 @@ const CreateVaultModal = ({
   };
 
   const handleNext = () => {
-    if (vaultName && symbol && ratio1 && ratio2) {
+    if (vaultName && symbol && ratio1) {
       onNext();
     } else {
       setMessage("Please Fill all fields");
@@ -79,7 +99,31 @@ const CreateVaultModal = ({
   };
 
   const handleBuyGHO = () => {};
-  const handleStakeAll = () => {};
+  const handleStakeAll = () => {
+    setStakeGHO(availableGHO);
+  };
+
+  const handleMintGHO = () => {
+    try {
+      onNext();
+      if (!address) throw "Please Log in.";
+      if (!ratio1 || !symbol || !vaultName) throw "Please fill all fields.";
+
+      const { hash } = await writeAsync();
+      console.log("Hash generated: ", hash);
+      await waitForTransaction({ hash, chainId: 11155111 });
+      console.log("Transaction successful");
+      onNext();
+    } catch (error) {
+      if (typeof error === "string") {
+        setMessage(error);
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      }
+      console.error(error);
+    }
+  }
 
   const handleVaultName = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -93,11 +137,6 @@ const CreateVaultModal = ({
   const handleRatio1 = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setRatio1(parseFloat(e.target.value));
-    // XX VALUE printing pre change
-  };
-  const handleRatio2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setRatio2(parseFloat(e.target.value));
     // XX VALUE printing pre change
   };
   const handleStakedGHO = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +153,6 @@ const CreateVaultModal = ({
               handleVaultName={handleVaultName}
               handleSymbol={handleSymbol}
               handleRatio1={handleRatio1}
-              handleRatio2={handleRatio2}
               handleCreate={handleCreate}
               message={message}
               vaultName={vaultName}
