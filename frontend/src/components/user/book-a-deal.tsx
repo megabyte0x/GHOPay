@@ -43,14 +43,15 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
     if (!amountPay) {
       setMessage("Enter Amount");
     }
-    if (!tnc) {
-      setMessage("Accept TnC");
+    // else if (!tnc) {
+    //   setMessage("Accept TnC");
+    // }
+    else {
+      const { hash } = await writeAsync();
+      console.log(`Transaction hash: ${hash}`);
+
+      await waitForTransaction({ hash, chainId: 11155111 });
     }
-
-    const { hash } = await writeAsync();
-    console.log(`Transaction hash: ${hash}`);
-
-    await waitForTransaction({ hash, chainId: 11155111 });
   };
   return (
     <div
@@ -63,18 +64,18 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             className="bg-[#5720b7] border-solid border-[1px] border-[#6927da] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)]
 flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
           >
-            <Image
-              src={"/fingerPrint.svg"}
-              height={24}
-              width={24}
-              alt="Fingerprint"
-            />
+            <Image src={"/tag.svg"} height={24} width={24} alt="tag" />
           </div>
           <h2 className="text-[18px] font-semibold leading-[28px] text-[#dbd2ef]">
             Book a Deal
           </h2>
         </div>
-        <Image src={"/g8.svg"} alt="partner-logo" height={48} width={93} />
+        <Image
+          src={"/unitedSq.svg"}
+          alt="partner-logo"
+          height={48}
+          width={93}
+        />
       </div>
       <div className="flex flex-col gap-[32px] w-full">
         <form className="flex flex-col gap-[16px] text-left">
@@ -133,28 +134,32 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
             </div>
           </div>
           {/* CHECK BASED ON? XX */}
-          {/* <div
-            className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+          {amountPay > availableGHO && (
+            <div
+              className="rounded-[8px] border-solid border-[#6927da] border-[1px] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
                 text-[#A48AFB]
               flex justify-between gap-[8px] w-full
                   text-[16px] leading-[24px] py-[10px] pl-[14px]"
-          >
-            <div className="flex gap-2">
-              <Image
-                src={"/info-circle.svg"}
-                alt="info"
-                width={20}
-                height={20}
-              />
-              <h3 className="text-left">You don’t have enough GHO to stake.</h3>
-            </div>
-            <h6
-              className="hover:underline-offset-[2px] cursor-pointer
-                      pr-[14px] min-w-fit underline font-semibold text-right place-self-end"
             >
-              Buy GHO
-            </h6>
-          </div> */}
+              <div className="flex gap-2">
+                <Image
+                  src={"/info-circle.svg"}
+                  alt="info"
+                  width={20}
+                  height={20}
+                />
+                <h3 className="text-left">
+                  You don’t have enough GHO to stake.
+                </h3>
+              </div>
+              <h6
+                className="hover:underline-offset-[2px] cursor-pointer
+                      pr-[14px] min-w-fit underline font-semibold text-right place-self-end"
+              >
+                Buy GHO
+              </h6>
+            </div>
+          )}
           <div className="border-b-[1px] border-solid border-[#491C96]"></div>
           <div className="flex gap-2">
             <input
