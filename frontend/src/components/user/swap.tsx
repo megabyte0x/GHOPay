@@ -5,11 +5,24 @@ import { useState } from "react";
 
 export const Swap = () => {
   const [vis, setVis] = useState(false);
+  const [fromToken, setFromToken] = useState("GHO Points");
+  const [fromAmount, setFromAmount] = useState(0);
+  const [toAmount, setToAmount] = useState(0);
+  const handleFromToken = (token: any) => {
+    setFromToken(token);
+  };
+  const handleFromAmount = (e: any) => {
+    setFromAmount(parseFloat(e.target.value));
+  };
+  const handleToAmount = (e: any) => {
+    setToAmount(parseFloat(e.target.value));
+  };
+  const handleSwap = () => {};
   return (
     <div
       className="pt-[32px] px-[24px] pb-[24px] rounded-[12px]
 bg-[#1B0F31] border-[1px] border-solid border-[#5720B7]
-max-w-[480px]"
+max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
     >
       <div className="flex flex-col gap-[16px]">
         <div className="flex flex-col gap-[6px] text-start">
@@ -32,16 +45,15 @@ max-w-[480px]"
                 onMouseLeave={() => {
                   setVis(false);
                 }}
-                className="flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
+                className="cursor-pointer flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
               >
-                <h3 className="text-[#C3B5FD] min-w-fit">GHO Points</h3>
+                <h3 className="text-[#C3B5FD] min-w-fit">{fromToken}</h3>
                 <Image
                   src={"/downArrow.svg"}
                   height={20}
                   width={20}
                   alt="dropdown"
                 />
-
                 {vis && (
                   <ol
                     className="fixed mt-[27px] justify-right
@@ -50,13 +62,28 @@ max-w-[480px]"
               border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
               text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
                   >
-                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                    <li
+                      onClick={() => {
+                        handleFromToken("GHO Points");
+                      }}
+                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                    >
                       GHO Points
                     </li>
-                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                    <li
+                      onClick={() => {
+                        handleFromToken("GHO Points1");
+                      }}
+                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                    >
                       Option
                     </li>
-                    <li className="hover:bg-[#3e2072] px-[10px] py-[8px]">
+                    <li
+                      onClick={() => {
+                        handleFromToken("GHO Points2");
+                      }}
+                      className="hover:bg-[#3e2072] px-[10px] py-[8px]"
+                    >
                       Optiom
                     </li>
                   </ol>
@@ -65,9 +92,10 @@ max-w-[480px]"
             </div>
 
             <input
-              type="text"
+              onChange={handleFromAmount}
+              type="number"
               placeholder="Enter an amount"
-              className="bg-[#00000000] text-[#A48AFB] py-[10px] w-full"
+              className="bg-[#00000000] text-[#A48AFB] py-[10px] w-full pl-4"
             />
           </div>
         </div>
@@ -76,7 +104,7 @@ max-w-[480px]"
           alt="swap"
           height={24}
           width={24}
-          className="self-center"
+          className="self-center mb-[-21px]"
         />
         <div className="flex flex-col gap-[6px] text-start">
           <label
@@ -98,9 +126,10 @@ max-w-[480px]"
             </div>
 
             <input
-              type="text"
+              onChange={handleToAmount}
+              type="number"
               placeholder="0.00"
-              className="bg-[#00000000] text-[#A48AFB] py-[10px] w-full"
+              className="bg-[#00000000] text-[#A48AFB] py-[10px] w-full pl-4"
             />
           </div>
         </div>
@@ -120,7 +149,7 @@ max-w-[480px]"
               <h3 className="text-left text-[#A48AFB]">Price</h3>
             </div>
             <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              1 GHO = $0.98 USD
+              1 GHO = ${currentExchangeRate} USD
             </h6>
           </div>
           <div className="flex justify-between text-[16px] leading-[24px]">
@@ -129,7 +158,7 @@ max-w-[480px]"
               <h3 className="text-left text-[#A48AFB]">Minimum Recieved</h3>
             </div>
             <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              $0.00 USD
+              ${minRecieved} USD
             </h6>
           </div>
           <div className="flex justify-between text-[16px] leading-[24px]">
@@ -138,24 +167,28 @@ max-w-[480px]"
               <h3 className="text-left text-[#A48AFB]">Gas Fees</h3>
             </div>
             <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              0.00 GWEI
+              {gasFee} GWEI
             </h6>
           </div>
           <h3 className="text-[14px] leading-[20px] text-[#DBD2EFCC]">
-            End price is an estimate. You will receive at least 0.00 GHO ($0.00
-            USD), or the transaction will be refunded.
+            End price is an estimate. You will receive at least {minGHORecieve}{" "}
+            GHO ${usdOfMinGHORecieved} USD, or the transaction will be refunded.
           </h3>
         </div>
       </div>
       <BUTTONS.PURPLE
         text="Swap"
-        style="px-[18px] py-[10px] text-[16px]"
-        onClick={() => {
-          console.log("clicked swap");
-        }}
+        style="px-[18px] py-[10px] text-[16px] w-full"
+        onClick={handleSwap}
       />
     </div>
   );
 };
 
 export default Swap;
+
+const minRecieved = 0;
+const currentExchangeRate = 0;
+const gasFee = 0;
+const minGHORecieve = 0;
+const usdOfMinGHORecieved = 0;

@@ -40,7 +40,15 @@ export const User = () => {
             </button>
           </div>
         </div>
-        <div>{navType === ENav.SHOP ? <Shop /> : <Swap />}</div>
+        <div>
+          {navType === ENav.SHOP ? (
+            <Shop />
+          ) : (
+            <div className="flex w-full items-center justify-center py-[48px]">
+              <Swap />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
