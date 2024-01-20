@@ -157,11 +157,9 @@ export const CONTRACTS: {
   },
   PARTNER: {
     PartnerVault: {
-      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
       ABI: PartnerVaultABI,
     },
     PartnerPayment: {
-      address: "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
       ABI: PartnerPaymentABI,
     },
   },

@@ -72,7 +72,6 @@ export type AdminContractCollection = {
 };
 
 type PartnerContract = {
-  address: `0x${string}`;
   ABI: ABI;
 };
 
