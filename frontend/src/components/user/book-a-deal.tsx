@@ -16,7 +16,7 @@ type BookDealModalProps = {
 const ghoPoints = 0;
 const gasFee = 0;
 
-const BookDealModal = ({ onClose }: BookDealModalProps) => {
+const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
   const [amountPay, setAmountPay] = useState(0);
   const [tnc, setTnc] = useState(false);
   const [message, setMessage] = useState("");
@@ -45,6 +45,7 @@ const BookDealModal = ({ onClose }: BookDealModalProps) => {
     console.log(e.target.value);
   };
   const handleBook = async () => {
+    onNext();
     console.log({ partnerPaymentAddr });
     if (!partnerPaymentAddr) {
       throw new Error("Partner Payment Address not found");
@@ -178,6 +179,7 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
             </div>
           )}
           <div className="border-b-[1px] border-solid border-[#491C96]"></div>
+
           <div className="flex gap-2">
             <input
               type="checkbox"

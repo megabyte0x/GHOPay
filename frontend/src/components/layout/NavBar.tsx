@@ -30,7 +30,8 @@ const NavBar = () => {
   return (
     <div
       className="fixed top-0 w-[100vw] backdrop-blur z-30
-    border-b-[1px] border-[#DBD2EF1A] bg-[#14141b75] h-[68px] px-20 flex items-center justify-between "
+    border-b-[1px] border-[#DBD2EF1A] bg-[#14141b75] h-[68px] 
+    px-20 flex items-center justify-between "
     >
       <div className="flex items-center gap-[40px] lg:w-fit w-full">
         <div
@@ -164,7 +165,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px]  text-[14px] hover:text-[#DDD6FE] font-medium ":
                     navSelected === EDashboardNavSelected.APPLY_AS_A_PARTNER,
-                },
+                }
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.SHOP);
@@ -182,7 +183,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] text-[14px] hover:text-[#DDD6FE]  font-medium":
                     navSelected === EDashboardNavSelected.SHOP,
-                },
+                }
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.APPLY_AS_A_PARTNER);
