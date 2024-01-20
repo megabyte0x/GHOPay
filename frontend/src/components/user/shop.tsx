@@ -17,7 +17,6 @@ const Shop = () => {
       {showBookDeal && (
         <BookDealModal
           onClose={() => setShowBookDeal(false)}
-          onBack={() => setShowBookDeal(false)}
           onNext={() => setShowBookDeal(false)}
         />
       )}

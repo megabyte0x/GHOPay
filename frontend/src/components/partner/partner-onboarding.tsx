@@ -13,7 +13,7 @@ const PartnerOnboarding = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-[12px] w-[100vw] h-[fit] items-center px-[112px] pt-[30px] pb-[112px]">
+      <div className="flex flex-col gap-[12px] w-[100vw] h-[fit] items-center px-[112px] pt-[72px] pb-[112px]">
         <div
           className="border-solid border-b-[1px] border-[#FFFFFF1A] 
       flex gap-[24px] items-center justify-start w-full pb-[24px]"

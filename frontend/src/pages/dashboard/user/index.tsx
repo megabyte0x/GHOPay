@@ -14,7 +14,7 @@ export const User = () => {
   return (
     <>
       <div>
-        <div className="flex flex-col px-20 pt-[64px]">
+        <div className="flex flex-col px-20 pt-[72px]">
           <div className="border-solid border-b-[1px] border-[#FFFFFF33] flex gap-[20px]  justify-start items-start">
             <button
               className={classNames(
