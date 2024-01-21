@@ -1,12 +1,8 @@
 "use client";
+import useBalances from "@/hooks/useBalances";
 import Image from "next/image";
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
-
-const balances = [
-  { name: "abc", balance: 3 },
-  { name: "xyz", balance: 40 },
-];
 
 const WalletInfo = () => {
   const { address } = useAccount();
@@ -17,6 +13,9 @@ const WalletInfo = () => {
   const handleLogout = () => {
     disconnect();
   };
+
+  const { tokens } = useBalances();
+
   const handleChangeChain = () => {};
 
   if (!address) return;
@@ -41,14 +40,14 @@ const WalletInfo = () => {
           rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]
           min-w-[150px]"
           >
-            {balances.map((balance) => (
+            {tokens.map((token) => (
               <li
+                key={token.name}
                 className=" flex gap-[8px] py-[8px] px-[21px]
         text-[#DBD2EF] text-[14px] leading-[20px] font-medium
         border-b-[1px] border-[#372e4c] border-solid"
               >
-                {balance.name}:{" "}
-                <span className="font-bold">{balance.balance}</span>
+                {token.name}: <span className="font-bold">{token.balance}</span>
               </li>
             ))}
           </ul>

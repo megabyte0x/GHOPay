@@ -1,7 +1,7 @@
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
 import { CONTRACTS } from "@/constants";
-import { EPublicContracts, PublicContractCollection } from "@/types";
+import { EPublicContracts, PublicContractCollection, TAddress } from "@/types";
 import { readContract } from "wagmi/actions";
 
 const clientConfig = {

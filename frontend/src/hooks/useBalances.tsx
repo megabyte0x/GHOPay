@@ -107,6 +107,8 @@ const useBalances = () => {
         stakedGho: gpInfo.stakeGho,
       });
 
+      console.log({ tokens });
+
       setTokens(tokens);
     })();
   }, [availableGho, details]);

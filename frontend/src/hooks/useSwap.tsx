@@ -11,15 +11,17 @@ const useSwap = ({
   swapArgs: _swapArgs,
   withdrawAmount,
 }: SwapArgs) => {
-  const { partnerVaultAddrs } = usePartnerDetails();
+  const { currVaultAddr } = usePartnerDetails();
   const { address } = useAccount();
   const { approveSwap } = useApprovals();
+
+  const { approveTestGHOWithPermit } = useApprovals();
 
   const [swapArgs, setSwapArgs] = useState<unknown[]>();
 
   const { writeAsync: stakeAsync } = useContractWrite({
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
-    address: partnerVaultAddrs?.[0],
+    address: currVaultAddr,
     account: address,
     functionName: "depositGHO",
     args: swapArgs,
