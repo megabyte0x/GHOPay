@@ -59,10 +59,10 @@ contract Utils {
         return (partnerDetails.s_partnerVault, partnerDetails.s_partnerPayment);
     }
 
-    function getPartnersDetails()
+    function getAllDetails()
         public
         view
-        returns (address[] memory _partnerVaults, address[] memory _partnerPayments)
+        returns (address[] memory _partners, address[] memory _partnerVaults, address[] memory _partnerPayments)
     {
         address[] memory partnerVaults = new address[](s_partners.length);
         address[] memory partnerPayments = new address[](s_partners.length);
@@ -72,7 +72,7 @@ contract Utils {
             partnerPayments[i] = _partnerPayment;
         }
 
-        return (partnerVaults, partnerPayments);
+        return (s_partners, partnerVaults, partnerPayments);
     }
 
     function getPartners() public view returns (address[] memory) {
