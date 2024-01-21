@@ -301,6 +301,19 @@ export const ABI = [
   },
   {
     inputs: [],
+    name: "DEADLINE",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "DOMAIN_SEPARATOR",
     outputs: [
       {
@@ -501,11 +514,6 @@ export const ABI = [
         internalType: "bytes32",
         name: "s",
         type: "bytes32",
-      },
-      {
-        internalType: "uint256",
-        name: "deadline",
-        type: "uint256",
       },
     ],
     name: "depositGHOWithPermit",

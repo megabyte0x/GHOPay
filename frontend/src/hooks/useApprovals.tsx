@@ -5,12 +5,23 @@ import { signERC2612Permit } from "eth-permit";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 import { useState } from "react";
+import { publicClient } from "@/utils/contract";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
 const useApprovals = (partnerVaultAddr?: TAddress) => {
   const { address } = useAccount();
+  const [r, setR] = useState("");
+  const [v, setV] = useState<number>();
+  const [s, setS] = useState("");
+  const [stakeGHO, setStakeGHO] = useState(0);
 
-
+  const { writeAsync: writeAsyncPartnerVault } = useContractWrite({
+    account: address,
+    abi: CONTRACTS.PARTNER.PartnerVault.ABI,
+    address: partnerVaultAddr,
+    functionName: "depositGHOWithPermit",
+    args: [BigInt(stakeGHO * 10e17), v, r, s],
+  });
   const { writeAsync: approveTestGhoForPartnerAsync } = useContractWrite({
     account: address,
     abi: CONTRACTS.PUBLIC.TestGHO.ABI,
@@ -40,14 +51,21 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     if (!partnerVaultAddr) {
       throw new Error("Partner Vault address not found");
     }
+    const block = await publicClient.getBlock()
+    console.log(block)
     const result = await signERC2612Permit(
       window.ethereum,
       CONTRACTS.PUBLIC.TestGHO.address,
       address as string,
       partnerVaultAddr,
       value,
-      3600,
+      Number(block.timestamp + BigInt(3600))
     );
+    setStakeGHO(value);
+    setV(result.v);
+    setR(result.r);
+    setS(result.s);
+
     console.log("result:", result);
     return result;
   };
@@ -77,6 +95,10 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     approveTestGhoForMain,
     approveSwap,
     approveTestGHOWithPermit,
+    r,
+    s,
+    v,
+    writeAsyncPartnerVault,
   };
 };
 

@@ -34,14 +34,15 @@ const CreateVaultModal = ({
   const [v, setV] = useState<number>();
   const [s, setS] = useState<string>();
   const [r, setR] = useState<string>();
-  const [deadline, setDeadline] = useState<bigint>();
+  const [isApproved, setIsApproved] = useState(false);
+
 
   const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   const { address } = useAccount();
   const { availableGho } = useBalances();
 
-  const { approveTestGhoForPartner, approveTestGHOWithPermit } =
+  const { approveTestGHOWithPermit } =
     useApprovals(currVaultAddr);
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const CreateVaultModal = ({
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
     address: currVaultAddr,
     functionName: "depositGHOWithPermit",
-    args: [BigInt(stakeGHO * 10e17), v, r, s, deadline],
+    args: [BigInt(stakeGHO * 10e17), v, r, s],
   });
 
   const handleVaultCreate = async () => {
@@ -101,19 +102,39 @@ const CreateVaultModal = ({
     }
   };
 
+  const handleApproveToken = async () => {
+    try {
+      if (!address) throw "Please Log in.";
+      if (!stakeGHO) throw "Please fill all fields.";
+      const {
+        r: newr,
+        s: news,
+        v: newv,
+      } = await approveTestGHOWithPermit(stakeGHO);
+      setV(newv);
+      setR(newr);
+      setS(news);
+      setIsApproved(true);
+      console.log(">>>>>>>>>", stakeGHO, s, v);
+    } catch (error) {
+      if (typeof error === "string") {
+        setMessage(error);
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      }
+      console.error(error);
+    }
+  };
+
   const handleMintRP = async () => {
     try {
       onNext();
 
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
-      const { r, s, v, deadline } = await approveTestGHOWithPermit(stakeGHO);
-      if (!deadline) return;
-      setV(v);
-      setR(r);
-      setS(s);
-      setDeadline(BigInt(deadline));
-      console.log(">>>>>>>>>", stakeGHO, s, v, deadline);
+      if(!isApproved) throw "Please approve token";
+
       // await approveTestGhoForPartner();
 
       console.log("invoked2");
@@ -191,6 +212,7 @@ const CreateVaultModal = ({
               stakeGHO={stakeGHO}
               rewardPoints={rewardPoints}
               handleMintRP={handleMintRP}
+              handleApproveToken={handleApproveToken}
             />
           )}
           {step == 4 && <Step4 />}

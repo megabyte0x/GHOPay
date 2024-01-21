@@ -11,6 +11,7 @@ type Props = {
   stakeGHO: number;
   rewardPoints: number;
   handleMintRP: () => void;
+  handleApproveToken: () => void;
 };
 
 const Step3 = ({
@@ -24,6 +25,7 @@ const Step3 = ({
   stakeGHO,
   rewardPoints,
   handleMintRP,
+  handleApproveToken,
 }: Props) => {
   return (
     <div
@@ -166,6 +168,17 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
         hover:opacity-60"
             >
               Go Back
+            </button>
+            <button
+              // onClick={handleCreate} TODO: Mint rp token function
+              className="font-semibold leading-[24px] text-white text-[16px]
+          border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
+          bg-[#6941c6] 
+          flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
+          hover:opacity-75"
+              onClick={handleApproveToken}
+            >
+              Approve token
             </button>
             <button
               // onClick={handleCreate} TODO: Mint rp token function

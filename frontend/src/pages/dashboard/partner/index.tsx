@@ -5,7 +5,7 @@ import VaultInfo from "@/components/partner/vault-info";
 const Partner = () => {
   const { isPartner } = useWalletInfo();
 
-  // return <>{!isPartner ? <PartnerOnboarding /> : <VaultInfo />}</>;
+  return <>{!isPartner ? <PartnerOnboarding /> : <VaultInfo />}</>;
   return <PartnerOnboarding />;
 };
 
