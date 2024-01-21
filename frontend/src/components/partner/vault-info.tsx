@@ -1,12 +1,48 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swap from "../user/swap";
 import { TokenInfo } from "@/types";
 import { CONTRACTS } from "@/constants";
 import useBalances from "@/hooks/useBalances";
+import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
+import { useAccount } from "wagmi";
 
 const VaultInfo = () => {
+  const { address } = useAccount();
   const { tokens } = useBalances();
+  const { details } = usePartnerDetails();
+
+  //   const totalTokensSupply = 0;
+  // const partnerTokens = 0;
+  // const totalTokensUsers = 0;
+  // const vaultName = "MonkeDAO";
+  // const symbol = "MONKE";
+  // const stakedGHO = 0;
+  // const rewardPoints = 0;
+
+  const [totalTokensSupply, setTotalTokensSupply] = useState(0);
+  const [partnerTokens, setPartnerTokens] = useState(0);
+  const [totalTokensUsers, setTotalTokensUsers] = useState(0);
+  const [vaultName, setVaultName] = useState("MonkeDAO");
+  const [symbol, setSymbol] = useState("MONKE");
+  const [stakedGHO, setStakedGHO] = useState(0);
+  const [rewardPoints, setRewardPoints] = useState(0);
+
+  useEffect(() => {
+    if (!details) return;
+    if (details.length === 0) return;
+
+    for (const partnerInfo of details) {
+      if (partnerInfo.addrs.partner !== address) return;
+      console.log(partnerInfo);
+      setVaultName(partnerInfo.name);
+      setSymbol(partnerInfo.symbol);
+      setPartnerTokens(partnerInfo.tokenBalance);
+      setTotalTokensSupply(partnerInfo.totalSupply);
+      setStakedGHO(partnerInfo.totalSupply);
+      setTotalTokensUsers(partnerInfo.totalSupply - partnerInfo.tokenBalance);
+    }
+  }, [address, details]);
 
   const [openStakeMore, setOpenStakeMore] = useState(false);
   const [openWithdraw, setOpenWithdraw] = useState(false);
@@ -34,6 +70,7 @@ const VaultInfo = () => {
       balance: tokens.find((token) => token.name === "GP")?.balance || 0,
     },
   ];
+
   return (
     <div className="flex flex-col gap-[48px] px-[112px] pb-[48px] pt-[96px]">
       <div
@@ -215,11 +252,3 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
 };
 
 export default VaultInfo;
-
-const totalTokensSupply = 0;
-const partnerTokens = 0;
-const totalTokensUsers = 0;
-const vaultName = "MonkeDAO";
-const symbol = "MONKE";
-const stakedGHO = 0;
-const rewardPoints = 0;

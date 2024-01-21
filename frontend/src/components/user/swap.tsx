@@ -222,6 +222,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
 
             <input
               onChange={handleToAmount}
+              disabled={true}
               type="number"
               placeholder="0.00"
               className="bg-[#00000000] text-[#A48AFB] py-[10px] w-full pl-4"
@@ -235,29 +236,6 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
         >
           <div className="flex justify-between text-[16px] leading-[24px]">
             <div className="flex gap-2">
-              <Image
-                src={"/currency-dollar-circle.svg"}
-                alt="info"
-                width={20}
-                height={20}
-              />
-              <h3 className="text-left text-[#A48AFB]">Price</h3>
-            </div>
-            <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              1 GHO = ${currentExchangeRate} USD
-            </h6>
-          </div>
-          <div className="flex justify-between text-[16px] leading-[24px]">
-            <div className="flex gap-2">
-              <Image src={"/upload.svg"} alt="info" width={20} height={20} />
-              <h3 className="text-left text-[#A48AFB]">Minimum Recieved</h3>
-            </div>
-            <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              ${minRecieved} USD
-            </h6>
-          </div>
-          <div className="flex justify-between text-[16px] leading-[24px]">
-            <div className="flex gap-2">
               <Image src={"/gas.svg"} alt="info" width={20} height={20} />
               <h3 className="text-left text-[#A48AFB]">Gas Fees</h3>
             </div>
@@ -266,8 +244,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
             </h6>
           </div>
           <h3 className="text-[14px] leading-[20px] text-[#DBD2EFCC]">
-            End price is an estimate. You will receive at least {minGHORecieve}{" "}
-            GHO ${usdOfMinGHORecieved} USD, or the transaction will be refunded.
+            This is an estimate, the actual amount of gas used will vary.
           </h3>
         </div>
       </div>

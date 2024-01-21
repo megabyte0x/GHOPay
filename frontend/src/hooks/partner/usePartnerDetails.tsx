@@ -73,7 +73,6 @@ const usePartnerDetails = () => {
 
     (async () => {
       const details = await getPartnerDetails();
-      console.log({ details });
 
       // Initialize arrays to hold the addresses
       const _partnerAddrs: TAddress[] = [];
