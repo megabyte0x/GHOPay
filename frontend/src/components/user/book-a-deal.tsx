@@ -27,7 +27,7 @@ const BookDealModal = ({
 
   const { address } = useAccount();
   const { approveTestGhoForMain, approveTestGhoForPartner } = useApprovals(
-    partnerInfo.addrs.payment,
+    partnerInfo.addrs.payment
   );
   const { availableGho } = useBalances();
 
@@ -43,9 +43,7 @@ const BookDealModal = ({
     setAmountPay(parseFloat(e.target.value));
   };
   const handleTnc = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setTnc(e.target.value);
-    console.log(tnc);
-    console.log(e.target.value);
+    setTnc(e.target.checked);
   };
   const handleBook = async () => {
     console.log({});
@@ -55,7 +53,7 @@ const BookDealModal = ({
     if (!amountPay) {
       setMessage("Enter Amount");
     }
-    // else if (!tnc) {
+    // if (!tnc) {
     //   setMessage("Accept TnC");
     // }
     try {

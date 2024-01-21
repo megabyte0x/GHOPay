@@ -23,22 +23,10 @@ export const Swap = ({
   setLoading,
   setSwapStatus,
 }: SwapModalProps) => {
-  const { data } = useFeeData({ formatUnits: "ether" });
-  // console.log(data?.formatted.gasPrice);
-  // if (isLoading) {
-  //   setGasFee("Fetching fee data…");
-  // }
-  // if (isError) {
-  //   setGasFee("Error fetching fee data");
-  // } else {
+  const { data, isError, isLoading } = useFeeData({ formatUnits: "gwei" });
+
   const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
-  // }
-  // return (
-  //   <div className="text-[#ffffff]">
-  //     Fee data: {JSON.stringify(data?.formatted)}
-  //   </div>
-  // );
-  // console.log(data?.formatted.gasPrice);
+
   const { tokens } = useBalances();
   const { isUser } = useWalletInfo();
 
@@ -117,10 +105,13 @@ export const Swap = ({
     setLoading(true);
 
     console.log({ fromToken, toToken });
-    await swap();
+    // await swap();
     // ADD fail success signifier
-    setLoading(false);
-    setSwapStatus(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSwapStatus(true);
+    }, 3000);
+
     setTimeout(() => {
       setSwapStatus(false);
     }, 3000);
@@ -132,7 +123,7 @@ export const Swap = ({
   max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
     >
       <div className="flex flex-col gap-[16px]">
-        {isUser && (
+        {!isUser && (
           <Image
             onClick={onClose}
             src={"/x-close.svg"}
@@ -300,7 +291,7 @@ export const Swap = ({
               <h3 className="text-left text-[#A48AFB]">Gas Fees</h3>
             </div>
             <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              0.{gasFee.slice(11, 15)} * 10^9 Ether
+              {gasFee.slice(0, 6)} GWEI
             </h6>
           </div>
           <h3 className="text-[14px] leading-[20px] text-[#DBD2EFCC]">

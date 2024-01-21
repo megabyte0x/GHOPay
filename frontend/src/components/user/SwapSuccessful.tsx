@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React from "react";
 
-const rewardPoints = 50;
-
 type SwapSuccessfulModalProps = {
   onClose: () => void;
 };

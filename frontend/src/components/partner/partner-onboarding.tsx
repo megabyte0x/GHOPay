@@ -52,6 +52,7 @@ const PartnerOnboarding = () => {
               onClick={() => {
                 setStep(1);
                 console.log("open modal");
+                console.log(step);
               }}
               text="Create a Vault"
               style="px-[16px] py-[10px] text-[16px]"

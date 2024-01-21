@@ -6,6 +6,7 @@ type Props = {
   handleStakeAll: () => void;
   handleBuyGHO: () => void;
   handleBack: () => void;
+  approved: boolean;
   message: string;
   availableGho: number;
   stakeGHO: number;
@@ -20,6 +21,7 @@ const Step3 = ({
   handleStakeAll,
   handleBuyGHO,
   handleBack,
+  approved,
   message,
   availableGho,
   stakeGHO,
@@ -89,7 +91,7 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             >
               <input
                 type="number"
-                value={stakeGHO}
+                value={stakeGHO > 0 ? stakeGHO : ""}
                 onChange={handleStakedGHO}
                 placeholder="0"
                 className="bg-[#00000000] border-0 w-full
@@ -169,28 +171,31 @@ p-[24px] flex flex-col gap-[20px] h-fit max-w-[690px] w-full"
             >
               Go Back
             </button>
-            <button
-              // onClick={handleCreate} TODO: Mint rp token function
-              className="font-semibold leading-[24px] text-white text-[16px]
+            {!approved ? (
+              <button
+                // onClick={handleCreate} TODO: Mint rp token function
+                className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-75"
-              onClick={handleApproveToken}
-            >
-              Approve token
-            </button>
-            <button
-              // onClick={handleCreate} TODO: Mint rp token function
-              className="font-semibold leading-[24px] text-white text-[16px]
+                onClick={handleApproveToken}
+              >
+                Approve token
+              </button>
+            ) : (
+              <button
+                // onClick={handleCreate} TODO: Mint rp token function
+                className="font-semibold leading-[24px] text-white text-[16px]
           border-solid border-[1px] rounded-[8px] border-[#a48afb] shadow-[0px_1px_2px_0px_rgba(16,_24,_40,_0.05)] 
           bg-[#6941c6] 
           flex flex-row justify-center cursor-pointer px-[18px] py-[10px]
           hover:opacity-75"
-              onClick={handleMintRP}
-            >
-              Mint RP
-            </button>
+                onClick={handleMintRP}
+              >
+                Mint RP
+              </button>
+            )}
           </div>
         </div>
       </div>

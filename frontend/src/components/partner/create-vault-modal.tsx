@@ -204,6 +204,7 @@ const CreateVaultModal = ({
               handleStakeAll={handleStakeAll}
               handleBuyGHO={handleBuyGHO}
               handleBack={onBack}
+              approved={isApproved}
               message={message}
               availableGho={availableGho as number}
               stakeGHO={stakeGHO}

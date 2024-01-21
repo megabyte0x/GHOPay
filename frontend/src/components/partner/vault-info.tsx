@@ -6,12 +6,18 @@ import { CONTRACTS } from "@/constants";
 import useBalances from "@/hooks/useBalances";
 import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 import { useAccount } from "wagmi";
+import Step3 from "./create-vault/step3";
+import CreateVaultModal from "./create-vault-modal";
+import Waiting from "../layout/Waiting";
+import SwapSuccessful from "../user/SwapSuccessful";
 
 const VaultInfo = () => {
   const { address } = useAccount();
   const { tokens } = useBalances();
   const { details } = usePartnerDetails();
 
+  const [loading, setLoading] = useState(false);
+  const [swapStatus, setSwapStatus] = useState(false);
   const [totalTokensSupply, setTotalTokensSupply] = useState(0);
   const [partnerTokens, setPartnerTokens] = useState(0);
   const [totalTokensUsers, setTotalTokensUsers] = useState(0);
@@ -33,8 +39,8 @@ const VaultInfo = () => {
         setStakedGHO(Number(partnerInfo.stakedGho.toFixed(2)));
         setTotalTokensUsers(
           Number(
-            (partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2),
-          ),
+            (partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2)
+          )
         );
       }
     });
@@ -48,6 +54,7 @@ const VaultInfo = () => {
   };
   const handleStakeMore = () => {
     setOpenStakeMore(true);
+    console.log(openStakeMore);
   };
 
   const GHO: TokenInfo[] = [
@@ -122,7 +129,11 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {totalTokensSupply}
+            {totalTokensSupply ? (
+              totalTokensSupply
+            ) : (
+              <div className="lds-dual-ring"></div>
+            )}
           </div>
         </div>
         <div
@@ -136,7 +147,11 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {partnerTokens}
+            {partnerTokens ? (
+              partnerTokens
+            ) : (
+              <div className="lds-dual-ring"></div>
+            )}
           </div>
         </div>
         <div
@@ -150,7 +165,11 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {totalTokensUsers}
+            {totalTokensUsers ? (
+              totalTokensUsers
+            ) : (
+              <div className="lds-dual-ring"></div>
+            )}
           </div>
         </div>
       </div>
@@ -175,7 +194,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {vaultName}
+            {vaultName ? vaultName : <div className="lds-dual-ring"></div>}
           </div>
         </div>
         <div
@@ -194,7 +213,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {symbol}
+            {symbol ? symbol : <div className="lds-dual-ring"></div>}
           </div>
         </div>
         <div
@@ -208,7 +227,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {stakedGHO}
+            {stakedGHO ? stakedGHO : <div className="lds-dual-ring"></div>}
           </div>
         </div>
         <div
@@ -227,26 +246,57 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {rewardPoints}
+            {rewardPoints ? (
+              rewardPoints
+            ) : (
+              <div className="lds-dual-ring"></div>
+            )}
           </div>
         </div>
       </div>
       {(openStakeMore || openWithdraw) && (
         <div className="items-center justify-center bg-[#21212198] backdrop-blur-md fixed inset-0 flex">
           <Swap
+            setLoading={setLoading}
+            setSwapStatus={setSwapStatus}
             onClose={() => {
               openStakeMore && setOpenStakeMore(false);
               openWithdraw && setOpenWithdraw(false);
             }}
             fromTokenList={openStakeMore ? GHO : GP}
             toTokenList={openStakeMore ? GP : GHO}
-            setLoading={() => {
-              console.log("loading");
-            }}
-            setSwapStatus={() => console.log("set swap status")}
           />
         </div>
       )}
+      {loading && <Waiting text1="Loading..." />}
+      {swapStatus && (
+        <SwapSuccessful
+          onClose={() => {
+            setSwapStatus(false);
+          }}
+        />
+      )}
+      {/* {openStakeMore && (
+        <Step3
+          onClose={() => {
+            setOpenStakeMore(false);
+          }}
+
+        />
+      )} */}
+      {/* {openStakeMore && (
+        <>
+          <h1>work</h1>
+          <CreateVaultModal
+            step={3}
+            onClose={() => {
+              setOpenStakeMore(false);
+            }}
+            onNext={() => {}}
+            onBack={() => {}}
+          />
+        </>
+      )} */}
     </div>
   );
 };
