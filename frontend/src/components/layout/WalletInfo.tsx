@@ -3,11 +3,17 @@ import Image from "next/image";
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 
+const balances = [
+  { name: "abc", balance: 3 },
+  { name: "xyz", balance: 40 },
+];
+
 const WalletInfo = () => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
 
-  const [vis, setVis] = useState(false);
+  const [accVis, setAccVis] = useState(false);
+  const [balancesVis, setBalancesVis] = useState(false);
   const handleLogout = () => {
     disconnect();
   };
@@ -17,19 +23,45 @@ const WalletInfo = () => {
 
   return (
     <div className="flex gap-[8px] items-center">
-      <div className="flex gap-[6px] items-center text-[#ddd7fe]">
+      <div
+        onMouseEnter={() => {
+          setBalancesVis(true);
+        }}
+        onMouseLeave={() => {
+          setBalancesVis(false);
+        }}
+        className="flex gap-[6px] items-center text-[#ddd7fe]"
+      >
         <Image src={"/ticketIcon.svg"} height={21} width={21} alt="reward" />
-        <h2 className="text-[15px] leading-[20px] font-medium">
-          Balance: {0} Reward Points
-        </h2>
+        <h2 className="text-[15px] leading-[20px] font-medium">My Balances</h2>
+        <Image src={"/downArrow.svg"} alt="dropDown" height={24} width={24} />
+        {balancesVis && (
+          <ul
+            className="absolute right-70 top-[51px] 
+          rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]
+          min-w-[150px]"
+          >
+            {balances.map((balance) => (
+              <li
+                className=" flex gap-[8px] py-[8px] px-[21px]
+        text-[#DBD2EF] text-[14px] leading-[20px] font-medium
+        border-b-[1px] border-[#372e4c] border-solid"
+              >
+                {balance.name}:{" "}
+                <span className="font-bold">{balance.balance}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
       <div className="px-[1px] py-[24px] bg-[#444349] rounded-full"></div>
       <div
         onMouseEnter={() => {
-          setVis(true);
+          setAccVis(true);
         }}
         onMouseLeave={() => {
-          setVis(false);
+          setAccVis(false);
         }}
         className="flex gap-[12px] items-center cursor-pointer"
       >
@@ -40,7 +72,7 @@ const WalletInfo = () => {
           </p>
           <Image src={"/downArrow.svg"} alt="dropDown" height={24} width={24} />
         </div>
-        {vis && (
+        {accVis && (
           <ul
             className="absolute right-20 top-[51px] 
           rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]"

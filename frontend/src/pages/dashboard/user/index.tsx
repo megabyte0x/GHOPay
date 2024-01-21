@@ -53,11 +53,6 @@ export const User = () => {
               </button>
             </div>
           </div>
-          <SwapSuccessful
-            onClose={() => {
-              setSwapStatus(false);
-            }}
-          />
           <div>
             {subNavType === ENav.SHOP ? (
               <Shop />
