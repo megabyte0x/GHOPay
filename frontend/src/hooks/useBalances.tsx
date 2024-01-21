@@ -76,10 +76,18 @@ const useBalances = () => {
         address: detail.addrs.vault,
       }));
 
+      tokens.push({
+        address: CONTRACTS.PUBLIC.TestGHO.address,
+        balance: availableGho || 0,
+        name: "GHO",
+        symbol: "GHO",
+        totalSupply: 0,
+      });
+
       const gpInfo = await getGpInfo();
 
       tokens.push({
-        address: CONTRACTS.PUBLIC.TestGHO.address,
+        address: CONTRACTS.PUBLIC.MainVault.address,
         balance: gpInfo.tokeBalance,
         name: gpInfo.name,
         symbol: gpInfo.symbol,
