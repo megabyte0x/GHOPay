@@ -1,0 +1,59 @@
+{
+  "transactions": [
+    {
+      "hash": "0x37f07415c329fbf335443f64290cb39b8a88c3e13fa53c3b5eb1382be4c5ddba",
+      "transactionType": "CALL",
+      "contractName": "MainVault",
+      "contractAddress": "0xeEf9639F53a5AcBd7B9db216f88B2EDa72e7597F",
+      "function": "setUserFee(uint256)",
+      "arguments": [
+        "2000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xeef9639f53a5acbd7b9db216f88b2eda72e7597f",
+        "gas": "0xfd01",
+        "value": "0x0",
+        "data": "0x2050e09400000000000000000000000000000000000000000000000000071afd498d0000",
+        "nonce": "0x26f",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": "0x47fa9d1c95c949291bea7dea13e5b7058a690e4431a880d5a8003c2bf4f35172",
+      "transactionType": "CALL",
+      "contractName": "MainVault",
+      "contractAddress": "0xeEf9639F53a5AcBd7B9db216f88B2EDa72e7597F",
+      "function": "setPartnerFee(uint256)",
+      "arguments": [
+        "300000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xeef9639f53a5acbd7b9db216f88b2eda72e7597f",
+        "gas": "0x10bf6",
+        "value": "0x0",
+        "data": "0x3741454d0000000000000000000000000000000000000000000000000429d069189e0000",
+        "nonce": "0x270",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x37f07415c329fbf335443f64290cb39b8a88c3e13fa53c3b5eb1382be4c5ddba",
+    "0x47fa9d1c95c949291bea7dea13e5b7058a690e4431a880d5a8003c2bf4f35172"
+  ],
+  "returns": {},
+  "timestamp": 1705822827,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "30b4b2d"
+}
