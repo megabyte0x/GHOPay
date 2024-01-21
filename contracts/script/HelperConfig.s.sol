@@ -84,6 +84,7 @@ contract HelperConfig is Script {
         s_mainAdmin = 0x1Cb30cb181D7854F91c2410BD037E6F42130e860;
         s_partnerAdmin = 0xa60f738a60BCA515Ac529b7335EC7CB2eE3891d2;
         s_user = 0xdDCc06f98A7C71Ab602b8247d540dA5BD8f5D2A2;
+        s_ghoToken = 0xc4bF5CbDaBE595361438F8c6a187bDc330539c60;
     }
 
     function getAnvilConfigs() public {
