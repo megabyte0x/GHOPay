@@ -81,35 +81,42 @@ const usePartnerDetails = () => {
   const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   useEffect(() => {
-    if (!address) return;
+    if (!address) {
+      return;
+    }
 
-    (async () => {
-      const details = await getPartnerDetails();
+    const interval = setInterval(() => {
+      (async () => {
+        const details = await getPartnerDetails();
 
-      // Initialize arrays to hold the addresses
-      const _partnerAddrs: TAddress[] = [];
-      const _partnerPaymentAddrs: TAddress[] = [];
-      const _partnerVaultAddrs: TAddress[] = [];
+        // Initialize arrays to hold the addresses
+        const _partnerAddrs: TAddress[] = [];
+        const _partnerPaymentAddrs: TAddress[] = [];
+        const _partnerVaultAddrs: TAddress[] = [];
 
-      // Use a single map to populate the arrays
-      details.forEach((partnerInfo) => {
-        _partnerAddrs.push(partnerInfo.addrs.partner);
-        _partnerPaymentAddrs.push(partnerInfo.addrs.payment);
-        _partnerVaultAddrs.push(partnerInfo.addrs.vault);
-      });
+        // Use a single map to populate the arrays
+        details.forEach((partnerInfo) => {
+          _partnerAddrs.push(partnerInfo.addrs.partner);
+          _partnerPaymentAddrs.push(partnerInfo.addrs.payment);
+          _partnerVaultAddrs.push(partnerInfo.addrs.vault);
+        });
 
-      details.find((info) => {
-        if (info.addrs.partner === address) {
-          setCurrVaultAddr(info.addrs.vault);
-        }
-      });
+        details.find((info) => {
+          console.log({ info });
+          if (info.addrs.partner === address) {
+            setCurrVaultAddr(info.addrs.vault);
+          }
+        });
 
-      setDetails(details);
-      setPartnerAddrs(_partnerAddrs);
-      setPartnerPaymentAddrs(_partnerPaymentAddrs);
-      setPartnerVaultAddrs(_partnerVaultAddrs);
-    })();
-  }, [address]);
+        setDetails(details);
+        setPartnerAddrs(_partnerAddrs);
+        setPartnerPaymentAddrs(_partnerPaymentAddrs);
+        setPartnerVaultAddrs(_partnerVaultAddrs);
+      })();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  });
 
   return {
     partnerAddrs,

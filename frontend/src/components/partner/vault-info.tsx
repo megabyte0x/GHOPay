@@ -39,8 +39,8 @@ const VaultInfo = () => {
         setStakedGHO(Number(partnerInfo.stakedGho.toFixed(2)));
         setTotalTokensUsers(
           Number(
-            (partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2)
-          )
+            (partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2),
+          ),
         );
       }
     });
@@ -165,7 +165,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {totalTokensUsers ? (
+            {totalTokensUsers !== undefined ? (
               totalTokensUsers
             ) : (
               <div className="lds-dual-ring"></div>
@@ -246,7 +246,7 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             </div>
           </div>
           <div className="text-[32px] font-semibold tracking-[-0.64] leading-[40px] text-[#ddd6fe]">
-            {rewardPoints ? (
+            {rewardPoints !== undefined ? (
               rewardPoints
             ) : (
               <div className="lds-dual-ring"></div>

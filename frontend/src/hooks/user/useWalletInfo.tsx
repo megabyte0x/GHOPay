@@ -24,7 +24,11 @@ function useWalletInfo() {
     })();
   }, [address, isPartner]);
 
-  return { isPartner, isUser: !isPartner };
+  return {
+    isPartner,
+    isUser: !isPartner,
+  };
+
   // return {
   //   isPartner: false,
   //   isUser: true,
