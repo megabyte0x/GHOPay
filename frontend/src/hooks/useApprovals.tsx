@@ -1,24 +1,34 @@
 import { CONTRACTS } from "@/constants";
-import { TAddress } from "@/types";
 import "wagmi/window";
 import { signERC2612Permit } from "eth-permit";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import usePartnerDetails from "./partner/usePartnerDetails";
+import { TAddress } from "@/types";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
-const useApprovals = (partnerVaultAddr?: TAddress) => {
+const useApprovals = (vaultAddr: TAddress) => {
   const { address } = useAccount();
   const [r, setR] = useState("");
   const [v, setV] = useState<number>();
   const [s, setS] = useState("");
+
+  const { currVaultAddr, partnerVaultAddrs } = usePartnerDetails();
+
+  const [vaultAddrToUse, setVaultAddrToUse] = useState<TAddress>();
+
+  useEffect(() => {
+    if (!vaultAddr) setVaultAddrToUse(currVaultAddr);
+    else setVaultAddrToUse(vaultAddr);
+  }, [partnerVaultAddrs, currVaultAddr, vaultAddr]);
 
   const { writeAsync: approveTestGhoForPartnerAsync } = useContractWrite({
     account: address,
     abi: CONTRACTS.PUBLIC.TestGHO.ABI,
     address: CONTRACTS.PUBLIC.TestGHO.address,
     functionName: "approve",
-    args: [partnerVaultAddr, MAX_ALLOWANCE],
+    args: [vaultAddrToUse, MAX_ALLOWANCE],
   });
 
   const { writeAsync: approveSwap } = useContractWrite({
@@ -39,7 +49,7 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
 
   const approveTestGHOWithPermit = async (value: number) => {
     console.log("invoked");
-    if (!partnerVaultAddr) {
+    if (!currVaultAddr) {
       throw new Error("Partner Vault address not found");
     }
     // const block = await publicClient.getBlock();
@@ -47,11 +57,11 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
       window.ethereum,
       CONTRACTS.PUBLIC.TestGHO.address,
       address as string,
-      partnerVaultAddr,
+      currVaultAddr,
       BigInt(value * 10e17).toString(),
       // Number(block.timestamp + BigInt(3600)),
     );
-    console.log("partner vault:", partnerVaultAddr);
+    console.log("partner vault:", currVaultAddr);
     setV(result.v);
     setR(result.r);
     setS(result.s);
@@ -61,7 +71,7 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
   };
 
   const approveTestGhoForPartner = async () => {
-    if (!partnerVaultAddr) {
+    if (!vaultAddrToUse) {
       throw new Error("Partner Vault Address not found");
     }
     const { hash } = await approveTestGhoForPartnerAsync();
@@ -71,7 +81,7 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
   };
 
   const approveTestGhoForMain = async () => {
-    if (!partnerVaultAddr) {
+    if (!vaultAddrToUse) {
       throw new Error("Partner Vault Address not found");
     }
     const { hash } = await approveTestGhoForMainAsync();

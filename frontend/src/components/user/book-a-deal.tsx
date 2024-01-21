@@ -1,38 +1,39 @@
 "use client";
 import { CONTRACTS } from "@/constants";
-import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 import useApprovals from "@/hooks/useApprovals";
 import useBalances from "@/hooks/useBalances";
+import { PartnerInfo } from "@/types";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 
 type BookDealModalProps = {
   onClose: () => void;
   onNext: () => void;
+  partnerInfo: PartnerInfo;
 };
 
-const ghoPoints = 0;
 const gasFee = 0;
 
-const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
+const BookDealModal = ({
+  onClose,
+  onNext,
+  partnerInfo,
+}: BookDealModalProps) => {
   const [amountPay, setAmountPay] = useState(0);
   const [tnc, setTnc] = useState(false);
   const [message, setMessage] = useState("");
 
   const { address } = useAccount();
-  const { partnerPaymentAddrs } = usePartnerDetails();
   const { approveTestGhoForMain, approveTestGhoForPartner } = useApprovals(
-    partnerPaymentAddrs?.[0],
+    partnerInfo.addrs.payment,
   );
   const { availableGho } = useBalances();
 
-  useEffect(() => {});
-
   const { writeAsync: bookService } = useContractWrite({
     account: address,
-    address: partnerPaymentAddrs?.[0],
+    address: partnerInfo.addrs.payment,
     abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
     functionName: "bookAService",
     args: [BigInt(0 * 10e17), BigInt(amountPay * 10e17)],
@@ -47,9 +48,8 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
     console.log(e.target.value);
   };
   const handleBook = async () => {
-    onNext();
-    console.log({ partnerPaymentAddrs });
-    if (!partnerPaymentAddrs || partnerPaymentAddrs.length === 0) {
+    console.log({});
+    if (!partnerInfo || !partnerInfo.name) {
       throw new Error("Partner Payment Address not found");
     }
     if (!amountPay) {
@@ -60,7 +60,15 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
     // }
     try {
       console.info(`Approving Test GHO for partner and main vault`);
-      await Promise.all([approveTestGhoForMain(), approveTestGhoForPartner()]);
+      try {
+        await Promise.all([
+          approveTestGhoForMain(),
+          approveTestGhoForPartner(),
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
+      console.log({ partnerInfo });
 
       const { hash } = await bookService();
       console.info(`Book Service: Transaction hash: ${hash}`);
@@ -68,10 +76,9 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
       await waitForTransaction({ hash, chainId: 11155111 });
       console.info(`Book Service: Transaction successful`);
     } catch (error) {
-      console.error(Object.keys(error));
-      console.log(Object.values(error));
-      // console.error((error as any).Error);
+      console.error(error);
     }
+    onNext();
   };
   return (
     <div
@@ -113,10 +120,10 @@ flex items-center justify-center p-[12px] rounded-[10px] h-fit w-fit"
                   width={20}
                   height={20}
                 />
-                <h3 className="text-left">GHO Points</h3>
+                <h3 className="text-left">Partner Points</h3>
               </div>
               <h6 className="pr-[14px] min-w-fit text-right place-self-end">
-                ${ghoPoints}
+                {partnerInfo.symbol} {partnerInfo.tokenBalance}
               </h6>
             </div>
             <div className="flex justify-between">

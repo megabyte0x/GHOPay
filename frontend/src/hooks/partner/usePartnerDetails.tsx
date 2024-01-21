@@ -78,6 +78,7 @@ const usePartnerDetails = () => {
   const [partnerPaymentAddrs, setPartnerPaymentAddrs] = useState<TAddress[]>();
   const [partnerVaultAddrs, setPartnerVaultAddrs] = useState<TAddress[]>();
   const [details, setDetails] = useState<PartnerInfo[]>();
+  const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   useEffect(() => {
     if (!address) return;
@@ -97,6 +98,12 @@ const usePartnerDetails = () => {
         _partnerVaultAddrs.push(partnerInfo.addrs.vault);
       });
 
+      details.find((info) => {
+        if (info.addrs.partner === address) {
+          setCurrVaultAddr(info.addrs.vault);
+        }
+      });
+
       setDetails(details);
       setPartnerAddrs(_partnerAddrs);
       setPartnerPaymentAddrs(_partnerPaymentAddrs);
@@ -109,6 +116,7 @@ const usePartnerDetails = () => {
     partnerPaymentAddrs,
     partnerVaultAddrs,
     details,
+    currVaultAddr,
   };
 };
 

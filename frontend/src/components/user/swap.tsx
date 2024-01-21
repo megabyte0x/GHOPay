@@ -23,7 +23,7 @@ export const Swap = ({
   setLoading,
   setSwapStatus,
 }: SwapModalProps) => {
-  const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
+  const { data } = useFeeData({ formatUnits: "ether" });
   // console.log(data?.formatted.gasPrice);
   // if (isLoading) {
   //   setGasFee("Fetching fee data…");

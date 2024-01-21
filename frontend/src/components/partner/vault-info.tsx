@@ -24,17 +24,20 @@ const VaultInfo = () => {
     if (!details) return;
     if (details.length === 0) return;
 
-    for (const partnerInfo of details) {
-      if (partnerInfo.addrs.partner !== address) return;
-      setVaultName(partnerInfo.name);
-      setSymbol(partnerInfo.symbol);
-      setPartnerTokens(Number(partnerInfo.tokenBalance.toFixed(2)));
-      setTotalTokensSupply(Number(partnerInfo.totalSupply.toFixed(2)));
-      setStakedGHO(Number(partnerInfo.stakedGho.toFixed(2)));
-      setTotalTokensUsers(
-        Number((partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2)),
-      );
-    }
+    details.find((partnerInfo) => {
+      if (partnerInfo.addrs.partner === address) {
+        setVaultName(partnerInfo.name);
+        setSymbol(partnerInfo.symbol);
+        setPartnerTokens(Number(partnerInfo.tokenBalance.toFixed(2)));
+        setTotalTokensSupply(Number(partnerInfo.totalSupply.toFixed(2)));
+        setStakedGHO(Number(partnerInfo.stakedGho.toFixed(2)));
+        setTotalTokensUsers(
+          Number(
+            (partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2),
+          ),
+        );
+      }
+    });
   }, [address, details]);
 
   const [openStakeMore, setOpenStakeMore] = useState(false);
@@ -237,6 +240,10 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
             }}
             fromTokenList={openStakeMore ? GHO : GP}
             toTokenList={openStakeMore ? GP : GHO}
+            setLoading={() => {
+              console.log("loading");
+            }}
+            setSwapStatus={() => console.log("set swap status")}
           />
         </div>
       )}

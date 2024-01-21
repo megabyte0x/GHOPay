@@ -41,7 +41,7 @@ const CreateVaultModal = ({
   const { address } = useAccount();
   const { availableGho } = useBalances();
 
-  const { approveTestGHOWithPermit } = useApprovals(currVaultAddr);
+  const { approveTestGHOWithPermit } = useApprovals();
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
