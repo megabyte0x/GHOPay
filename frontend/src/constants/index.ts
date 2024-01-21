@@ -134,23 +134,23 @@ export const CONTRACTS: {
       ABI: GHOPartnerPassportABI,
     },
     Utils: {
-      address: "0xc514C7DF9353b272dCac90686E06F779b9406b85",
+      address: "0x7a6Bb3A480ad1159d4FEE319321e2858c5FdF721",
       ABI: UtilsABI,
     },
     RPool: {
-      address: "0xc275B562F7F699E083D2Bd00b44b64B5820F2551",
+      address: "0x175Ea2DabAeb8d2d1903259226EA109a22E12737",
       ABI: RPoolABI,
     },
     MainVault: {
-      address: "0x510075afb658EE8b1D3863689ff33Fea8DeA38f5",
+      address: "0x5f87AE2b5B978FDF21A5495518967e7F3d89EA23",
       ABI: MainVaultABI,
     },
     MainPayment: {
-      address: "0x082422192db0651080b486B9B734370E4162242B",
+      address: "0xfc0d2439D12A501fc5071b871740b8A0430f1133",
       ABI: MainPaymentABI,
     },
     PartnerContractsDeployer: {
-      address: "0xC22d1CfFb775b0Bc630f111eB4a18fEAc2Cb6c8D",
+      address: "0x0EcdC9DdF64be06C9b9752f2a7d1CBA6B2f989a7",
       ABI: PartnerContractsDeployerABI,
     },
   },
