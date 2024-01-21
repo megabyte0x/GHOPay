@@ -4,8 +4,7 @@ pragma solidity 0.8.20;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-import {ERC20} from "./ERC4626Flatten.sol";
-import {ERC4626} from "./ERC4626Flatten.sol";
+import {ERC4626, ERC20} from "./ERC4626Flatten.sol";
 
 /**
  * @title MainVault

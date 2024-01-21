@@ -3,10 +3,7 @@ pragma solidity 0.8.20;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-import {ERC20} from "./ERC4626Flatten.sol";
-import {ERC4626} from "./ERC4626Flatten.sol";
-import {SafeTransferLib} from "./ERC4626Flatten.sol";
-import {FixedPointMathLib} from "./ERC4626Flatten.sol";
+import {ERC20, ERC4626, SafeTransferLib, FixedPointMathLib} from "./ERC4626Flatten.sol";
 
 /**
  * @title Partner Vault

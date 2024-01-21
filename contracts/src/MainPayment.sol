@@ -5,8 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 import {Utils} from "./Utils.sol";
-import {ERC20} from "./ERC4626Flatten.sol";
-import {FixedPointMathLib} from "./ERC4626Flatten.sol";
+import {FixedPointMathLib, ERC20} from "./ERC4626Flatten.sol";
 
 contract MainPayment is Ownable {
     error MainPayment__ZeroAmount();
