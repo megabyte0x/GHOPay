@@ -1,8 +1,13 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Swap from "../user/swap";
+import { TokenInfo } from "@/types";
+import { CONTRACTS } from "@/constants";
+import useBalances from "@/hooks/useBalances";
 
 const VaultInfo = () => {
+  const { tokens } = useBalances();
+
   const [openStakeMore, setOpenStakeMore] = useState(false);
   const [openWithdraw, setOpenWithdraw] = useState(false);
 
@@ -12,6 +17,23 @@ const VaultInfo = () => {
   const handleStakeMore = () => {
     setOpenStakeMore(true);
   };
+
+  const GHO: TokenInfo[] = [
+    {
+      name: "GHO",
+      symbol: "GHO",
+      address: CONTRACTS.PUBLIC.TestGHO.address,
+      balance: tokens.find((token) => token.name === "GHO")?.balance || 0,
+    },
+  ];
+  const GP: TokenInfo[] = [
+    {
+      name: "GP",
+      symbol: "GP",
+      address: CONTRACTS.PUBLIC.MainVault.address,
+      balance: tokens.find((token) => token.name === "GP")?.balance || 0,
+    },
+  ];
   return (
     <div className="flex flex-col gap-[48px] px-[112px] pb-[48px] pt-[96px]">
       <div
@@ -183,8 +205,8 @@ flex flex-col justify-center text-left gap-[24px] p-[24px]"
               openStakeMore && setOpenStakeMore(false);
               openWithdraw && setOpenWithdraw(false);
             }}
-            fromTokenList={openStakeMore ? ["GHO"] : ["Partner Point"]}
-            toTokenList={openStakeMore ? ["Partner Point"] : ["GHO"]}
+            fromTokenList={openStakeMore ? GHO : GP}
+            toTokenList={openStakeMore ? GP : GHO}
           />
         </div>
       )}

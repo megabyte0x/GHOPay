@@ -14,33 +14,16 @@ const usdOfMinGHORecieved = 0;
 
 type SwapModalProps = {
   onClose?: () => void;
-  fromTokenList?: TokenInfo[];
-  toTokenList?: TokenInfo[];
+  fromTokenList: TokenInfo[];
+  toTokenList: TokenInfo[];
 };
-
-const DEFAULT_TOKENS: TokenInfo[] = [];
 
 export const Swap = ({
   onClose,
-  fromTokenList = DEFAULT_TOKENS,
-  toTokenList = DEFAULT_TOKENS,
+  fromTokenList,
+  toTokenList,
 }: SwapModalProps) => {
   const { tokens } = useBalances();
-
-  DEFAULT_TOKENS.push(
-    {
-      name: "GHO",
-      symbol: "GHO",
-      address: CONTRACTS.PUBLIC.TestGHO.address,
-      balance: tokens.find((token) => token.name === "GHO")?.balance || 0,
-    },
-    {
-      name: "GP",
-      symbol: "GP",
-      address: CONTRACTS.PUBLIC.MainVault.address,
-      balance: tokens.find((token) => token.name === "GP")?.balance || 0,
-    },
-  );
 
   const [fromVis, setFromVis] = useState(false);
   const [toVis, setToVis] = useState(false);
@@ -122,7 +105,9 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                 className="cursor-pointer flex gap-[4px] px-[8px] py-[4px] rounded-[6px] bg-[#491C96] min-w-fit"
               >
                 <h3 className="text-[#C3B5FD] min-w-fit">
-                  {fromTokenList?.length === 1 ? fromTokenList[0] : fromToken}
+                  {fromTokenList?.length === 1
+                    ? fromTokenList[0].name
+                    : fromToken.name}
                 </h3>
                 {fromTokenList.length > 1 && (
                   <>
@@ -147,7 +132,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                               onClick={handleFromTokenSelect}
                               className="hover:bg-[#3e2072] px-[10px] py-[8px]"
                             >
-                              {token}
+                              {token.name}
                             </li>
                           );
                         })}
@@ -197,7 +182,9 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
               >
                 {/* <Image alt="gho" src={"/GHOLogo.svg"} height={15} width={20} /> */}
                 <h3 className="text-[#C3B5FD] min-w-fit">
-                  {toTokenList.length === 1 ? toTokenList[0] : toToken}
+                  {toTokenList.length === 1
+                    ? toTokenList[0].name
+                    : toToken.name}
                 </h3>
                 {toTokenList.length > 1 && (
                   <>
@@ -222,7 +209,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                               onClick={handleToTokenSelect}
                               className="hover:bg-[#3e2072] px-[10px] py-[8px]"
                             >
-                              {token}
+                              {token.name}
                             </li>
                           );
                         })}
