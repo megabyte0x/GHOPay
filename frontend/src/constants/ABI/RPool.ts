@@ -96,6 +96,30 @@ export const ABI = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_rpToken",
+        type: "address",
+      },
+    ],
+    name: "decimalCorrectionFromRPtoCV",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "_ghoAmount",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "_initialToken",
         type: "address",
@@ -175,19 +199,6 @@ export const ABI = [
   },
   {
     inputs: [],
-    name: "s_gpToken",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "s_mainAdmin",
     outputs: [
       {
@@ -247,19 +258,6 @@ export const ABI = [
       },
     ],
     name: "setGHOToken",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_gpToken",
-        type: "address",
-      },
-    ],
-    name: "setGPToken",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

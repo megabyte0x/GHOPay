@@ -54,6 +54,13 @@ export const Swap = ({
         withdrawAmount: fromAmount,
       });
     } else {
+      console.log({
+        swapArgs: {
+          amount: fromAmount,
+          from: fromToken.name,
+          to: toToken.name,
+        },
+      });
       setSwapArgs({
         swapArgs: {
           amount: fromAmount,
@@ -105,7 +112,7 @@ export const Swap = ({
     setLoading(true);
 
     console.log({ fromToken, toToken });
-    // await swap();
+    await swap();
     // ADD fail success signifier
     setTimeout(() => {
       setLoading(false);

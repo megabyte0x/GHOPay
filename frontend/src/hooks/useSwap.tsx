@@ -15,8 +15,6 @@ const useSwap = ({
   const { address } = useAccount();
   const { approveSwap } = useApprovals();
 
-  const { approveTestGHOWithPermit } = useApprovals();
-
   const [swapArgs, setSwapArgs] = useState<unknown[]>();
 
   const { writeAsync: stakeAsync } = useContractWrite({

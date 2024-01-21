@@ -8,7 +8,7 @@ import usePartnerDetails from "./partner/usePartnerDetails";
 import { TAddress } from "@/types";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
-const useApprovals = (vaultAddr: TAddress) => {
+const useApprovals = (vaultAddr?: TAddress) => {
   const { address } = useAccount();
   const [r, setR] = useState("");
   const [v, setV] = useState<number>();
