@@ -22,15 +22,17 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
   const [message, setMessage] = useState("");
 
   const { address } = useAccount();
-  const { partnerPaymentAddr } = usePartnerDetails();
-  const { approveTestGhoForMain, approveTestGhoForPartner } = useApprovals();
+  const { partnerPaymentAddrs } = usePartnerDetails();
+  const { approveTestGhoForMain, approveTestGhoForPartner } = useApprovals(
+    partnerPaymentAddrs?.[0],
+  );
   const { availableGho } = useBalances();
 
   useEffect(() => {});
 
   const { writeAsync: bookService } = useContractWrite({
     account: address,
-    address: partnerPaymentAddr,
+    address: partnerPaymentAddrs?.[0],
     abi: CONTRACTS.PARTNER.PartnerPayment.ABI,
     functionName: "bookAService",
     args: [BigInt(0 * 10e17), BigInt(amountPay * 10e17)],
@@ -46,8 +48,8 @@ const BookDealModal = ({ onClose, onNext }: BookDealModalProps) => {
   };
   const handleBook = async () => {
     onNext();
-    console.log({ partnerPaymentAddr });
-    if (!partnerPaymentAddr) {
+    console.log({ partnerPaymentAddrs });
+    if (!partnerPaymentAddrs || partnerPaymentAddrs.length === 0) {
       throw new Error("Partner Payment Address not found");
     }
     if (!amountPay) {

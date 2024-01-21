@@ -1,4 +1,5 @@
 import { CONTRACTS } from "@/constants";
+import { TAddress } from "@/types";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
@@ -12,6 +13,14 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     address: CONTRACTS.PUBLIC.TestGHO.address,
     functionName: "approve",
     args: [partnerVaultAddr, MAX_ALLOWANCE],
+  });
+
+  const { writeAsync: approveSwap } = useContractWrite({
+    account: address,
+    abi: CONTRACTS.PUBLIC.MainVault.ABI,
+    address: CONTRACTS.PUBLIC.MainVault.address,
+    functionName: "approve",
+    args: [CONTRACTS.PUBLIC.RPool.address, MAX_ALLOWANCE],
   });
 
   const { writeAsync: approveTestGhoForMainAsync } = useContractWrite({
@@ -42,7 +51,7 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     console.info(`Approval Test GHO for main: Transaction successful`);
   };
 
-  return { approveTestGhoForPartner, approveTestGhoForMain };
+  return { approveTestGhoForPartner, approveTestGhoForMain, approveSwap };
 };
 
 export default useApprovals;

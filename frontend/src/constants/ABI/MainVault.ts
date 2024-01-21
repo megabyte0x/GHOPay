@@ -8,6 +8,11 @@ export const ABI = [
       },
       {
         internalType: "address",
+        name: "ghoPartnerPassport",
+        type: "address",
+      },
+      {
+        internalType: "address",
         name: "_mainAdmin",
         type: "address",
       },
@@ -146,9 +151,9 @@ export const ABI = [
     inputs: [
       {
         indexed: false,
-        internalType: "uint8",
+        internalType: "uint256",
         name: "partnerFee",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     name: "MainVault__PartnerFeeSet",
@@ -185,9 +190,9 @@ export const ABI = [
     inputs: [
       {
         indexed: false,
-        internalType: "uint8",
+        internalType: "uint256",
         name: "userFee",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     name: "MainVault__UserFeeSet",
@@ -844,9 +849,9 @@ export const ABI = [
     name: "s_partnerFee",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -857,9 +862,9 @@ export const ABI = [
     name: "s_userFee",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -907,9 +912,9 @@ export const ABI = [
   {
     inputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "_partnerFee",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     name: "setPartnerFee",
@@ -920,9 +925,9 @@ export const ABI = [
   {
     inputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "_userFee",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     name: "setUserFee",

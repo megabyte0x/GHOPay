@@ -12,14 +12,6 @@ const VaultInfo = () => {
   const { tokens } = useBalances();
   const { details } = usePartnerDetails();
 
-  //   const totalTokensSupply = 0;
-  // const partnerTokens = 0;
-  // const totalTokensUsers = 0;
-  // const vaultName = "MonkeDAO";
-  // const symbol = "MONKE";
-  // const stakedGHO = 0;
-  // const rewardPoints = 0;
-
   const [totalTokensSupply, setTotalTokensSupply] = useState(0);
   const [partnerTokens, setPartnerTokens] = useState(0);
   const [totalTokensUsers, setTotalTokensUsers] = useState(0);

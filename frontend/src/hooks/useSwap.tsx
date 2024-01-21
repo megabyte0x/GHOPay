@@ -4,6 +4,7 @@ import { useAccount, useContractWrite } from "wagmi";
 import usePartnerDetails from "./partner/usePartnerDetails";
 import { SwapArgs } from "@/types";
 import { waitForTransaction } from "wagmi/actions";
+import useApprovals from "./useApprovals";
 
 const useSwap = ({
   stakeAmount,
@@ -12,6 +13,7 @@ const useSwap = ({
 }: SwapArgs) => {
   const { partnerVaultAddrs } = usePartnerDetails();
   const { address } = useAccount();
+  const { approveSwap } = useApprovals();
 
   const [swapArgs, setSwapArgs] = useState<unknown[]>();
 
@@ -74,10 +76,12 @@ const useSwap = ({
       await waitForTransaction({ chainId: 11155111, hash });
     } else if (withdrawAmount !== undefined) {
       console.log("Withdrawing");
+      await approveSwap();
       const { hash } = await swapASync();
       await waitForTransaction({ chainId: 11155111, hash });
     } else if (_swapArgs?.amount !== undefined) {
       console.log("Swapping");
+      await approveSwap();
       const { hash } = await swapASync();
       await waitForTransaction({ chainId: 11155111, hash });
     } else {
@@ -90,6 +94,7 @@ const useSwap = ({
     swapArgs,
     _swapArgs?.amount,
     stakeAsync,
+    approveSwap,
     swapASync,
   ]);
 

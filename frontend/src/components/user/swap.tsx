@@ -53,9 +53,6 @@ export const Swap = ({
   useEffect(() => {
     if (fromTokenList.length === 0 || toTokenList.length === 0) return;
 
-    const fromToken = fromTokenList[0];
-    const toToken = toTokenList[0];
-
     if (fromToken.name === "GHO" && toToken.name === "GP") {
       setSwapArgs({
         stakeAmount: fromAmount,
@@ -73,7 +70,15 @@ export const Swap = ({
         },
       });
     }
-  }, [fromAmount, fromTokenList, toTokenList]);
+  }, [
+    fromAmount,
+    fromToken.address,
+    fromToken.name,
+    fromTokenList,
+    toToken.address,
+    toToken.name,
+    toTokenList,
+  ]);
 
   const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
     const __token = e.currentTarget.textContent as string | undefined;
@@ -104,6 +109,7 @@ export const Swap = ({
 
   const handleSwap = async () => {
     if (!swap) return;
+    console.log({ fromToken, toToken });
     await swap();
   };
   return (
