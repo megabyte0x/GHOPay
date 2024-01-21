@@ -11,6 +11,8 @@ import useApprovals from "@/hooks/useApprovals";
 import useBalances from "@/hooks/useBalances";
 import { getPartnerDetails } from "@/utils/contract";
 import { TAddress } from "@/types";
+import { delay } from "@/utils/delay";
+import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -36,10 +38,9 @@ const CreateVaultModal = ({
   const [r, setR] = useState<string>();
   const [isApproved, setIsApproved] = useState(false);
 
-  const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
-
   const { address } = useAccount();
   const { availableGho } = useBalances();
+  const { currVaultAddr } = usePartnerDetails();
 
   const { approveTestGHOWithPermit } = useApprovals();
 
@@ -82,11 +83,6 @@ const CreateVaultModal = ({
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 });
       console.log("Transaction successful");
-
-      const details = await getPartnerDetails(address);
-      if (!details) throw "Error fetching partner details";
-
-      setCurrVaultAddr(details.partnerVaultAddr);
 
       onNext();
     } catch (error) {

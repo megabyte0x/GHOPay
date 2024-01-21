@@ -18,21 +18,22 @@ function useWalletInfo() {
 
   useEffect(() => {
     if (!address || isPartner) return;
-    (async () => {
-      const isPartner = await isVaultOwner(address);
-      setIsPartner(isPartner);
-    })();
+    const id = setInterval(async () => {
+      (async () => {
+        const isPartner = await isVaultOwner(address);
+        setIsPartner(isPartner);
+      })();
+    }, 5000);
+
+    return () => {
+      clearInterval(id);
+    };
   }, [address, isPartner]);
 
   return {
     isPartner,
     isUser: !isPartner,
   };
-
-  // return {
-  //   isPartner: false,
-  //   isUser: true,
-  // };
 }
 
 export default useWalletInfo;

@@ -96,6 +96,7 @@ const usePartnerDetails = () => {
 
         // Use a single map to populate the arrays
         details.forEach((partnerInfo) => {
+          console.log(partnerInfo);
           _partnerAddrs.push(partnerInfo.addrs.partner);
           _partnerPaymentAddrs.push(partnerInfo.addrs.payment);
           _partnerVaultAddrs.push(partnerInfo.addrs.vault);
