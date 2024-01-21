@@ -13,6 +13,7 @@
     "@t3-oss/env-nextjs": "^0.7.3",
     "classnames": "^2.5.1",
     "connectkit": "^1.6.0",
+    "eth-permit": "^0.2.3",
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -31,13 +31,18 @@ const CreateVaultModal = ({
   const [stakeGHO, setStakeGHO] = useState(0);
   const [ratio1, setRatio1] = useState(2);
   const [rewardPoints, setRewardPoints] = useState(0);
+  const [v, setV] = useState<number>();
+  const [s, setS] = useState<string>();
+  const [r, setR] = useState<string>();
+  const [deadline, setDeadline] = useState<bigint>();
 
   const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   const { address } = useAccount();
   const { availableGho } = useBalances();
 
-  const { approveTestGhoForPartner } = useApprovals(currVaultAddr);
+  const { approveTestGhoForPartner, approveTestGHOWithPermit } =
+    useApprovals(currVaultAddr);
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
@@ -63,8 +68,8 @@ const CreateVaultModal = ({
     account: address,
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
     address: currVaultAddr,
-    functionName: "depositGHO",
-    args: [BigInt(stakeGHO * 10e17)],
+    functionName: "depositGHOWithPermit",
+    args: [BigInt(stakeGHO * 10e17), v, r, s, deadline],
   });
 
   const handleVaultCreate = async () => {
@@ -96,15 +101,22 @@ const CreateVaultModal = ({
     }
   };
 
-  const handleMintGHO = async () => {
+  const handleMintRP = async () => {
     try {
       onNext();
 
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
+      const { r, s, v, deadline } = await approveTestGHOWithPermit(stakeGHO);
+      if (!deadline) return;
+      setV(v);
+      setR(r);
+      setS(s);
+      setDeadline(BigInt(deadline));
+      console.log(">>>>>>>>>", stakeGHO, s, v, deadline);
+      // await approveTestGhoForPartner();
 
-      await approveTestGhoForPartner();
-
+      console.log("invoked2");
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 }),
@@ -178,7 +190,7 @@ const CreateVaultModal = ({
               availableGho={availableGho as number}
               stakeGHO={stakeGHO}
               rewardPoints={rewardPoints}
-              handleMintGHO={handleMintGHO}
+              handleMintRP={handleMintRP}
             />
           )}
           {step == 4 && <Step4 />}

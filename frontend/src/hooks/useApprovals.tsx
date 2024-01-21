@@ -1,11 +1,15 @@
 import { CONTRACTS } from "@/constants";
 import { TAddress } from "@/types";
+import "wagmi/window";
+import { signERC2612Permit } from "eth-permit";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
+import { useState } from "react";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
 const useApprovals = (partnerVaultAddr?: TAddress) => {
   const { address } = useAccount();
+
 
   const { writeAsync: approveTestGhoForPartnerAsync } = useContractWrite({
     account: address,
@@ -31,6 +35,23 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     args: [CONTRACTS.PUBLIC.MainPayment.address, MAX_ALLOWANCE],
   });
 
+  const approveTestGHOWithPermit = async (value: number) => {
+    console.log("invoked");
+    if (!partnerVaultAddr) {
+      throw new Error("Partner Vault address not found");
+    }
+    const result = await signERC2612Permit(
+      window.ethereum,
+      CONTRACTS.PUBLIC.TestGHO.address,
+      address as string,
+      partnerVaultAddr,
+      value,
+      3600,
+    );
+    console.log("result:", result);
+    return result;
+  };
+
   const approveTestGhoForPartner = async () => {
     if (!partnerVaultAddr) {
       throw new Error("Partner Vault Address not found");
@@ -51,7 +72,12 @@ const useApprovals = (partnerVaultAddr?: TAddress) => {
     console.info(`Approval Test GHO for main: Transaction successful`);
   };
 
-  return { approveTestGhoForPartner, approveTestGhoForMain, approveSwap };
+  return {
+    approveTestGhoForPartner,
+    approveTestGhoForMain,
+    approveSwap,
+    approveTestGHOWithPermit,
+  };
 };
 
 export default useApprovals;

@@ -151,6 +151,96 @@ export const ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "address",
+        name: "feeCollector",
+        type: "address",
+      },
+    ],
+    name: "PartnerVault__FeeCollectorSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "PartnerVault__GHODeposited",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "PartnerVault__GHOWithdrawn",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "partnerFee",
+        type: "uint256",
+      },
+    ],
+    name: "PartnerVault__PartnerFeeSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "rewardPool",
+        type: "address",
+      },
+    ],
+    name: "PartnerVault__RewardPoolSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "withdrawalFee",
+        type: "uint256",
+      },
+    ],
+    name: "PartnerVault__WithdrawalFeeSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "from",
@@ -386,6 +476,39 @@ export const ABI = [
       },
     ],
     name: "depositGHO",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_ghoAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "v",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes32",
+        name: "r",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "depositGHOWithPermit",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -935,7 +1058,7 @@ export const ABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_rpAmount",
+        name: "_ghoAmount",
         type: "uint256",
       },
       {
@@ -964,7 +1087,7 @@ export const ABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_rp",
+        name: "_ghoAmount",
         type: "uint256",
       },
       {
@@ -981,6 +1104,30 @@ export const ABI = [
     name: "withdrawGHO",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_ghoAmount",
+        type: "uint256",
+      },
+    ],
+    name: "withdrawWithFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "amountPayable",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "feeForPartner",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
 ];
