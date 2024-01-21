@@ -88,7 +88,7 @@ contract MainVaultTest is Test {
 
         uint256 nonce = vm.getNonce(s_mainAdmin);
         console2.log("nonce", nonce);
-        bytes32 _digest = generateDigest(s_mainAdmin, address(s_mainVault), GHO_TOKEN_TO_MINT, nonce, 3600);
+        bytes32 _digest = generateDigest(s_mainAdmin, address(s_mainVault), GHO_TOKEN_TO_MINT, nonce, type(uint256).max);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(_pvtKey, _digest);
 
         s_mainVault.depositGHOWithPermit(GHO_TOKEN_TO_MINT, v, r, s);

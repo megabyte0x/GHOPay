@@ -97,7 +97,7 @@ contract TestMainVault is ERC4626, Ownable {
         isZeroAmount(_ghoAmount)
         onlyOwner
     {
-        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, 3600, v, r, s);
+        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, type(uint256).max, v, r, s);
         deposit(_ghoAmount, s_mainPayment);
         emit MainVault__GHODeposited(_ghoAmount);
     }
