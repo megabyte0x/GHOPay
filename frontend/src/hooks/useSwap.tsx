@@ -1,27 +1,15 @@
 import { CONTRACTS } from "@/constants";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAccount, useContractWrite } from "wagmi";
 import usePartnerDetails from "./partner/usePartnerDetails";
-import { TAddress } from "@/types";
+import { SwapArgs } from "@/types";
 import { waitForTransaction } from "wagmi/actions";
-
-type SwapArgs = {
-  from: TAddress;
-  to: TAddress;
-  amount: number;
-};
-
-type SwapProps = {
-  stakeAmount?: number;
-  withdrawAmount?: number;
-  swapArgs?: SwapArgs;
-};
 
 const useSwap = ({
   stakeAmount,
   swapArgs: _swapArgs,
   withdrawAmount,
-}: SwapProps) => {
+}: SwapArgs) => {
   const { partnerVaultAddrs } = usePartnerDetails();
   const { address } = useAccount();
 
@@ -35,7 +23,7 @@ const useSwap = ({
     args: swapArgs,
   });
 
-  const { writeAsync: swapSync } = useContractWrite({
+  const { writeAsync: swapASync } = useContractWrite({
     abi: CONTRACTS.PUBLIC.RPool.ABI,
     address: CONTRACTS.PUBLIC.RPool.address,
     account: address,
@@ -44,59 +32,68 @@ const useSwap = ({
   });
 
   useEffect(() => {
-    if (!_swapArgs || withdrawAmount) return;
+    console.log("here");
+    if (!_swapArgs?.amount && !withdrawAmount && !stakeAmount) return;
 
-    if (swapArgs) {
-      const args = _swapArgs;
-      setSwapArgs([args]);
-    } else if (withdrawAmount) {
-      const args = {
-        amount: withdrawAmount,
-        from: CONTRACTS.PUBLIC.MainVault.address,
-        to: CONTRACTS.PUBLIC.TestGHO.address,
-      } as SwapArgs;
-      setSwapArgs([args]);
+    console.log("not here?");
+
+    if (_swapArgs?.amount !== undefined) {
+      // swapping
+      console.log("swapping args");
+      const args = [_swapArgs.from, _swapArgs.to, _swapArgs.amount * 10e17];
+      setSwapArgs(args);
+    } else if (withdrawAmount !== undefined) {
+      console.log("withdrawing args");
+      const args = [
+        CONTRACTS.PUBLIC.MainVault.address,
+        CONTRACTS.PUBLIC.TestGHO.address,
+        withdrawAmount * 10e17,
+      ];
+      setSwapArgs(args);
+    } else if (stakeAmount !== undefined) {
+      console.log("staking args");
+      const args = [stakeAmount * 10e17];
+      setSwapArgs(args);
     } else {
       throw new Error("WTF???");
     }
-  }, [withdrawAmount, _swapArgs, swapArgs]);
+  }, [withdrawAmount, _swapArgs, stakeAmount]);
 
-  const [stake, setStake] = useState<() => Promise<void>>();
-  const [withdraw, setWithdraw] = useState<() => Promise<void>>();
-  const [swap, setSwap] = useState<() => Promise<void>>();
+  const swap = useCallback(async () => {
+    console.log("Performing swap operation");
+    console.log({
+      stakeAmount,
+      withdrawAmount,
+      swapArgs,
+    });
 
-  useEffect(() => {
-    if (!stakeAmount) return;
-    const _stake = async () => {
+    if (stakeAmount !== undefined) {
+      console.log("Staking");
       const { hash } = await stakeAsync();
+      console.log("called?");
+      await waitForTransaction({ chainId: 11155111, hash });
+    } else if (withdrawAmount !== undefined) {
+      console.log("Withdrawing");
+      const { hash } = await swapASync();
+      await waitForTransaction({ chainId: 11155111, hash });
+    } else if (_swapArgs?.amount !== undefined) {
+      console.log("Swapping");
+      const { hash } = await swapASync();
+      await waitForTransaction({ chainId: 11155111, hash });
+    } else {
+      console.error("Invalid swap operation");
+      throw new Error("Invalid operation");
+    }
+  }, [
+    stakeAmount,
+    withdrawAmount,
+    swapArgs,
+    _swapArgs?.amount,
+    stakeAsync,
+    swapASync,
+  ]);
 
-      await waitForTransaction({
-        chainId: 11155111,
-        hash,
-      });
-    };
-    setStake(_stake);
-  }, [stakeAmount, stakeAsync]);
-
-  useEffect(() => {
-    if (!withdrawAmount) return;
-
-    const _withdraw = async () => {
-      const { hash } = await swapSync();
-
-      await waitForTransaction({
-        chainId: 11155111,
-        hash,
-      });
-    };
-
-    const _swap = _withdraw;
-
-    setWithdraw(_withdraw);
-    setSwap(_swap);
-  }, [swapSync, withdrawAmount]);
-
-  return { stake, withdraw, swap };
+  return { swap };
 };
 
 export default useSwap;

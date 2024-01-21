@@ -5,12 +5,24 @@ export type PartnerInfo = {
   symbol: string;
   totalSupply: number;
   tokenBalance: number;
-  // totalSupplyWithUsers: number;
+  stakedGho: number;
   addrs: {
     vault: TAddress;
     payment: TAddress;
     partner: TAddress;
   };
+};
+
+type _SwapArgs = {
+  from: TAddress;
+  to: TAddress;
+  amount: number;
+};
+
+export type SwapArgs = {
+  stakeAmount?: number;
+  withdrawAmount?: number;
+  swapArgs?: _SwapArgs;
 };
 
 export type TokenInfo = {

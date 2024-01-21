@@ -39,7 +39,7 @@ const VaultInfo = () => {
       setSymbol(partnerInfo.symbol);
       setPartnerTokens(partnerInfo.tokenBalance);
       setTotalTokensSupply(partnerInfo.totalSupply);
-      setStakedGHO(partnerInfo.totalSupply);
+      setStakedGHO(partnerInfo.stakedGho);
       setTotalTokensUsers(partnerInfo.totalSupply - partnerInfo.tokenBalance);
     }
   }, [address, details]);

@@ -1,17 +1,12 @@
 "use client";
 import Image from "next/image";
 import BUTTONS from "../landing/Buttons";
-import { useState } from "react";
-import { TokenInfo } from "@/types";
+import { useEffect, useState } from "react";
+import { SwapArgs, TokenInfo } from "@/types";
 import useBalances from "@/hooks/useBalances";
-import { CONTRACTS } from "@/constants";
+import useSwap from "@/hooks/useSwap";
+import useWalletInfo from "@/hooks/user/useWalletInfo";
 import { useFeeData } from "wagmi";
-
-const minRecieved = 0;
-const currentExchangeRate = 0;
-
-const minGHORecieve = 0;
-const usdOfMinGHORecieved = 0;
 
 type SwapModalProps = {
   onClose?: () => void;
@@ -41,6 +36,7 @@ export const Swap = ({
   // );
   // console.log(data?.formatted.gasPrice);
   const { tokens } = useBalances();
+  const { isUser } = useWalletInfo();
 
   const [fromVis, setFromVis] = useState(false);
   const [toVis, setToVis] = useState(false);
@@ -50,7 +46,34 @@ export const Swap = ({
   const [fromToken, setFromToken] = useState<TokenInfo>(fromTokenList[0]);
   const [toToken, setToToken] = useState<TokenInfo>(toTokenList[0]);
 
-  const isUser = true;
+  const [swapArgs, setSwapArgs] = useState<SwapArgs>();
+
+  const { swap } = useSwap(swapArgs ?? {});
+
+  useEffect(() => {
+    if (fromTokenList.length === 0 || toTokenList.length === 0) return;
+
+    const fromToken = fromTokenList[0];
+    const toToken = toTokenList[0];
+
+    if (fromToken.name === "GHO" && toToken.name === "GP") {
+      setSwapArgs({
+        stakeAmount: fromAmount,
+      });
+    } else if (toToken.name === "GHO" && fromToken.name === "GP") {
+      setSwapArgs({
+        withdrawAmount: fromAmount,
+      });
+    } else {
+      setSwapArgs({
+        swapArgs: {
+          amount: fromAmount,
+          from: fromToken.address,
+          to: toToken.address,
+        },
+      });
+    }
+  }, [fromAmount, fromTokenList, toTokenList]);
 
   const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
     const __token = e.currentTarget.textContent as string | undefined;
@@ -79,8 +102,9 @@ export const Swap = ({
     setToAmount(parseFloat(e.target.value));
   };
 
-  const handleSwap = () => {
-    console.log({ toAmount, fromAmount, fromToken, toToken });
+  const handleSwap = async () => {
+    if (!swap) return;
+    await swap();
   };
   return (
     <div
