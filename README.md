@@ -2,6 +2,8 @@
 
 Decentralised Loyalty Reward System by leveraging GHO across chains.
 
+![Flow](flow.png)
+
 ## Description
 
 GHOPay is a decentralized loyalty reward system leveraging the GHO Token across chains.
