@@ -28,8 +28,8 @@ contract PartnerVault is ERC4626, Ownable {
 
     ERC20 public immutable i_ghoToken;
 
-    uint256 public s_withdrawalFee;
-    uint256 public s_partnerFee;
+    uint256 public s_withdrawalFee = 30e16; // 30%
+    uint256 public s_partnerFee = 50e16; // 50%
     address public s_rewardPool;
     address public s_partnerFeeCollector;
 

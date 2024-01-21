@@ -70,13 +70,13 @@ contract MainVault is ERC4626, Ownable {
       |_|
     */
 
-    function setPartnerFee(uint8 _partnerFee) public isZeroAmount(uint256(_partnerFee)) onlyOwner {
+    function setPartnerFee(uint256 _partnerFee) public isZeroAmount(uint256(_partnerFee)) onlyOwner {
         emit MainVault__PartnerFeeSet(_partnerFee);
 
         s_partnerFee = _partnerFee;
     }
 
-    function setUserFee(uint8 _userFee) public isZeroAmount(uint256(_userFee)) onlyOwner {
+    function setUserFee(uint256 _userFee) public isZeroAmount(uint256(_userFee)) onlyOwner {
         emit MainVault__UserFeeSet(_userFee);
 
         s_userFee = _userFee;
