@@ -1,0 +1,37 @@
+{
+  "transactions": [
+    {
+      "hash": "0x0ec8e9fb793773a85da28e089ed106f7130c9cc77faef335d436b8a3c016a432",
+      "transactionType": "CALL",
+      "contractName": "TestGHO",
+      "contractAddress": "0xBdD9c513Be2514F83B72761503F0be2134ec6A1a",
+      "function": "mint(address,uint256)",
+      "arguments": [
+        "0x4d2cE66107a44C349036adF33877865a7b6B0d49",
+        "10000000000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
+        "gas": "0xb7ba",
+        "value": "0x0",
+        "data": "0x40c10f190000000000000000000000004d2ce66107a44c349036adf33877865a7b6b0d4900000000000000000000000000000000000000000000021e19e0c9bab2400000",
+        "nonce": "0x29c",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x0ec8e9fb793773a85da28e089ed106f7130c9cc77faef335d436b8a3c016a432"
+  ],
+  "returns": {},
+  "timestamp": 1705859746,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "ff594f9"
+}

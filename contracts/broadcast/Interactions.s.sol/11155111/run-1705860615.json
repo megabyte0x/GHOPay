@@ -1,0 +1,60 @@
+{
+  "transactions": [
+    {
+      "hash": "0x6cf832fc2ac88d94c8e92e16d2a6d851b65b1119eae9f0ccd807799112f51a31",
+      "transactionType": "CALL",
+      "contractName": "TestGHO",
+      "contractAddress": "0xBdD9c513Be2514F83B72761503F0be2134ec6A1a",
+      "function": "approve(address,uint256):(bool)",
+      "arguments": [
+        "0x5f87AE2b5B978FDF21A5495518967e7F3d89EA23",
+        "10000000000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xbdd9c513be2514f83b72761503f0be2134ec6a1a",
+        "gas": "0x107d0",
+        "value": "0x0",
+        "data": "0x095ea7b30000000000000000000000005f87ae2b5b978fdf21a5495518967e7f3d89ea2300000000000000000000000000000000000000000000021e19e0c9bab2400000",
+        "nonce": "0x2a8",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": "0x0619c352bb6df21f73de33a14c8806c161e9e1cde37c8c0263807846805c10f2",
+      "transactionType": "CALL",
+      "contractName": "MainVault",
+      "contractAddress": "0x5f87AE2b5B978FDF21A5495518967e7F3d89EA23",
+      "function": "depositGHO(uint256)",
+      "arguments": [
+        "10000000000000000000000"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0x5f87ae2b5b978fdf21a5495518967e7f3d89ea23",
+        "gas": "0x24bf8",
+        "value": "0x0",
+        "data": "0x7709b6ab00000000000000000000000000000000000000000000021e19e0c9bab2400000",
+        "nonce": "0x2a9",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x6cf832fc2ac88d94c8e92e16d2a6d851b65b1119eae9f0ccd807799112f51a31",
+    "0x0619c352bb6df21f73de33a14c8806c161e9e1cde37c8c0263807846805c10f2"
+  ],
+  "returns": {},
+  "timestamp": 1705860615,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "581e935"
+}

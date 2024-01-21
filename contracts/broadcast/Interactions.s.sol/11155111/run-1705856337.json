@@ -1,0 +1,61 @@
+{
+  "transactions": [
+    {
+      "hash": "0x790b622d72550313b6af508d9173f91b3d1a35951829f1ee96d8b1d7c5100658",
+      "transactionType": "CALL",
+      "contractName": "TestGHOPassport",
+      "contractAddress": "0x17206705E75249B2Cb885423937e88Fc8f068338",
+      "function": "mint(address,uint256)",
+      "arguments": [
+        "0x6C5B323C02E01218689D59f250BBdA6283edd3f7",
+        "6"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0x17206705e75249b2cb885423937e88fc8f068338",
+        "gas": "0x17307",
+        "value": "0x0",
+        "data": "0x40c10f190000000000000000000000006c5b323c02e01218689d59f250bbda6283edd3f70000000000000000000000000000000000000000000000000000000000000006",
+        "nonce": "0x28c",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": "0xd74ae89fde0b3df49bfa826462b74e49c7ed631f48f5dcd50b1e756f098065e2",
+      "transactionType": "CALL",
+      "contractName": "TestGHOPartnerPassport",
+      "contractAddress": "0xEa9b91D90ff3e904EcF230296D88c30c78E1E4c8",
+      "function": "mint(address,uint256)",
+      "arguments": [
+        "0x79fDC8EC923aE2d6B0CC3757b476422e01DAbE7d",
+        "6"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xea9b91d90ff3e904ecf230296d88c30c78e1e4c8",
+        "gas": "0x17307",
+        "value": "0x0",
+        "data": "0x40c10f1900000000000000000000000079fdc8ec923ae2d6b0cc3757b476422e01dabe7d0000000000000000000000000000000000000000000000000000000000000006",
+        "nonce": "0x28d",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x790b622d72550313b6af508d9173f91b3d1a35951829f1ee96d8b1d7c5100658",
+    "0xd74ae89fde0b3df49bfa826462b74e49c7ed631f48f5dcd50b1e756f098065e2"
+  ],
+  "returns": {},
+  "timestamp": 1705856337,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "b7b0b1c"
+}

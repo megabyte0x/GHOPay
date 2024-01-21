@@ -1,0 +1,37 @@
+{
+  "transactions": [
+    {
+      "hash": "0x6c690ed5fa52a234b52b3411167f2943723be84b896180956a0fad4c96b228fc",
+      "transactionType": "CALL",
+      "contractName": "TestGHOPartnerPassport",
+      "contractAddress": "0xEa9b91D90ff3e904EcF230296D88c30c78E1E4c8",
+      "function": "mint(address,uint256)",
+      "arguments": [
+        "0x6C92E8595C8E749be38480e7ed5d53a0682C331F",
+        "7"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0xea9b91d90ff3e904ecf230296d88c30c78e1e4c8",
+        "gas": "0x17307",
+        "value": "0x0",
+        "data": "0x40c10f190000000000000000000000006c92e8595c8e749be38480e7ed5d53a0682c331f0000000000000000000000000000000000000000000000000000000000000007",
+        "nonce": "0x291",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x6c690ed5fa52a234b52b3411167f2943723be84b896180956a0fad4c96b228fc"
+  ],
+  "returns": {},
+  "timestamp": 1705858271,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "b7b0b1c"
+}
