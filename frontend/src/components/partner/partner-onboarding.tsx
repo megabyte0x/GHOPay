@@ -3,6 +3,7 @@ import CreateVaultModal from "@/components/partner/create-vault-modal";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import BUTTONS from "../landing/Buttons";
+import Step1 from "./create-vault/step1";
 
 const PartnerOnboarding = () => {
   const [step, setStep] = useState(0);
@@ -50,6 +51,7 @@ const PartnerOnboarding = () => {
             <BUTTONS.PURPLE
               onClick={() => {
                 setStep(1);
+                console.log("open modal");
               }}
               text="Create a Vault"
               style="px-[16px] py-[10px] text-[16px]"

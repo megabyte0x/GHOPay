@@ -148,6 +148,7 @@ const CreateVaultModal = ({
   const handleStakedGHO = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStakeGHO(Number(e.target.value));
   };
+  console.log(step);
   return (
     <>
       {step > 0 && (
