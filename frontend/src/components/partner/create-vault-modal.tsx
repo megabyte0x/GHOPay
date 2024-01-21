@@ -36,14 +36,12 @@ const CreateVaultModal = ({
   const [r, setR] = useState<string>();
   const [isApproved, setIsApproved] = useState(false);
 
-
   const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   const { address } = useAccount();
   const { availableGho } = useBalances();
 
-  const { approveTestGHOWithPermit } =
-    useApprovals(currVaultAddr);
+  const { approveTestGHOWithPermit } = useApprovals(currVaultAddr);
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
@@ -133,11 +131,11 @@ const CreateVaultModal = ({
 
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
-      if(!isApproved) throw "Please approve token";
+      if (!isApproved) throw "Please approve token";
 
       // await approveTestGhoForPartner();
 
-      console.log("invoked2");
+      console.log("invoked2", currVaultAddr);
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 }),
