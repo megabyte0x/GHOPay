@@ -10,6 +10,7 @@ import {TestGHOPassport} from "../test/mocks/TestGHOPassport.sol";
 import {TestGHOPartnerPassport} from "../test/mocks/TestGHOPartnerPassport.sol";
 import {MainVault} from "../src/MainVault.sol";
 import {PartnerContractsDeployer} from "../src/PartnerContractsDeployer.sol";
+import {RPool} from "../src/RPool.sol";
 
 contract MintGHOToken is Script {
     function mintGHOToken(address _ghoToken, address _mainAdmin, address _partner, address _user, address _danish)
@@ -18,9 +19,9 @@ contract MintGHOToken is Script {
         vm.startBroadcast();
         TestGHO ghoToken = TestGHO(_ghoToken);
         ghoToken.mint(_mainAdmin, 10000e18);
-        ghoToken.mint(_partner, 10000e18);
-        ghoToken.mint(_user, 10000e18);
-        ghoToken.mint(_danish, 10000e18);
+        // ghoToken.mint(_partner, 10000e18);
+        // ghoToken.mint(_user, 10000e18);
+        // ghoToken.mint(_danish, 10000e18);
         vm.stopBroadcast();
     }
 
@@ -55,8 +56,10 @@ contract MintNFT is Script {
         TestGHOPassport ghoPassport = TestGHOPassport(_ghoPassport);
         TestGHOPartnerPassport ghoPartnerPassport = TestGHOPartnerPassport(_ghoPartnerPassport);
         ghoPassport.mint(_user, 1);
-        ghoPassport.mint(_danish, 2);
+        // current token id count is 4. Start with 5.
+
         ghoPartnerPassport.mint(_partner, 1);
+        // current token id count is 3. Start with 4.
         vm.stopBroadcast();
     }
 
@@ -101,6 +104,29 @@ contract SetMainPayment is Script {
     }
 }
 
+contract SetMainVault is Script {
+    function setMainVault(address _mainVault, address _rPool) public {
+        vm.startBroadcast();
+        RPool rPool = RPool(_rPool);
+        rPool.setMainVault(_mainVault);
+        vm.stopBroadcast();
+    }
+
+    function setMainVaultUsingConfigs() public {
+        HelperConfig helperConfigs = new HelperConfig();
+
+        uint256 _chainId = block.chainid;
+        address _mainVault = helperConfigs.getMainVault(_chainId);
+        address _rPool = helperConfigs.getRPoolAddress(_chainId);
+
+        setMainVault(_mainVault, _rPool);
+    }
+
+    function run() public {
+        setMainVaultUsingConfigs();
+    }
+}
+
 contract DepositGHOInMainVault is Script {
     function depositGHOInMainVault(address _mainVault, address _ghoToken, uint256 _ghoToMint) public {
         vm.startBroadcast();
@@ -124,6 +150,31 @@ contract DepositGHOInMainVault is Script {
 
     function run() public {
         depositGHOInMainVaultUsingConfigs();
+    }
+}
+
+contract SetMainVaultFee is Script {
+    function setMainPaymentFee(address _mainVault, uint256 _userFee, uint256 _partnerFee) public {
+        vm.startBroadcast();
+        MainVault mainVault = MainVault(_mainVault);
+        mainVault.setUserFee(_userFee);
+        mainVault.setPartnerFee(_partnerFee);
+        vm.stopBroadcast();
+    }
+
+    function setMainPaymentFeeUsingConfigs() public {
+        HelperConfig helperConfigs = new HelperConfig();
+
+        uint256 _chainId = block.chainid;
+        address _mainVault = helperConfigs.getMainVault(_chainId);
+        uint256 _userFee = helperConfigs.USER_FEE_FOR_MAIN_PAYMENT();
+        uint256 _partnerFee = helperConfigs.PARTNER_FEE_FOR_MAIN_PAYMENT();
+
+        setMainPaymentFee(_mainVault, _userFee, _partnerFee);
+    }
+
+    function run() public {
+        setMainPaymentFeeUsingConfigs();
     }
 }
 

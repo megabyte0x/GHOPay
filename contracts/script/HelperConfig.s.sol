@@ -32,6 +32,8 @@ contract HelperConfig is Script {
     uint256 public constant FEE_ON_RPS = 2e17;
     uint256 public constant GHO_TOKEN_TO_MINT = 10000e18;
     uint256 public constant MINIMUM_REWARD_AMOUNT = 200e18;
+    uint256 public constant USER_FEE_FOR_MAIN_PAYMENT = 2e15; // 0.2%
+    uint256 public constant PARTNER_FEE_FOR_MAIN_PAYMENT = 30e16; // 30%
 
     constructor() {
         if (block.chainid == 11155111) {
