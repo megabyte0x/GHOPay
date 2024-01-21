@@ -6,12 +6,14 @@ import { SwapArgs, TokenInfo } from "@/types";
 import useBalances from "@/hooks/useBalances";
 import useSwap from "@/hooks/useSwap";
 import useWalletInfo from "@/hooks/user/useWalletInfo";
+import { useFeeData } from "wagmi";
 
 type SwapModalProps = {
   onClose?: () => void;
   fromTokenList: TokenInfo[];
   toTokenList: TokenInfo[];
   setLoading: (boolean: boolean) => void;
+  setSwapStatus: (boolean: boolean) => void;
 };
 
 export const Swap = ({
@@ -19,8 +21,9 @@ export const Swap = ({
   fromTokenList,
   toTokenList,
   setLoading,
+  setSwapStatus,
 }: SwapModalProps) => {
-  // const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
+  const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
   // console.log(data?.formatted.gasPrice);
   // if (isLoading) {
   //   setGasFee("Fetching fee data…");
@@ -28,7 +31,7 @@ export const Swap = ({
   // if (isError) {
   //   setGasFee("Error fetching fee data");
   // } else {
-  // const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
+  const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
   // }
   // return (
   //   <div className="text-[#ffffff]">
@@ -115,8 +118,12 @@ export const Swap = ({
 
     console.log({ fromToken, toToken });
     await swap();
-
+    // ADD fail success signifier
     setLoading(false);
+    setSwapStatus(true);
+    setTimeout(() => {
+      setSwapStatus(false);
+    }, 3000);
   };
   return (
     <div
