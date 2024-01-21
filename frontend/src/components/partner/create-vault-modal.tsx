@@ -113,7 +113,6 @@ const CreateVaultModal = ({
       setR(newr);
       setS(news);
       setIsApproved(true);
-      console.log(">>>>>>>>>", stakeGHO, s, v);
     } catch (error) {
       if (typeof error === "string") {
         setMessage(error);
