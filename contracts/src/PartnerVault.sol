@@ -34,6 +34,7 @@ contract PartnerVault is ERC4626, Ownable {
     */
 
     ERC20 public immutable i_ghoToken;
+    uint256 public constant DEADLINE = 3600; // 1 hour
 
     uint256 public s_withdrawalFee = 30e16; // 30%
     uint256 public s_partnerFee = 50e16; // 50%
@@ -108,12 +109,12 @@ contract PartnerVault is ERC4626, Ownable {
      * @param _ghoAmount The amount of GHO tokens to be deposited.
      * @notice This can only be called by the owner of the vault.
      */
-    function depositGHOWithPermit(uint256 _ghoAmount, uint8 v, bytes32 r, bytes32 s, uint256 deadline)
+    function depositGHOWithPermit(uint256 _ghoAmount, uint8 v, bytes32 r, bytes32 s)
         public
         isZeroAmount(_ghoAmount)
         onlyOwner
     {
-        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, deadline, v, r, s);
+        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, (block.timestamp + DEADLINE), v, r, s);
         deposit(_ghoAmount, s_rewardPool);
     }
 

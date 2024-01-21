@@ -25,49 +25,18 @@
       "isFixedGasLimit": false
     }
   ],
-  "receipts": [
-    {
-      "transactionHash": "0xb759702e651fc2abe1996a5594d8ffc0af40401fac89098c0d2e7a685dca08eb",
-      "transactionIndex": "0xd",
-      "blockHash": "0x45825041edb2d620aa6cca1519cfabf5a3e8e5fce7c45bcc1796584684f452fa",
-      "blockNumber": "0x4e390d",
-      "from": "0x1Cb30cb181D7854F91c2410BD037E6F42130e860",
-      "to": null,
-      "cumulativeGasUsed": "0x1d497d",
-      "gasUsed": "0xe7149",
-      "contractAddress": "0xeFbEA216E5373C9177964fb9A08b44f4d5e1c548",
-      "logs": [
-        {
-          "address": "0xeFbEA216E5373C9177964fb9A08b44f4d5e1c548",
-          "topics": [
-            "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "0x0000000000000000000000001cb30cb181d7854f91c2410bd037e6f42130e860"
-          ],
-          "data": "0x",
-          "blockHash": "0x45825041edb2d620aa6cca1519cfabf5a3e8e5fce7c45bcc1796584684f452fa",
-          "blockNumber": "0x4e390d",
-          "transactionHash": "0xb759702e651fc2abe1996a5594d8ffc0af40401fac89098c0d2e7a685dca08eb",
-          "transactionIndex": "0xd",
-          "logIndex": "0xa",
-          "removed": false
-        }
-      ],
-      "status": "0x1",
-      "logsBloom": "0x02002000000000000000000000000000000000200000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000400000004000000000000000020000000000000000000000000000000000000000000000000000000000000000000",
-      "type": "0x2",
-      "effectiveGasPrice": "0xbb298f05"
-    }
-  ],
+  "receipts": [],
   "libraries": [],
-  "pending": [],
+  "pending": [
+    "0xb759702e651fc2abe1996a5594d8ffc0af40401fac89098c0d2e7a685dca08eb"
+  ],
   "returns": {
     "rPool": {
       "internal_type": "address",
       "value": "0xeFbEA216E5373C9177964fb9A08b44f4d5e1c548"
     }
   },
-  "timestamp": 1705836700,
+  "timestamp": 1705836687,
   "chain": 11155111,
   "multi": false,
   "commit": "00e3607"
