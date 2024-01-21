@@ -114,7 +114,7 @@ contract PartnerVault is ERC4626, Ownable {
         isZeroAmount(_ghoAmount)
         onlyOwner
     {
-        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, (block.timestamp + DEADLINE), v, r, s);
+        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, type(uint256).max, v, r, s);
         deposit(_ghoAmount, s_rewardPool);
     }
 
