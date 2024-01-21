@@ -76,7 +76,7 @@ contract PartnerContractDeployerTest is Test {
             s_partnerContractsDeployer.registerAsPartner((address(s_ghoToken)), "name", "symbol", 2, 10);
         vm.stopPrank();
 
-        (address partnerVault, address partnerPayment) = s_utils.getPartnerDetails(PARTNER_ADMIN);
+        (address partnerVault, address partnerPayment) = s_utils.getSpecificPartnerDetails(PARTNER_ADMIN);
         assertEq(_partnerVault, partnerVault);
         assertEq(_partnerPay, partnerPayment);
     }

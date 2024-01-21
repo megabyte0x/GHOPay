@@ -50,9 +50,29 @@ contract Utils {
         return false;
     }
 
-    function getPartnerDetails(address _partner) public view returns (address _partnerVault, address _partnerPayment) {
+    function getSpecificPartnerDetails(address _partner)
+        public
+        view
+        returns (address _partnerVault, address _partnerPayment)
+    {
         PartnerDetails memory partnerDetails = s_addressToPartnerDetails[_partner];
         return (partnerDetails.s_partnerVault, partnerDetails.s_partnerPayment);
+    }
+
+    function getPartnersDetails()
+        public
+        view
+        returns (address[] memory _partnerVaults, address[] memory _partnerPayments)
+    {
+        address[] memory partnerVaults = new address[](s_partners.length);
+        address[] memory partnerPayments = new address[](s_partners.length);
+        for (uint256 i = 0; i < s_partners.length; i++) {
+            (address _partnerVault, address _partnerPayment) = getSpecificPartnerDetails(s_partners[i]);
+            partnerVaults[i] = _partnerVault;
+            partnerPayments[i] = _partnerPayment;
+        }
+
+        return (partnerVaults, partnerPayments);
     }
 
     function getPartners() public view returns (address[] memory) {
@@ -64,7 +84,7 @@ contract Utils {
         uint256[] memory balances = new uint256[](s_partners.length);
         address[] memory partnerVaults = new address[](s_partners.length);
         for (uint256 i = 0; i < s_partners.length; i++) {
-            (address _partnerVault,) = getPartnerDetails(s_partners[i]);
+            (address _partnerVault,) = getSpecificPartnerDetails(s_partners[i]);
             balances[i] = ERC20(_partnerVault).balanceOf(_user);
             partnerVaults[i] = _partnerVault;
         }
