@@ -9,9 +9,12 @@ import {ERC20} from "../src/ERC4626Flatten.sol";
 import {HelperConfig} from "../script/HelperConfig.s.sol";
 
 contract DeployMainVault is Script {
-    function deployMainVault(address _ghoToken, address _mainAdmin) public returns (address mainVault) {
+    function deployMainVault(address _ghoToken, address _ghoPartnerPassport, address _mainAdmin)
+        public
+        returns (address mainVault)
+    {
         vm.startBroadcast();
-        MainVault _mainVault = new MainVault(ERC20(_ghoToken), _mainAdmin);
+        MainVault _mainVault = new MainVault(ERC20(_ghoToken),_ghoPartnerPassport, _mainAdmin);
         vm.stopBroadcast();
 
         mainVault = address(_mainVault);
@@ -22,9 +25,10 @@ contract DeployMainVault is Script {
         HelperConfig _helperConfigs = new HelperConfig();
 
         address _ghoToken = _helperConfigs.getGHOToken(block.chainid);
+        address _ghoPartnerPassport = _helperConfigs.getGhoPartnerPassport(block.chainid);
         address _mainAdmin = _helperConfigs.s_mainAdmin();
 
-        mainVault = deployMainVault(_ghoToken, _mainAdmin);
+        mainVault = deployMainVault(_ghoToken, _ghoPartnerPassport, _mainAdmin);
     }
 
     function run() public returns (address mainVault) {

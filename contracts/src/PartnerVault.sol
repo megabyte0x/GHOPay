@@ -129,7 +129,7 @@ contract PartnerVault is ERC4626, Ownable {
      * @return feeForPartner The amount of GHO Tokens to be deducted as fee for Partners.
      */
     function withdrawWithFee(uint256 _rpTokenAmount)
-        internal
+        public
         view
         returns (uint256 amountPayable, uint256 feeForPartner)
     {

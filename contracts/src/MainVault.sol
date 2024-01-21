@@ -4,7 +4,7 @@ pragma solidity 0.8.20;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-import {ERC4626, ERC20} from "./ERC4626Flatten.sol";
+import {ERC4626, ERC20, FixedPointMathLib} from "./ERC4626Flatten.sol";
 
 /**
  * @title MainVault
@@ -16,13 +16,15 @@ contract MainVault is ERC4626, Ownable {
     error MainVault__ZeroAddress();
     error MainVault__ZeroAmount();
 
-    event MainVault__PartnerFeeSet(uint8 partnerFee);
-    event MainVault__UserFeeSet(uint8 userFee);
+    event MainVault__PartnerFeeSet(uint256 partnerFee);
+    event MainVault__UserFeeSet(uint256 userFee);
     event MainVault__RewardPoolSet(address rewardPool);
     event MainVault__UpdatedMainAdmin(address mainAdmin);
     event MainVault__UtilsSet(address utils);
     event MainVault__GHODeposited(uint256 amount);
     event MainVault__GHOWithdrawn(uint256 indexed amount, address indexed receiver, address indexed owner);
+
+    using FixedPointMathLib for uint256;
 
     /*
            _        _                         _       _     _
@@ -35,14 +37,18 @@ contract MainVault is ERC4626, Ownable {
     ERC20 public immutable i_ghoToken;
     IERC721 public s_ghoPartnerPassport;
 
-    uint8 public s_userFee;
-    uint8 public s_partnerFee;
+    uint256 public s_userFee;
+    uint256 public s_partnerFee;
     address public s_mainPayment;
     address public s_mainAdmin;
 
-    constructor(ERC20 _ghoToken, address _mainAdmin) Ownable(_mainAdmin) ERC4626(_ghoToken, "GHO Points", "GP", 18) {
+    constructor(ERC20 _ghoToken, address ghoPartnerPassport, address _mainAdmin)
+        Ownable(_mainAdmin)
+        ERC4626(_ghoToken, "GHO Points", "GP", 18)
+    {
         i_ghoToken = _ghoToken;
         s_mainAdmin = _mainAdmin;
+        s_ghoPartnerPassport = IERC721(ghoPartnerPassport);
     }
 
     modifier isZeroAdrress(address _address) {
@@ -151,7 +157,7 @@ contract MainVault is ERC4626, Ownable {
      * @return amountPayable The amount of GHO tokens to be paid
      * @return fee The amount of fee to be paid
      */
-    function withdrawWithFee(uint256 _rpTokenAmount, uint8 _fee)
+    function withdrawWithFee(uint256 _rpTokenAmount, uint256 _fee)
         internal
         pure
         returns (uint256 amountPayable, uint256 fee)
@@ -165,8 +171,9 @@ contract MainVault is ERC4626, Ownable {
      * @param _rpTokenAmount The amount of GP tokens in exchange for GHO tokens
      * @param _fee The fee percent to be charged
      */
-    function calculateFee(uint256 _rpTokenAmount, uint8 _fee) internal pure returns (uint256) {
-        return (_rpTokenAmount * _fee) / 100;
+    function calculateFee(uint256 _rpTokenAmount, uint256 _fee) internal pure returns (uint256) {
+        uint256 fee = FixedPointMathLib.mulWadDown(_rpTokenAmount, _fee);
+        return fee;
     }
 
     /*

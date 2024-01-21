@@ -34,7 +34,6 @@ contract RPool is Ownable {
     using SafeTransferLib for ERC20;
 
     address public s_utils;
-    address public s_gpToken;
     address public s_ghoToken;
     address public s_mainVault;
     address public s_mainAdmin;
@@ -82,10 +81,6 @@ contract RPool is Ownable {
 
     function setUtils(address _utils) public onlyOwner isZeroAdrress(_utils) {
         s_utils = _utils;
-    }
-
-    function setGPToken(address _gpToken) public onlyOwner isZeroAdrress(_gpToken) {
-        s_gpToken = _gpToken;
     }
 
     function setGHOToken(address _ghoToken) public onlyOwner isZeroAdrress(_ghoToken) {
@@ -203,11 +198,11 @@ contract RPool is Ownable {
      * @dev In any other case, the swap will be routed to swapRP function. Charging nominal fee for swap.
      */
     function swapRouter(address _initialToken, address _finalToken, uint256 _initialTokenAmount) internal {
-        address gpToken = s_gpToken;
+        address gpToken = s_mainVault;
         address ghoToken = s_ghoToken;
 
         if (_initialToken == gpToken && _finalToken == ghoToken) {
-            MainVault(s_mainVault).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
+            MainVault(gpToken).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
             emit RPool__GHOWithdrawn();
         } else if (_initialToken != gpToken && _finalToken == ghoToken) {
             PartnerVault(_initialToken).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);

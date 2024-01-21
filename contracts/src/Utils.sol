@@ -2,13 +2,24 @@
 pragma solidity 0.8.20;
 
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
+import {ERC4626, FixedPointMathLib} from "./ERC4626Flatten.sol";
+import {PartnerVault} from "./PartnerVault.sol";
+import {RPool} from "./RPool.sol";
+import {MainVault} from "./MainVault.sol";
 
 contract Utils {
+    error Utils__GHOCannotBeUsedForSwap();
+
     event Utils__PartnerContractsAdded(
         address indexed partner, address indexed partnerPayment, address indexed partnerVault
     );
 
+    using FixedPointMathLib for uint256;
+
     address[] public s_partners;
+    address public s_ghoToken;
+    address public s_gpToken;
+    address public s_rPool;
 
     struct PartnerDetails {
         address s_partnerVault;
@@ -90,5 +101,41 @@ contract Utils {
         }
 
         return (partnerVaults, balances);
+    }
+
+    function getSwapFinalAmount(address _user, address _initialToken, address _finalToken, uint256 _initialTokenAmount)
+        public
+        view
+        returns (uint256 _finalTokenAmount)
+    {
+        if (_initialToken == s_ghoToken) {
+            revert Utils__GHOCannotBeUsedForSwap();
+        }
+
+        if (_initialToken == s_gpToken && _finalToken == s_ghoToken) {
+            if (isPartner(_user)) {
+                uint256 fee = MainVault(s_gpToken).s_partnerFee();
+                _finalTokenAmount = calculateAmountPayable(_initialTokenAmount, fee);
+            } else {
+                uint256 fee = MainVault(s_gpToken).s_userFee();
+                _finalTokenAmount = calculateAmountPayable(_initialTokenAmount, fee);
+            }
+        } else if (_initialToken != s_gpToken && _finalToken == s_ghoToken) {
+            if (PartnerVault(_initialToken).owner() == _user) {
+                _finalTokenAmount = _initialTokenAmount;
+            } else {
+                (uint256 amountPayable,) = PartnerVault(_initialToken).withdrawWithFee(_initialTokenAmount);
+                _finalTokenAmount = amountPayable;
+            }
+        } else {
+            (uint256 amountPayable,) =
+                RPool(s_rPool).feeCalculatorForRPs(_initialToken, _finalToken, _initialTokenAmount);
+            _finalTokenAmount = amountPayable;
+        }
+    }
+
+    function calculateAmountPayable(uint256 _rpTokenAmount, uint256 _fee) internal pure returns (uint256) {
+        uint256 fee = FixedPointMathLib.mulWadDown(_rpTokenAmount, _fee);
+        return (_rpTokenAmount - fee);
     }
 }
