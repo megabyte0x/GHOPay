@@ -5,10 +5,11 @@ import { useState } from "react";
 import { TokenInfo } from "@/types";
 import useBalances from "@/hooks/useBalances";
 import { CONTRACTS } from "@/constants";
+import { useFeeData } from "wagmi";
 
 const minRecieved = 0;
 const currentExchangeRate = 0;
-const gasFee = 0;
+
 const minGHORecieve = 0;
 const usdOfMinGHORecieved = 0;
 
@@ -23,6 +24,22 @@ export const Swap = ({
   fromTokenList,
   toTokenList,
 }: SwapModalProps) => {
+  const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
+  // console.log(data?.formatted.gasPrice);
+  // if (isLoading) {
+  //   setGasFee("Fetching fee data…");
+  // }
+  // if (isError) {
+  //   setGasFee("Error fetching fee data");
+  // } else {
+  const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
+  // }
+  // return (
+  //   <div className="text-[#ffffff]">
+  //     Fee data: {JSON.stringify(data?.formatted)}
+  //   </div>
+  // );
+  // console.log(data?.formatted.gasPrice);
   const { tokens } = useBalances();
 
   const [fromVis, setFromVis] = useState(false);
@@ -68,8 +85,8 @@ export const Swap = ({
   return (
     <div
       className="pt-[32px] px-[24px] pb-[24px] rounded-[12px]
-bg-[#1B0F31] border-[1px] border-solid border-[#5720B7]
-max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
+  bg-[#1B0F31] border-[1px] border-solid border-[#5720B7]
+  max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
     >
       <div className="flex flex-col gap-[16px]">
         {isUser && (
@@ -91,8 +108,8 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
           </label>
           <div
             className="flex pl-[10px]  gap-[12px]
-          border-[1px] rounded-[8px] border-[#6927DA] bg-[#2E125E]
-          text-[16px] leading-[24px]"
+            border-[1px] rounded-[8px] border-[#6927DA] bg-[#2E125E]
+            text-[16px] leading-[24px]"
           >
             <div className="py-[10px] min-w-fit flex flex-col">
               <div
@@ -120,10 +137,10 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                     {fromVis && (
                       <ol
                         className="fixed mt-[27px] justify-right
-                    z-50
-                   flex flex-col 
-              border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
-              text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
+                      z-50
+                     flex flex-col
+                border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
+                text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
                       >
                         {fromTokenList.map((token) => {
                           return (
@@ -167,8 +184,8 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
           </label>
           <div
             className="flex pl-[10px]  gap-[12px]
-          border-[1px] rounded-[8px] border-[#6927DA] bg-[#2E125E]
-          text-[16px] leading-[24px]"
+            border-[1px] rounded-[8px] border-[#6927DA] bg-[#2E125E]
+            text-[16px] leading-[24px]"
           >
             <div className="py-[10px] min-w-fit">
               <div
@@ -197,10 +214,10 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
                     {toVis && (
                       <ol
                         className="fixed mt-[27px] justify-right
-                    z-50
-                   flex flex-col 
-              border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
-              text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
+                      z-50
+                     flex flex-col
+                border-[1px] border-solid bg-[#491d97] border-[#bbafd5] rounded-[6px]
+                text-[14px] text-[#DBD2EF] font-medium leading-[20px]"
                       >
                         {toTokenList.map((token) => {
                           return (
@@ -231,8 +248,8 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
         </div>
         <div
           className="px-[14px] py-[10px] bg-[#1a0f2f]
-        border-[#6927DA] border-[1px] border-solid rounded-[8px]
-        flex flex-col gap-[16px]"
+          border-[#6927DA] border-[1px] border-solid rounded-[8px]
+          flex flex-col gap-[16px]"
         >
           <div className="flex justify-between text-[16px] leading-[24px]">
             <div className="flex gap-2">
@@ -240,7 +257,7 @@ max-w-[480px] flex flex-col items-center justify-center gap-[32px]"
               <h3 className="text-left text-[#A48AFB]">Gas Fees</h3>
             </div>
             <h6 className="pr-[14px] min-w-fit text-right place-self-end text-[#C3B5FD]">
-              {gasFee} GWEI
+              0.{gasFee.slice(11, 15)} * 10^9 Ether
             </h6>
           </div>
           <h3 className="text-[14px] leading-[20px] text-[#DBD2EFCC]">
