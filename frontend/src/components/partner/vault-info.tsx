@@ -26,13 +26,14 @@ const VaultInfo = () => {
 
     for (const partnerInfo of details) {
       if (partnerInfo.addrs.partner !== address) return;
-      console.log(partnerInfo);
       setVaultName(partnerInfo.name);
       setSymbol(partnerInfo.symbol);
-      setPartnerTokens(partnerInfo.tokenBalance);
-      setTotalTokensSupply(partnerInfo.totalSupply);
-      setStakedGHO(partnerInfo.stakedGho);
-      setTotalTokensUsers(partnerInfo.totalSupply - partnerInfo.tokenBalance);
+      setPartnerTokens(Number(partnerInfo.tokenBalance.toFixed(2)));
+      setTotalTokensSupply(Number(partnerInfo.totalSupply.toFixed(2)));
+      setStakedGHO(Number(partnerInfo.stakedGho.toFixed(2)));
+      setTotalTokensUsers(
+        Number((partnerInfo.totalSupply - partnerInfo.tokenBalance).toFixed(2)),
+      );
     }
   }, [address, details]);
 
