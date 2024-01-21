@@ -9,14 +9,14 @@ import { readContract } from "wagmi/actions";
 const pollInterval = 10_000; // 10 seconds
 
 const getGpInfo = async () => {
-  const promises = ["name", "symbol", "totalAssets", "balanceOf"].map(
+  const promises = ["name", "symbol", "totalAssets", "gpTokenBalance"].map(
     (funcName) => {
       return readContract({
-        abi: CONTRACTS.PARTNER.PartnerVault.ABI,
+        abi: CONTRACTS.PUBLIC.MainVault.ABI,
         address: CONTRACTS.PUBLIC.MainVault.address,
         functionName: funcName,
-        ...(funcName === "rpTokenBalance" && {
-          args: [CONTRACTS.PUBLIC.RPool.address],
+        ...(funcName === "gpTokenBalance" && {
+          args: [CONTRACTS.PUBLIC.MainPayment.address],
         }),
       });
     },
@@ -75,14 +75,6 @@ const useBalances = () => {
         totalSupply: detail.totalSupply,
         address: detail.addrs.vault,
       }));
-
-      tokens.push({
-        address: CONTRACTS.PUBLIC.TestGHO.address,
-        balance: availableGho || 0,
-        name: "GHO",
-        symbol: "GHO",
-        totalSupply: 0,
-      });
 
       const gpInfo = await getGpInfo();
 
