@@ -205,11 +205,22 @@ contract RPool is Ownable {
             MainVault(gpToken).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
             emit RPool__GHOWithdrawn();
         } else if (_initialToken != gpToken && _finalToken == ghoToken) {
-            PartnerVault(_initialToken).withdrawGHO(_initialTokenAmount, msg.sender, msg.sender);
+            uint256 _ghoAmount = decimalCorrectionFromRPtoCV(_initialTokenAmount, _initialToken);
+            PartnerVault(_initialToken).withdrawGHO(_ghoAmount, msg.sender, msg.sender);
             emit RPool__GHOWithdrawn();
         } else {
             swapRP(_initialToken, _finalToken, _initialTokenAmount);
             emit RPool__RPsSwapped();
+        }
+    }
+
+    function decimalCorrectionFromRPtoCV(uint256 _amount, address _rpToken) public returns (uint256 _ghoAmount) {
+        uint256 rpDecimals = ERC20(_rpToken).decimals();
+        uint256 extraDecimals = rpDecimals - 18;
+        if (extraDecimals > 0) {
+            _ghoAmount = FixedPointMathLib.divWadDown(_amount, 10 ** extraDecimals);
+        } else if (extraDecimals == 0) {
+            _ghoAmount = _amount;
         }
     }
 }

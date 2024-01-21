@@ -108,6 +108,23 @@ contract MainVault is ERC4626, Ownable {
     }
 
     /**
+     * Function to deposit GHO tokens to the vault in exchange for GP tokens using permit.
+     * @param _ghoAmount number of assets to be deposited
+     * @param v v of the signature
+     * @param r r of the signature
+     * @param s s of the signature
+     */
+    function depositGHOWithPermit(uint256 _ghoAmount, uint8 v, bytes32 r, bytes32 s)
+        public
+        isZeroAmount(_ghoAmount)
+        onlyOwner
+    {
+        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, 3600, v, r, s);
+        deposit(_ghoAmount, s_mainPayment);
+        emit MainVault__GHODeposited(_ghoAmount);
+    }
+
+    /**
      * Function to withdraw GP tokens in exchange for GHO tokens.
      * @param _gp Amount of GP tokens to be burned in exchange for GHO tokens
      * @param _receiver The address of the receiver of the GHO tokens

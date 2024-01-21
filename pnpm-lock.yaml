@@ -28,6 +28,9 @@ importers:
       connectkit:
         specifier: ^1.6.0
         version: 1.6.0(@babel/core@7.23.7)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.3)(viem@1.21.4)(wagmi@1.4.13)(zod@3.22.4)
+      eth-permit:
+        specifier: ^0.2.3
+        version: 0.2.3
       next:
         specifier: 14.0.4
         version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
@@ -3555,6 +3558,12 @@ packages:
       pify: 5.0.0
     dev: false
 
+  /eth-permit@0.2.3:
+    resolution: {integrity: sha512-d4tbiRQgbpdeJbdC9hdyT0SUJcJx28FIy3o2RxEAoeYI+zyYbNC0ZpdE6kxBK+7iY2payjHRE7rs7tr5EcOVLg==}
+    dependencies:
+      utf8: 3.0.0
+    dev: false
+
   /eth-query@2.1.2:
     resolution: {integrity: sha512-srES0ZcvwkR/wd5OQBRA1bIJMww1skfGS0s8wlwK3/oNP4+wnds60krvu5R1QbpRQjMmpG5OMIWro5s7gvDPsA==}
     dependencies:
@@ -6139,6 +6148,10 @@ packages:
     requiresBuild: true
     dependencies:
       node-gyp-build: 4.8.0
+    dev: false
+
+  /utf8@3.0.0:
+    resolution: {integrity: sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==}
     dev: false
 
   /util-deprecate@1.0.2:

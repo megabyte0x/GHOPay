@@ -15,6 +15,13 @@ contract PartnerVault is ERC4626, Ownable {
     error PartnerVault__ZeroAddress();
     error PartnerVault__ZeroAmount();
 
+    event PartnerVault__WithdrawalFeeSet(uint256 withdrawalFee);
+    event PartnerVault__RewardPoolSet(address rewardPool);
+    event PartnerVault__FeeCollectorSet(address feeCollector);
+    event PartnerVault__PartnerFeeSet(uint256 partnerFee);
+    event PartnerVault__GHODeposited(uint256 amount);
+    event PartnerVault__GHOWithdrawn(uint256 indexed amount, address indexed receiver, address indexed owner);
+
     using SafeTransferLib for ERC20;
     using FixedPointMathLib for uint256;
 
@@ -27,6 +34,7 @@ contract PartnerVault is ERC4626, Ownable {
     */
 
     ERC20 public immutable i_ghoToken;
+    uint256 public constant DEADLINE = 3600; // 1 hour
 
     uint256 public s_withdrawalFee = 30e16; // 30%
     uint256 public s_partnerFee = 50e16; // 50%
@@ -68,18 +76,22 @@ contract PartnerVault is ERC4626, Ownable {
 
     function setWithdrawalFee(uint8 _withdrawalFee) public isZeroAmount(uint256(_withdrawalFee)) onlyOwner {
         s_withdrawalFee = _withdrawalFee;
+        emit PartnerVault__WithdrawalFeeSet(_withdrawalFee);
     }
 
     function setRewardPool(address _rewardPool) public isZeroAdrress(_rewardPool) onlyOwner {
         s_rewardPool = _rewardPool;
+        emit PartnerVault__RewardPoolSet(_rewardPool);
     }
 
     function setFeeCollector(address _feeCollector) public isZeroAdrress(_feeCollector) onlyOwner {
         s_partnerFeeCollector = _feeCollector;
+        emit PartnerVault__FeeCollectorSet(_feeCollector);
     }
 
     function setPartnerFee(uint8 _partnerFee) public isZeroAmount(uint256(_partnerFee)) onlyOwner {
         s_partnerFee = _partnerFee;
+        emit PartnerVault__PartnerFeeSet(_partnerFee);
     }
 
     /**
@@ -89,21 +101,37 @@ contract PartnerVault is ERC4626, Ownable {
      */
     function depositGHO(uint256 _ghoAmount) public isZeroAmount(_ghoAmount) onlyOwner {
         deposit(_ghoAmount, s_rewardPool);
+        emit PartnerVault__GHODeposited(_ghoAmount);
+    }
+
+    /**
+     * Function to deposit GHO Tokens into the vault.
+     * @param _ghoAmount The amount of GHO tokens to be deposited.
+     * @notice This can only be called by the owner of the vault.
+     */
+    function depositGHOWithPermit(uint256 _ghoAmount, uint8 v, bytes32 r, bytes32 s)
+        public
+        isZeroAmount(_ghoAmount)
+        onlyOwner
+    {
+        i_ghoToken.permit(msg.sender, address(this), _ghoAmount, type(uint256).max, v, r, s);
+        deposit(_ghoAmount, s_rewardPool);
     }
 
     /**
      * Function to withdraw GHO Tokens from the vault in exchange for RP tokens.
-     * @param _rp The amount of Reward Points tokens to be withdrawn.
+     * @param _ghoAmount The amount of GHO tokens to be withdrawn.
      * @param _receiver The address of the receiver of the GHO tokens.
      * @param _owner The address of the owner of the RP tokens.
      */
-    function withdrawGHO(uint256 _rp, address _receiver, address _owner)
+    function withdrawGHO(uint256 _ghoAmount, address _receiver, address _owner)
         public
-        isZeroAmount(_rp)
+        isZeroAmount(_ghoAmount)
         isZeroAdrress(_receiver)
         isZeroAdrress(_owner)
     {
-        withdraw(_rp, _receiver, _owner);
+        withdraw(_ghoAmount, _receiver, _owner);
+        emit PartnerVault__GHOWithdrawn(_ghoAmount, _receiver, _owner);
     }
 
     function totalAssets() public view override returns (uint256) {
@@ -124,22 +152,18 @@ contract PartnerVault is ERC4626, Ownable {
 
     /**
      * Function to calculate the amount of GHO to be paid to the Partner and the user.
-     * @param _rpTokenAmount The amount of RP tokens deposited in exchange for GHO.
+     * @param _ghoAmount The amount of GHO tokens to be withdrawn.
      * @return amountPayable The amount of GHO Tokens to be paid to the user.
      * @return feeForPartner The amount of GHO Tokens to be deducted as fee for Partners.
      */
-    function withdrawWithFee(uint256 _rpTokenAmount)
-        public
-        view
-        returns (uint256 amountPayable, uint256 feeForPartner)
-    {
-        uint256 fee = calculateFee(_rpTokenAmount);
+    function withdrawWithFee(uint256 _ghoAmount) public view returns (uint256 amountPayable, uint256 feeForPartner) {
+        uint256 fee = calculateFee(_ghoAmount);
         feeForPartner = FixedPointMathLib.mulWadUp(fee, s_partnerFee);
-        amountPayable = _rpTokenAmount - fee;
+        amountPayable = _ghoAmount - fee;
     }
 
-    function calculateFee(uint256 _rpTokenAmount) internal view returns (uint256) {
-        return FixedPointMathLib.mulWadUp(_rpTokenAmount, s_withdrawalFee);
+    function calculateFee(uint256 _ghoAmount) internal view returns (uint256) {
+        return FixedPointMathLib.mulWadUp(_ghoAmount, s_withdrawalFee);
     }
 
     /*
@@ -152,18 +176,18 @@ contract PartnerVault is ERC4626, Ownable {
 
     /**
      * Function to withdraw GHO tokens from the vault in exchange for RP tokens.
-     * @param _rpAmount The amount of RP tokens deposited in exchange for GHO
+     * @param _ghoAmount The amount of GHO tokens to be withdrawn
      * @param _receiver The address of the recipient for GHO tokens
      * @param _owner The address of the owner of the RP tokens
      * @dev This function is overriden from ERC4626 to add the withdrawal fee.
      */
-    function withdraw(uint256 _rpAmount, address _receiver, address _owner)
+    function withdraw(uint256 _ghoAmount, address _receiver, address _owner)
         public
         virtual
         override
         returns (uint256 shares)
     {
-        shares = previewWithdraw(_rpAmount); // No need to check for rounding error, previewWithdraw rounds up.
+        shares = previewWithdraw(_ghoAmount); // No need to check for rounding error, previewWithdraw rounds up.
 
         if (msg.sender != _owner) {
             uint256 allowed = allowance[_owner][msg.sender]; // Saves gas for limited approvals.
@@ -171,16 +195,16 @@ contract PartnerVault is ERC4626, Ownable {
             if (allowed != type(uint256).max) allowance[_owner][msg.sender] = allowed - shares;
         }
 
-        beforeWithdraw(_rpAmount, shares);
+        beforeWithdraw(_ghoAmount, shares);
 
         _burn(_owner, shares);
 
-        emit Withdraw(msg.sender, _receiver, _owner, _rpAmount, shares);
+        emit Withdraw(msg.sender, _receiver, _owner, _ghoAmount, shares);
 
         if (msg.sender == owner()) {
-            i_ghoToken.safeTransfer(_receiver, _rpAmount);
+            i_ghoToken.safeTransfer(_receiver, _ghoAmount);
         } else {
-            (uint256 amountPayable, uint256 feeForPartner) = withdrawWithFee(_rpAmount);
+            (uint256 amountPayable, uint256 feeForPartner) = withdrawWithFee(_ghoAmount);
             i_ghoToken.safeTransfer(_receiver, amountPayable);
             i_ghoToken.safeTransfer(s_partnerFeeCollector, feeForPartner);
         }

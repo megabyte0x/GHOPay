@@ -31,13 +31,17 @@ const CreateVaultModal = ({
   const [stakeGHO, setStakeGHO] = useState(0);
   const [ratio1, setRatio1] = useState(2);
   const [rewardPoints, setRewardPoints] = useState(0);
+  const [v, setV] = useState<number>();
+  const [s, setS] = useState<string>();
+  const [r, setR] = useState<string>();
+  const [isApproved, setIsApproved] = useState(false);
 
   const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
 
   const { address } = useAccount();
   const { availableGho } = useBalances();
 
-  const { approveTestGhoForPartner } = useApprovals(currVaultAddr);
+  const { approveTestGHOWithPermit } = useApprovals(currVaultAddr);
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
@@ -63,8 +67,8 @@ const CreateVaultModal = ({
     account: address,
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
     address: currVaultAddr,
-    functionName: "depositGHO",
-    args: [BigInt(stakeGHO * 10e17)],
+    functionName: "depositGHOWithPermit",
+    args: [BigInt(stakeGHO * 10e17), v, r, s],
   });
 
   const handleVaultCreate = async () => {
@@ -96,15 +100,42 @@ const CreateVaultModal = ({
     }
   };
 
-  const handleMintGHO = async () => {
+  const handleApproveToken = async () => {
+    try {
+      if (!address) throw "Please Log in.";
+      if (!stakeGHO) throw "Please fill all fields.";
+      const {
+        r: newr,
+        s: news,
+        v: newv,
+      } = await approveTestGHOWithPermit(stakeGHO);
+      setV(newv);
+      setR(newr);
+      setS(news);
+      setIsApproved(true);
+      console.log(">>>>>>>>>", stakeGHO, s, v);
+    } catch (error) {
+      if (typeof error === "string") {
+        setMessage(error);
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+      }
+      console.error(error);
+    }
+  };
+
+  const handleMintRP = async () => {
     try {
       onNext();
 
       if (!address) throw "Please Log in.";
       if (!stakeGHO) throw "Please fill all fields.";
+      if (!isApproved) throw "Please approve token";
 
-      await approveTestGhoForPartner();
+      // await approveTestGhoForPartner();
 
+      console.log("invoked2", currVaultAddr);
       const { hash } = await writeAsyncPartnerVault();
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 }),
@@ -178,7 +209,8 @@ const CreateVaultModal = ({
               availableGho={availableGho as number}
               stakeGHO={stakeGHO}
               rewardPoints={rewardPoints}
-              handleMintGHO={handleMintGHO}
+              handleMintRP={handleMintRP}
+              handleApproveToken={handleApproveToken}
             />
           )}
           {step == 4 && <Step4 />}
