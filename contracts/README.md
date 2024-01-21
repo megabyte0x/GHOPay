@@ -3,14 +3,18 @@
 TestGHO: 0xBdD9c513Be2514F83B72761503F0be2134ec6A1a
 GHOPassport: 0x17206705E75249B2Cb885423937e88Fc8f068338
 GHOPartnerPassport: 0xEa9b91D90ff3e904EcF230296D88c30c78E1E4c8
-Utils: 0x265fAb1541931e06307df504119A43b66Ee7f04F
-RPool: 0x7d5fAA2F882fE15819685E3d0FAB95Cb8EaF24e9
-MainVault: 0x0Daf0Dd7902EB415f9624c102Ef6dA7a20D15e10
-MainPayment: 0x0A7eba6b4841128E05704890d2326553803570cF
-PartnerContractsDeployer: 0x5C6cb07D9Ea0145E159476e2C2e278c7861AA0F4
+Utils: 0x9d349778916978d4FBBA667A220E87aC88aC304a
+RPool: 0x7DE9C27FdE16554a73e550AE7b322AC0cfd593Db
+MainVault: 0x4DaB3934373d7f4f0CBC1bA597b5Dc8Cf5d6A2D3
+MainPayment: 0x8D910C25AE43620FDDA5CFc54c0FD07b4601d137
+PartnerContractsDeployer: 0xE77ADA999d96DFe686FBb5eD5F4B7B635f91A8d0
 
 
-// Paretner -> withdrawal and partnerfee
-// RPool -> Main vault
-// Mainvault -> userfee, partnerfee, mainpayment
+// Paretner -> withdrawal and partnerfee [UI]
+
+// MainVault -> MainPayment
+// RPool -> Main vault 
+// DepositGHOInMainVault
+// Mainvault -> userfee, partnerfee
+**make setUpInteractionsOnSepolia**
 //
