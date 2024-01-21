@@ -27,7 +27,7 @@ export const User = () => {
                   "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
                   {
                     "border-solid border-b-2": subNavType === ENav.SHOP,
-                  }
+                  },
                 )}
                 onClick={() => setSubNavType(ENav.SHOP)}
               >
@@ -38,7 +38,7 @@ export const User = () => {
                   "text-[14px] font-semibold leading-[20px] text-[#dbd2ef] cursor-pointer px-[4x] pb-[12px]",
                   {
                     "border-solid border-b-2": subNavType === ENav.SWAP,
-                  }
+                  },
                 )}
                 onClick={() => setSubNavType(ENav.SWAP)}
               >

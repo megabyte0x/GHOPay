@@ -2,6 +2,9 @@
 import Image from "next/image";
 import BUTTONS from "../landing/Buttons";
 import { useState } from "react";
+import { TokenInfo } from "@/types";
+import useBalances from "@/hooks/useBalances";
+import { CONTRACTS } from "@/constants";
 
 const minRecieved = 0;
 const currentExchangeRate = 0;
@@ -11,37 +14,62 @@ const usdOfMinGHORecieved = 0;
 
 type SwapModalProps = {
   onClose?: () => void;
-  fromTokenList?: any[];
-  toTokenList?: any[];
+  fromTokenList?: TokenInfo[];
+  toTokenList?: TokenInfo[];
 };
 
-const DEFAULT_TOKENS = ["GHO", "UNI"];
+const DEFAULT_TOKENS: TokenInfo[] = [];
 
 export const Swap = ({
   onClose,
   fromTokenList = DEFAULT_TOKENS,
   toTokenList = DEFAULT_TOKENS,
 }: SwapModalProps) => {
+  const { tokens } = useBalances();
+
+  DEFAULT_TOKENS.push(
+    {
+      name: "GHO",
+      symbol: "GHO",
+      address: CONTRACTS.PUBLIC.TestGHO.address,
+      balance: tokens.find((token) => token.name === "GHO")?.balance || 0,
+    },
+    {
+      name: "GP",
+      symbol: "GP",
+      address: CONTRACTS.PUBLIC.MainVault.address,
+      balance: tokens.find((token) => token.name === "GP")?.balance || 0,
+    },
+  );
+
   const [fromVis, setFromVis] = useState(false);
   const [toVis, setToVis] = useState(false);
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
 
-  const [fromToken, setFromToken] = useState<any>(fromTokenList[0]);
-  const [toToken, setToToken] = useState<any>(toTokenList[0]);
+  const [fromToken, setFromToken] = useState<TokenInfo>(fromTokenList[0]);
+  const [toToken, setToToken] = useState<TokenInfo>(toTokenList[0]);
 
   const isUser = true;
 
   const handleFromTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    const token = e.currentTarget.textContent;
+    const __token = e.currentTarget.textContent as string | undefined;
+    if (!__token) return;
+
+    const token = tokens.find((_token) => _token.name === __token);
     if (!token) return;
+
     setFromToken(token);
   };
 
   const handleToTokenSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    const token = e.currentTarget.textContent;
+    const token = e.currentTarget.textContent as string | undefined;
     if (!token) return;
-    setToToken(token);
+
+    const _token = tokens.find((_token) => _token.name === token);
+    if (!_token) return;
+
+    setToToken(_token);
   };
 
   const handleFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {

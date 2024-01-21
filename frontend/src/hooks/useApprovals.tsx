@@ -1,11 +1,9 @@
 import { CONTRACTS } from "@/constants";
-import usePartnerDetails from "./partner/usePartnerDetails";
 import { useAccount, useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 const MAX_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);
 
-const useApprovals = () => {
-  const { partnerVaultAddr } = usePartnerDetails();
+const useApprovals = (partnerVaultAddr?: TAddress) => {
   const { address } = useAccount();
 
   const { writeAsync: approveTestGhoForPartnerAsync } = useContractWrite({
@@ -25,6 +23,9 @@ const useApprovals = () => {
   });
 
   const approveTestGhoForPartner = async () => {
+    if (!partnerVaultAddr) {
+      throw new Error("Partner Vault Address not found");
+    }
     const { hash } = await approveTestGhoForPartnerAsync();
     console.info(`Approval Test GHO for partner: Transaction hash: ${hash}`);
     await waitForTransaction({ hash, chainId: 11155111 });
@@ -32,6 +33,9 @@ const useApprovals = () => {
   };
 
   const approveTestGhoForMain = async () => {
+    if (!partnerVaultAddr) {
+      throw new Error("Partner Vault Address not found");
+    }
     const { hash } = await approveTestGhoForMainAsync();
     console.info(`Approval Test GHO for main: Transaction hash: ${hash}`);
     await waitForTransaction({ hash, chainId: 11155111 });

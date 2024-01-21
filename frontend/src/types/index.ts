@@ -1,3 +1,25 @@
+export type TAddress = `0x${string}`;
+
+export type PartnerInfo = {
+  name: string;
+  symbol: string;
+  totalSupply: number;
+  tokenBalance: number;
+  // totalSupplyWithUsers: number;
+  addrs: {
+    vault: TAddress;
+    payment: TAddress;
+    partner: TAddress;
+  };
+};
+
+export type TokenInfo = {
+  name: string;
+  address: TAddress;
+  symbol: string;
+  balance: number;
+};
+
 export type TeamMember = {
   name: string;
   role: string;
@@ -60,7 +82,7 @@ export enum EPartnerContracts {
 type ABI = Array<object>;
 
 type PublicContract = {
-  address: `0x${string}`;
+  address: TAddress;
   ABI: ABI;
 };
 
@@ -69,7 +91,7 @@ export enum EAdminContracts {
 }
 
 type AdminContract = {
-  address: `0x${string}`;
+  address: TAddress;
 };
 
 export type AdminContractCollection = {

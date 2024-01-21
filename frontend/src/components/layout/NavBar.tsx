@@ -165,7 +165,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px]  text-[14px] hover:text-[#DDD6FE] font-medium ":
                     navSelected === EDashboardNavSelected.APPLY_AS_A_PARTNER,
-                }
+                },
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.SHOP);
@@ -183,7 +183,7 @@ const NavBar = () => {
                 {
                   "hover:bg-[#491C96] hover:border-[#6927da95] hover:border-[1px] hover:border-solid hover:rounded-[6px] text-[14px] hover:text-[#DDD6FE]  font-medium":
                     navSelected === EDashboardNavSelected.SHOP,
-                }
+                },
               )}
               onClick={() => {
                 setNavSelected(EDashboardNavSelected.APPLY_AS_A_PARTNER);

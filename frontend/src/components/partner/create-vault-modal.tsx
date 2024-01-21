@@ -7,9 +7,10 @@ import Step2 from "./create-vault/step2";
 import Step3 from "./create-vault/step3";
 import Step4 from "./create-vault/step4";
 import { waitForTransaction } from "wagmi/actions";
-import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 import useApprovals from "@/hooks/useApprovals";
 import useBalances from "@/hooks/useBalances";
+import { getPartnerDetails } from "@/utils/contract";
+import { TAddress } from "@/types";
 
 type CreateVaultModalProps = {
   onClose: () => void;
@@ -31,11 +32,12 @@ const CreateVaultModal = ({
   const [ratio1, setRatio1] = useState(2);
   const [rewardPoints, setRewardPoints] = useState(0);
 
+  const [currVaultAddr, setCurrVaultAddr] = useState<TAddress>();
+
   const { address } = useAccount();
-  const { partnerVaultAddr } = usePartnerDetails();
   const { availableGho } = useBalances();
 
-  const { approveTestGhoForPartner } = useApprovals();
+  const { approveTestGhoForPartner } = useApprovals(currVaultAddr);
 
   useEffect(() => {
     const zerosToAdd = "0".repeat(ratio1);
@@ -60,7 +62,7 @@ const CreateVaultModal = ({
   const { writeAsync: writeAsyncPartnerVault } = useContractWrite({
     account: address,
     abi: CONTRACTS.PARTNER.PartnerVault.ABI,
-    address: partnerVaultAddr,
+    address: currVaultAddr,
     functionName: "depositGHO",
     args: [BigInt(stakeGHO * 10e17)],
   });
@@ -76,6 +78,11 @@ const CreateVaultModal = ({
       console.log("Hash generated: ", hash);
       await waitForTransaction({ hash, chainId: 11155111 });
       console.log("Transaction successful");
+
+      const details = await getPartnerDetails(address);
+      if (!details) throw "Error fetching partner details";
+
+      setCurrVaultAddr(details.partnerVaultAddr);
 
       onNext();
     } catch (error) {

@@ -1,22 +1,55 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { EPublicContracts } from "@/types";
+import { EPublicContracts, TokenInfo } from "@/types";
 import { readPublicContract } from "@/utils/contract";
+import usePartnerDetails from "./partner/usePartnerDetails";
+import { CONTRACTS } from "@/constants";
+import { readContract } from "wagmi/actions";
+
+const pollInterval = 10_000; // 10 seconds
+
+const getGpInfo = async () => {
+  const promises = ["name", "symbol", "totalAssets", "balanceOf"].map(
+    (funcName) => {
+      return readContract({
+        abi: CONTRACTS.PARTNER.PartnerVault.ABI,
+        address: CONTRACTS.PUBLIC.MainVault.address,
+        functionName: funcName,
+        ...(funcName === "rpTokenBalance" && {
+          args: [CONTRACTS.PUBLIC.RPool.address],
+        }),
+      });
+    },
+  );
+
+  const [name, symbol, totalSupply, balance] = (await Promise.all(
+    promises,
+  )) as unknown as [string, string, number, number];
+
+  return {
+    name,
+    symbol,
+    tokeBalance: Number(balance) / 10e17,
+    totalSupply: Number(totalSupply) / 10e17,
+  };
+};
 
 const useBalances = () => {
   const { address } = useAccount();
+  const { details } = usePartnerDetails();
+
   const [availableGho, setAvailableGho] = useState<number>();
-  const pollInterval = 10_000; // 10 seconds
+  const [tokens, setTokens] = useState<TokenInfo[]>([]);
 
   useEffect(() => {
     const fetchBalance = async () => {
       if (address) {
         try {
-          const balance = Number(
+          const balance = (Number(
             await readPublicContract(EPublicContracts.TestGHO, "balanceOf", [
               address,
             ]),
-          ) as number;
+          ) / 10e17) as number;
           setAvailableGho(balance);
         } catch (error) {
           console.error("Error fetching balance:", error);
@@ -31,7 +64,41 @@ const useBalances = () => {
     return () => clearInterval(intervalId);
   }, [address]);
 
-  return { availableGho };
+  useEffect(() => {
+    if (!details) return;
+
+    (async () => {
+      const tokens = details.map((detail) => ({
+        name: detail.name,
+        symbol: detail.symbol,
+        balance: detail.tokenBalance,
+        totalSupply: detail.totalSupply,
+        address: detail.addrs.vault,
+      }));
+
+      tokens.push({
+        address: CONTRACTS.PUBLIC.TestGHO.address,
+        balance: availableGho || 0,
+        name: "GHO",
+        symbol: "GHO",
+        totalSupply: 0,
+      });
+
+      const gpInfo = await getGpInfo();
+
+      tokens.push({
+        address: CONTRACTS.PUBLIC.TestGHO.address,
+        balance: gpInfo.tokeBalance,
+        name: gpInfo.name,
+        symbol: gpInfo.symbol,
+        totalSupply: gpInfo.totalSupply,
+      });
+
+      setTokens(tokens);
+    })();
+  }, [availableGho, details]);
+
+  return { availableGho, tokens };
 };
 
 export default useBalances;

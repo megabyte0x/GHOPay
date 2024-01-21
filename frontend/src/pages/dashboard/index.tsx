@@ -3,11 +3,13 @@ import { useAccount } from "wagmi";
 import useAppNavigation from "@/hooks/useAppNavigation";
 import useWalletInfo from "@/hooks/user/useWalletInfo";
 import Partner from "./partner";
+import usePartnerDetails from "@/hooks/partner/usePartnerDetails";
 
 const Dapp = () => {
   const { isPartner, isUser } = useWalletInfo();
   const { isConnected } = useAccount();
   const { goToHome } = useAppNavigation();
+  usePartnerDetails();
 
   if (!isConnected) {
     return goToHome();
