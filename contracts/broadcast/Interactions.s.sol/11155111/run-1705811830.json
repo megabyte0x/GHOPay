@@ -1,0 +1,36 @@
+{
+  "transactions": [
+    {
+      "hash": "0x33e917b4ddbfc57bf377f08709fc29e61d0bf0172ff9eb65e2147628b2f4eccd",
+      "transactionType": "CALL",
+      "contractName": "RPool",
+      "contractAddress": "0x7d5fAA2F882fE15819685E3d0FAB95Cb8EaF24e9",
+      "function": "setMainVault(address)",
+      "arguments": [
+        "0x0Daf0Dd7902EB415f9624c102Ef6dA7a20D15e10"
+      ],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x1cb30cb181d7854f91c2410bd037e6f42130e860",
+        "to": "0x7d5faa2f882fe15819685e3d0fab95cb8eaf24e9",
+        "gas": "0xf945",
+        "value": "0x0",
+        "data": "0xc842d3780000000000000000000000000daf0dd7902eb415f9624c102ef6da7a20d15e10",
+        "nonce": "0x24e",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x33e917b4ddbfc57bf377f08709fc29e61d0bf0172ff9eb65e2147628b2f4eccd"
+  ],
+  "returns": {},
+  "timestamp": 1705811830,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "b80610e"
+}

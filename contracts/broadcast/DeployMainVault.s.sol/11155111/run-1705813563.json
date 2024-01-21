@@ -24,49 +24,18 @@
       "isFixedGasLimit": false
     }
   ],
-  "receipts": [
-    {
-      "transactionHash": "0xdeffcf84ff0c5f2b57af6dfa4873d3d0069496ff1846c4b47783446c29bd1ffd",
-      "transactionIndex": "0x1d",
-      "blockHash": "0x54887fe58296c350dfc9707e6975bd89737ebe02af175ce1184225dee321713d",
-      "blockNumber": "0x4e3271",
-      "from": "0x1Cb30cb181D7854F91c2410BD037E6F42130e860",
-      "to": null,
-      "cumulativeGasUsed": "0x334a68",
-      "gasUsed": "0x1cbe0c",
-      "contractAddress": "0x4DaB3934373d7f4f0CBC1bA597b5Dc8Cf5d6A2D3",
-      "logs": [
-        {
-          "address": "0x4DaB3934373d7f4f0CBC1bA597b5Dc8Cf5d6A2D3",
-          "topics": [
-            "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "0x0000000000000000000000001cb30cb181d7854f91c2410bd037e6f42130e860"
-          ],
-          "data": "0x",
-          "blockHash": "0x54887fe58296c350dfc9707e6975bd89737ebe02af175ce1184225dee321713d",
-          "blockNumber": "0x4e3271",
-          "transactionHash": "0xdeffcf84ff0c5f2b57af6dfa4873d3d0069496ff1846c4b47783446c29bd1ffd",
-          "transactionIndex": "0x1d",
-          "logIndex": "0xd",
-          "removed": false
-        }
-      ],
-      "status": "0x1",
-      "logsBloom": "0x02002000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000400000000000000000000000000000000000004000000000000000020000000000000000000000000000000000000000000000000000000000000000100",
-      "type": "0x2",
-      "effectiveGasPrice": "0xb9543f2d"
-    }
-  ],
+  "receipts": [],
   "libraries": [],
-  "pending": [],
+  "pending": [
+    "0xdeffcf84ff0c5f2b57af6dfa4873d3d0069496ff1846c4b47783446c29bd1ffd"
+  ],
   "returns": {
     "mainVault": {
       "internal_type": "address",
       "value": "0x4DaB3934373d7f4f0CBC1bA597b5Dc8Cf5d6A2D3"
     }
   },
-  "timestamp": 1705813613,
+  "timestamp": 1705813563,
   "chain": 11155111,
   "multi": false,
   "commit": "5fcfa32"

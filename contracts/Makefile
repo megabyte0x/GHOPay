@@ -111,6 +111,12 @@ deployPartnerContractsDeployer:
 deployMainPayment:
 	@forge script script/DeployMainPayment.s.sol:DeployMainPayment $(NETWORK_ARGS)
 
+deployContracts:
+	make deployUtils && make deployRPool && make deployMainVault && make deployMainPayment && make deployPartnerContractsDeployer 
+
+
+	-----------------
+
 mintGHOToken:
 	@forge script script/Interactions.s.sol:MintGHOToken $(NETWORK_ARGS)
 
@@ -120,8 +126,19 @@ mintNFT:
 setMainPayment:
 	@forge script script/Interactions.s.sol:SetMainPayment $(NETWORK_ARGS)
 
+setMainVault:
+	@forge script script/Interactions.s.sol:SetMainVault $(NETWORK_ARGS)
+
 depositGHOInMainVault:
 	@forge script script/Interactions.s.sol:DepositGHOInMainVault $(NETWORK_ARGS)
+
+setMainVaultFee:
+	@forge script script/Interactions.s.sol:SetMainVaultFee $(NETWORK_ARGS)
+
+setUpInteractions:
+	make mintGHOToken && make setMainPayment && make setMainVault && make depositGHOInMainVault && make setMainVaultFee
+
+	--------	
 
 registerAsPartner:
 	@forge script script/Interactions.s.sol:RegisterAsPartner $(NETWORK_ARGS)
@@ -154,6 +171,11 @@ deployMainPaymentOnSepolia:
 deployPartnerContractsDeployerOnSepolia:
 	make deployPartnerContractsDeployer ARGS="--network sepolia"
 
+deployContractsOnSepolia:
+	make deployUtilsOnSepolia && make deployRPoolOnSepolia && make deployMainVaultOnSepolia && make deployMainPaymentOnSepolia && make deployPartnerContractsDeployerOnSepolia
+
+	-----------------
+
 mintGHOTokenOnSepolia:
 	make mintGHOToken ARGS="--network sepolia"
 
@@ -163,8 +185,19 @@ mintNFTOnSepolia:
 setMainPaymentOnSepolia:
 	make setMainPayment ARGS="--network sepolia"
 
+setMainVaultOnSepolia:
+	make setMainVault ARGS="--network sepolia"
+
 depositGHOInMainVaultOnSepolia:
 	make depositGHOInMainVault ARGS="--network sepolia"
+
+setMainVaultFeeOnSepolia:
+	make setMainVaultFee ARGS="--network sepolia"
+
+setUpInteractionsOnSepolia:
+	make mintGHOTokenOnSepolia && make setMainPaymentOnSepolia && make setMainVaultOnSepolia && make depositGHOInMainVaultOnSepolia && make setMainVaultFeeOnSepolia
+
+	--------
 
 registerAsPartnerOnSepolia:
 	make registerAsPartner ARGS="--network sepolia"
