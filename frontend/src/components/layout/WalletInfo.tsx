@@ -8,6 +8,7 @@ const rewardPoints = 0;
 const WalletInfo = () => {
   const [vis, setVis] = useState(false);
   const handleLogout = () => {};
+  const handleChangeChain = () => {};
   return (
     <div className="flex gap-[8px] items-center">
       <div className="flex gap-[6px] items-center text-[#ddd7fe]">
@@ -34,16 +35,30 @@ const WalletInfo = () => {
           <Image src={"/downArrow.svg"} alt="dropDown" height={24} width={24} />
         </div>
         {vis && (
-          <div
-            onClick={handleLogout}
-            className="absolute right-20 top-[45px] flex gap-[8px] pl-[10px] py-[8px] pr-[27px]
-        text-[#DBD2EF] text-[14px] leading-[20px] font-medium
-      rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]
-      hover:bg-[#3e3547] cursor-pointer"
+          <ul
+            className="absolute right-20 top-[51px] 
+          rounded-[6px] bg-[#1b171f] border-[#372e4c] border-[1px]"
           >
-            <Image src={"/logOut.svg"} alt="logout" height={18} width={18} />
-            <h3>Log out</h3>
-          </div>
+            <li
+              onClick={handleChangeChain}
+              className=" flex gap-[8px] py-[8px] px-[21px]
+        text-[#DBD2EF] text-[14px] leading-[20px] font-medium
+  
+      hover:bg-[#3e3547] cursor-pointer"
+            >
+              Change Chain
+            </li>
+            <li
+              onClick={handleLogout}
+              className=" flex gap-[8px] py-[8px] px-[21px]
+        text-[#DBD2EF] text-[14px] leading-[20px] font-medium
+      
+      hover:bg-[#3e3547] cursor-pointer"
+            >
+              <Image src={"/logOut.svg"} alt="logout" height={18} width={18} />
+              <h3>Log out</h3>
+            </li>
+          </ul>
         )}
       </div>
     </div>
