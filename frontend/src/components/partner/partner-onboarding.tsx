@@ -49,7 +49,6 @@ const PartnerOnboarding = () => {
             </div>
             <BUTTONS.PURPLE
               onClick={() => {
-                console.log("here");
                 setStep(1);
               }}
               text="Create a Vault"
@@ -63,11 +62,10 @@ const PartnerOnboarding = () => {
             setStep(0);
           }}
           onNext={() => {
-            console.log("onnext");
             setStep((step) => step + 1);
           }}
           onBack={() => {
-            setStep((step) => step - 1);
+            setStep((step) => (step > 2 ? step - 2 : step - 1));
           }}
         />
       </div>

@@ -6,20 +6,21 @@ import { SwapArgs, TokenInfo } from "@/types";
 import useBalances from "@/hooks/useBalances";
 import useSwap from "@/hooks/useSwap";
 import useWalletInfo from "@/hooks/user/useWalletInfo";
-import { useFeeData } from "wagmi";
 
 type SwapModalProps = {
   onClose?: () => void;
   fromTokenList: TokenInfo[];
   toTokenList: TokenInfo[];
+  setLoading: (boolean: boolean) => void;
 };
 
 export const Swap = ({
   onClose,
   fromTokenList,
   toTokenList,
+  setLoading,
 }: SwapModalProps) => {
-  const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
+  // const { data, isError, isLoading } = useFeeData({ formatUnits: "ether" });
   // console.log(data?.formatted.gasPrice);
   // if (isLoading) {
   //   setGasFee("Fetching fee data…");
@@ -27,7 +28,7 @@ export const Swap = ({
   // if (isError) {
   //   setGasFee("Error fetching fee data");
   // } else {
-  const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
+  // const [gasFee, setGasFee] = useState(data?.formatted.gasPrice || "");
   // }
   // return (
   //   <div className="text-[#ffffff]">
@@ -109,8 +110,13 @@ export const Swap = ({
 
   const handleSwap = async () => {
     if (!swap) return;
+
+    setLoading(true);
+
     console.log({ fromToken, toToken });
     await swap();
+
+    setLoading(false);
   };
   return (
     <div

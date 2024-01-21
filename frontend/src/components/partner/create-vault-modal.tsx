@@ -122,7 +122,7 @@ const CreateVaultModal = ({
   };
 
   if (!availableGho) {
-    console.warn("Waiting...");
+    console.warn("No available GHO");
     return;
   }
 
