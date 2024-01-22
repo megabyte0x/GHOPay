@@ -14,7 +14,7 @@ const isVaultOwner = async (address: string): Promise<boolean> => {
 
 function useWalletInfo() {
   const { address } = useAccount();
-  const [isPartner, setIsPartner] = useState(false);
+  const [isPartner, setIsPartner] = useState(true);
 
   useEffect(() => {
     if (!address || isPartner) return;
