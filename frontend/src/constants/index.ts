@@ -37,7 +37,7 @@ export const TEAM: TeamMember[] = [
   },
   {
     name: "Lilith",
-    role: "Smart Contract Dev",
+    role: "FrontEnd Developer",
     twit: "https://x.com/0xLPircy?t=3mEAkYIV5XzTV1Z9fMxAEg&s=09",
     gitHub: "https://github.com/0xLPircy",
     img: "/team/lilith.png",
